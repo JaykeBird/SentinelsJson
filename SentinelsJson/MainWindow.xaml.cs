@@ -1745,12 +1745,12 @@ namespace SentinelsJson
 
         private void mnuGithub_Click(object sender, RoutedEventArgs e)
         {
-            OpenBrowser("https://github.com/JaykeBird/PathfinderJson/");
+            OpenBrowser("https://github.com/JaykeBird/SentinelsJson/");
         }
 
         private void mnuFeedback_Click(object sender, RoutedEventArgs e)
         {
-            OpenBrowser("https://github.com/JaykeBird/PathfinderJson/issues/new/choose");
+            OpenBrowser("https://github.com/JaykeBird/SentinelsJson/issues/new/choose");
         }
 
         private void mnuKeyboard_Click(object sender, RoutedEventArgs e)

@@ -40,7 +40,7 @@
 
         <flat:Menu Grid.Row="0" x:Name="menu" IsMainMenu="True" Grid.ColumnSpan="2" >
             <MenuItem Header="_File">
-                <MenuItem Header="_New Character..." x:Name="mnuNew" Click="mnuNew_Click">
+                <MenuItem Header="_New Character..." x:Name="mnuNew" Click="mnuNew_Click" IsEnabled="False">
                     <MenuItem.Icon>
                         <Image Source="/SentinelsJson;component/Images/Color/NewFile.png" />
                     </MenuItem.Icon>
@@ -163,7 +163,7 @@
                 <MenuItem Header="_Dice Roller" x:Name="mnuDiceRoll" Click="mnuDiceRoll_Click" />
                 <Separator />
                 <MenuItem Header="_Text Editor Font..." x:Name="mnuEditorFont" Click="mnuEditorFont_Click" />
-                <MenuItem Header="_Options..." x:Name="mnuOptions" Click="mnuOptions_Click">
+                <MenuItem Header="_Options..." x:Name="mnuOptions" Click="mnuOptions_Click" IsEnabled="False">
                     <MenuItem.Icon>
                         <Image Source="/SentinelsJson;component/Images/Color/Options.png" />
                     </MenuItem.Icon>
@@ -178,7 +178,7 @@
                 <MenuItem Header="_Check for Updates" x:Name="mnuCheckUpdates" Click="mnuCheckUpdates_Click" />
                 <MenuItem Header="A_uto Check on Startup" x:Name="mnuAutoCheck" Click="mnuAutoCheck_Click" />
                 <Separator />
-                <MenuItem Header="_About..." x:Name="mnuAbout" Click="mnuAbout_Click" >
+                <MenuItem Header="_About..." x:Name="mnuAbout" Click="mnuAbout_Click" IsEnabled="False" >
                     <MenuItem.Icon>
                         <Image Source="/SentinelsJson;component/Images/Color/Info.png" />
                     </MenuItem.Icon>
@@ -188,7 +188,7 @@
 
         <Border Grid.Row="1" Grid.ColumnSpan="2" x:Name="toolbar" IsEnabled="False" >
             <StackPanel Orientation="Horizontal" Margin="3,0,0,0" x:Name="stkToolbar" UseLayoutRounding="True" >
-                <flat:FlatButton TransparentBack="True" x:Name="btnNew" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="mnuNew_Click" Margin="0,2" Padding="3,2" ToolTip="New Character" >
+                <flat:FlatButton TransparentBack="True" x:Name="btnNew" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="mnuNew_Click" Margin="0,2" Padding="3,2" ToolTip="New Character" IsEnabled="False" >
                     <local:ThemedImage ImageName="NewFile" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Width="16" Height="16" />
                 </flat:FlatButton>
                 <flat:FlatButton TransparentBack="True" x:Name="btnOpen" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="mnuOpen_Click" Margin="0,2" Padding="3,2" ToolTip="Open" >

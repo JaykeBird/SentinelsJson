@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.8</Version>
+    <Authors>Jayke R. Huempfner</Authors>
+    <Company>Jayke R. Huempfner</Company>
+    <Product>Sentinels RPG JSON Sheet Editor</Product>
+    <AssemblyVersion>0.8</AssemblyVersion>
+    <FileVersion>0.8</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>Read and edit JSON Sentinels RPG sheet files</Description>
+    <Copyright>© 2019-2020 Jayke R. Huempfner</Copyright>
+    <StartupObject>SentinelsJson.App</StartupObject>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.0.1" />
+    <PackageReference Include="Markdig" Version="0.20.0" />
+    <PackageReference Include="Markdig.Wpf" Version="0.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SolidShineUi">
+      <HintPath>..\Ssui\SolidShineUi.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Release-win-x64\**" />
+    <Compile Remove="Release-win-x86\**" />
+    <EmbeddedResource Remove="Release-win-x64\**" />
+    <EmbeddedResource Remove="Release-win-x86\**" />
+    <None Remove="Release-win-x64\**" />
+    <None Remove="Release-win-x86\**" />
+    <Page Remove="Release-win-x64\**" />
+    <Page Remove="Release-win-x86\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Images\**" />
+    <None Remove="Json.xshd" />
+    <None Remove="None.xshd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\**" />
+    <EmbeddedResource Include="Json.xshd" />
+    <EmbeddedResource Include="None.xshd" />
+  </ItemGroup>
+
+</Project>

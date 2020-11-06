@@ -1,0 +1,11 @@
+﻿<Application x:Class="SentinelsJson.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SentinelsJson" Startup="Application_Startup" DispatcherUnhandledException="Application_DispatcherUnhandledException" ShutdownMode="OnExplicitShutdown" >
+    <Application.Resources>
+
+    </Application.Resources>
+    <JumpList.JumpList>
+        <JumpList ShowRecentCategory="True" JumpItemsRejected="JumpList_JumpItemsRejected" JumpItemsRemovedByUser="JumpList_JumpItemsRemovedByUser" />
+    </JumpList.JumpList>
+</Application>

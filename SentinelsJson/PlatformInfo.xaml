@@ -1,0 +1,28 @@
+﻿<flat:FlatWindow x:Class="SentinelsJson.PlatformInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SentinelsJson"
+        xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+        mc:Ignorable="d"
+        Title="Platform Info" Height="250" Width="340" FontSize="12" ResizeMode="NoResize" CaptionDisplayType="Close" >
+    <Grid>
+        <flat:FlatButton x:Name="btnClose" Content="OK" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="80" Click="btnClose_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,20,0,0" Text="Platform Information" VerticalAlignment="Top"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="10,43,0,0" Text="OS Platform:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="135,43,0,0" Text="0" VerticalAlignment="Top" x:Name="txtPlatform" />
+        <TextBlock HorizontalAlignment="Left" Margin="10,60,0,0" Text="OS Version:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="135,60,0,0" Text="a" VerticalAlignment="Top" x:Name="txtVersion" />
+        <TextBlock HorizontalAlignment="Left" Margin="10,77,0,0" Text="OS Architecture:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="135,77,0,0" VerticalAlignment="Top" Text="b" x:Name="txtProcessor" />
+        <TextBlock HorizontalAlignment="Left" Margin="10,94,0,0" Text="Process Architecture:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="135,94,0,0" VerticalAlignment="Top" Text="e" x:Name="txtProcessArch" />
+        
+        <TextBlock HorizontalAlignment="Left" Margin="10,128,0,0" Text=".NET Core Target:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="135,128,0,0" Text="c" VerticalAlignment="Top" x:Name="txtTarget" />
+        <TextBlock HorizontalAlignment="Left" Margin="10,145,0,0" Text=".NET Core Runtime:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="135,145,0,0" Text="d" VerticalAlignment="Top" x:Name="txtRuntime" />
+    </Grid>
+</flat:FlatWindow>

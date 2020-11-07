@@ -428,7 +428,7 @@ namespace SentinelsJson
         {
             if (!_sheetLoaded)
             {
-                Title = "Pathfinder JSON";
+                Title = "Sentinels JSON";
                 displayedTitle = "";
             }
             else
@@ -437,12 +437,12 @@ namespace SentinelsJson
                 {
                     if (string.IsNullOrEmpty(filePath))
                     {
-                        Title = "Pathfinder JSON - New File";
+                        Title = "Sentinels JSON - New File";
                         displayedTitle = "New File";
                     }
                     else
                     {
-                        Title = "Pathfinder JSON - " + Path.GetFileName(filePath);
+                        Title = "Sentinels JSON - " + Path.GetFileName(filePath);
                         displayedTitle = Path.GetFileName(filePath);
                     }
                 }
@@ -450,12 +450,12 @@ namespace SentinelsJson
                 {
                     if (string.IsNullOrEmpty(fileTitle))
                     {
-                        Title = "Pathfinder JSON - (unnamed character)";
+                        Title = "Sentinels JSON - (unnamed character)";
                         displayedTitle = fileTitle;
                     }
                     else
                     {
-                        Title = "Pathfinder JSON - " + fileTitle;
+                        Title = "Sentinels JSON - " + fileTitle;
                         displayedTitle = fileTitle;
                     }
                 }
@@ -1182,7 +1182,6 @@ namespace SentinelsJson
 
         #endregion
 
-
         #region Tab bar / visuals / appearance
 
         void UpdateAppearance()
@@ -1216,19 +1215,21 @@ namespace SentinelsJson
                 //    //}
                 //}
 
-                //txtStrm.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
-                //txtDexm.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
-                //txtCham.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
-                //txtConm.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
-                //txtIntm.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
-                //txtWism.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
+                txtStrm.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
+                txtPerm.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
+                txtEndm.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
+                txtCham.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
+                txtIntm.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
+                txtAgim.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
+                txtLukm.BorderBrush = new SolidColorBrush(App.ColorScheme.LightDisabledColor);
 
-                //txtStrm.Background = new SolidColorBrush(SystemColors.ControlColor);
-                //txtDexm.Background = new SolidColorBrush(SystemColors.ControlColor);
-                //txtCham.Background = new SolidColorBrush(SystemColors.ControlColor);
-                //txtConm.Background = new SolidColorBrush(SystemColors.ControlColor);
-                //txtIntm.Background = new SolidColorBrush(SystemColors.ControlColor);
-                //txtWism.Background = new SolidColorBrush(SystemColors.ControlColor);
+                txtStrm.Background = new SolidColorBrush(SystemColors.ControlColor);
+                txtPerm.Background = new SolidColorBrush(SystemColors.ControlColor);
+                txtEndm.Background = new SolidColorBrush(SystemColors.ControlColor);
+                txtCham.Background = new SolidColorBrush(SystemColors.ControlColor);
+                txtIntm.Background = new SolidColorBrush(SystemColors.ControlColor);
+                txtAgim.Background = new SolidColorBrush(SystemColors.ControlColor);
+                txtLukm.Background = new SolidColorBrush(SystemColors.ControlColor);
             }
             else
             {
@@ -1244,19 +1245,21 @@ namespace SentinelsJson
                     }
                 }
 
-                //txtStrm.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
-                //txtDexm.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
-                //txtCham.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
-                //txtConm.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
-                //txtIntm.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
-                //txtWism.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
+                txtStrm.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
+                txtPerm.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
+                txtEndm.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
+                txtCham.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
+                txtIntm.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
+                txtAgim.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
+                txtLukm.BorderBrush = new SolidColorBrush(SystemColors.ControlDarkColor);
 
-                //txtStrm.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
-                //txtDexm.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
-                //txtCham.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
-                //txtConm.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
-                //txtIntm.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
-                //txtWism.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
+                txtStrm.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
+                txtPerm.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
+                txtEndm.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
+                txtCham.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
+                txtIntm.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
+                txtAgim.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
+                txtLukm.Background = App.ColorScheme.SecondHighlightColor.ToBrush();
             }
 
             brdrCalculating.Background = App.ColorScheme.SecondaryColor.ToBrush();
@@ -1270,8 +1273,8 @@ namespace SentinelsJson
             //    item.UpdateAppearance();
             //}
 
-            //btnNotesEdit.Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
-            //btnNotesView.Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
+            btnNotesEdit.Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
+            btnNotesView.Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
 
             //foreach (SpellEditor item in selSpells.GetItemsAsType<SpellEditor>())
             //{
@@ -1284,8 +1287,8 @@ namespace SentinelsJson
             selTabs.AddItem(CreateTab("General"));
             selTabs.AddItem(CreateTab("Skills"));
             selTabs.AddItem(CreateTab("Combat"));
-            selTabs.AddItem(CreateTab("Spells"));
-            selTabs.AddItem(CreateTab("Feats/Abilities"));
+            selTabs.AddItem(CreateTab("Attributes/Defects"));
+            selTabs.AddItem(CreateTab("Feats"));
             selTabs.AddItem(CreateTab("Items"));
             selTabs.AddItem(CreateTab("Notes"));
 
@@ -1323,76 +1326,52 @@ namespace SentinelsJson
 
         void LoadTab(string text)
         {
-            //if (currentView == TABS_VIEW)
-            //{
-            //    SetAllTabsVisibility(Visibility.Collapsed);
+            if (currentView == TABS_VIEW)
+            {
+                SetAllTabsVisibility(Visibility.Collapsed);
 
-            //    //txtLoc.Text = text;
-            //    switch (text)
-            //    {
-            //        case "General":
-            //            grdGeneral.Visibility = Visibility.Visible;
-            //            break;
-            //        case "Skills":
-            //            grdSkills.Visibility = Visibility.Visible;
-            //            break;
-            //        case "Combat":
-            //            grdCombat.Visibility = Visibility.Visible;
-            //            break;
-            //        case "Spells":
-            //            grdSpells.Visibility = Visibility.Visible;
-            //            break;
-            //        case "Feats/Abilities":
-            //            grdFeats.Visibility = Visibility.Visible;
-            //            break;
-            //        case "Items":
-            //            grdItems.Visibility = Visibility.Visible;
-            //            break;
-            //        case "Notes":
-            //            grdNotes.Visibility = Visibility.Visible;
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //    scrSheet.ScrollToVerticalOffset(0);
-            //}
-            //else
-            //{
-            //    SetAllTabsVisibility();
-            //    //txtLoc.Text = "All Tabs";
+                //txtLoc.Text = text;
+                switch (text)
+                {
+                    case "General":
+                        grdGeneral.Visibility = Visibility.Visible;
+                        break;
+                    case "Attributes/Defects":
+                        grdAttributes.Visibility = Visibility.Visible;
+                        break;
+                    case "Notes":
+                        grdNotes.Visibility = Visibility.Visible;
+                        break;
+                    default:
+                        break;
+                }
+                scrSheet.ScrollToVerticalOffset(0);
+            }
+            else
+            {
+                SetAllTabsVisibility();
+                //txtLoc.Text = "All Tabs";
 
-            //    TextBlock control = titGeneral;
+                TextBlock control = titGeneral;
 
-            //    switch (text)
-            //    {
-            //        case "General":
-            //            control = titGeneral;
-            //            break;
-            //        case "Skills":
-            //            control = titSkills;
-            //            break;
-            //        case "Combat":
-            //            control = titCombat;
-            //            break;
-            //        case "Spells":
-            //            control = titSpells;
-            //            break;
-            //        case "Feats/Abilities":
-            //            control = titFeats;
-            //            break;
-            //        case "Items":
-            //            control = titItems;
-            //            break;
-            //        case "Notes":
-            //            control = titNotes;
-            //            break;
-            //        default:
-            //            break;
-            //    }
+                switch (text)
+                {
+                    case "General":
+                        control = titGeneral;
+                        break;
+                    case "Attributes/Defects":
+                        control = titAttributes;
+                        break;
+                    case "Notes":
+                        control = titNotes;
+                        break;
+                    default:
+                        break;
+                }
 
-            //    Point relativeLocation = control.TranslatePoint(new Point(0, 0), stkSheet);
-            //    scrSheet.ScrollToVerticalOffset(relativeLocation.Y - 5);
-            //}
+                Point relativeLocation = control.TranslatePoint(new Point(0, 0), stkSheet);
+                scrSheet.ScrollToVerticalOffset(relativeLocation.Y - 5);
+            }
         }
 
         private void tabItem_Click(object? sender, EventArgs e)
@@ -1408,13 +1387,9 @@ namespace SentinelsJson
 
         void SetAllTabsVisibility(Visibility visibility = Visibility.Visible)
         {
-            //grdGeneral.Visibility = visibility;
-            //grdSkills.Visibility = visibility;
-            //grdCombat.Visibility = visibility;
-            //grdSpells.Visibility = visibility;
-            //grdFeats.Visibility = visibility;
-            //grdItems.Visibility = visibility;
-            //grdNotes.Visibility = visibility;
+            grdGeneral.Visibility = visibility;
+            grdAttributes.Visibility = visibility;
+            grdNotes.Visibility = visibility;
         }
 
         private void mnuColors_Click(object sender, RoutedEventArgs e)
@@ -1451,7 +1426,7 @@ namespace SentinelsJson
                 ExtraButton2Text = "Use Green on Black",
                 ExtraButton3Text = "Use Black on White",
                 OkButtonText = "Don't use",
-                Message = "A high contrast theme is good for users who have vision-impairment or other issues. PathfinderJSON comes with 3 high-contrast options available.",
+                Message = "A high contrast theme is good for users who have vision-impairment or other issues. SentinelsJSON comes with 3 high-contrast options available.",
                 Title = "High Contrast Theme"
             };
 
@@ -1755,7 +1730,7 @@ namespace SentinelsJson
 
         private void mnuKeyboard_Click(object sender, RoutedEventArgs e)
         {
-            OpenBrowser("https://github.com/JaykeBird/PathfinderJson/wiki/Keyboard-Shortcuts");
+            OpenBrowser("https://github.com/JaykeBird/SentinelsJSON/wiki/Keyboard-Shortcuts");
         }
 
         private void mnuMarkdown_Click(object sender, RoutedEventArgs e)
@@ -1891,7 +1866,7 @@ namespace SentinelsJson
         {
             if (value)
             {
-                using (Stream? s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("PathfinderJson.Json.xshd"))
+                using (Stream? s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SentinelsJSON.Json.xshd"))
                 {
                     if (s != null)
                     {
@@ -1902,7 +1877,7 @@ namespace SentinelsJson
             }
             else
             {
-                using (Stream? s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("PathfinderJson.None.xshd"))
+                using (Stream? s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SentinelsJSON.None.xshd"))
                 {
                     if (s != null)
                     {
@@ -2139,14 +2114,235 @@ namespace SentinelsJson
             if (addToRecent) AddRecentFile(filename);
         }
 
-        void LoadSentinelsSheet(SentinelsSheet ss)
+        void LoadSentinelsSheet(SentinelsSheet sheet)
         {
+            // set this flag so that the program doesn't try to set the sheet as dirty while loading in the file
+            _isUpdating = true;
 
+            // check if the userdata structure is present
+            bool _userDataCheck = false;
+
+            // General tab
+            if (sheet.Player != null)
+            {
+                txtPlayerName.Text = sheet.Player.DisplayName;
+
+                string email = "";
+
+                foreach (UserData.Email item in sheet.Player.Emails)
+                {
+                    if (item.Type == "account")
+                    {
+                        email = item.Value;
+                    }
+                }
+                if (string.IsNullOrEmpty(email))
+                {
+                    try
+                    {
+                        email = sheet.Player.Emails[0].Value;
+                    }
+                    catch (IndexOutOfRangeException) { }
+                    catch (ArgumentOutOfRangeException) { }
+                }
+                txtPlayerEmail.Text = email;
+
+                try
+                {
+                    if (sheet.Player.Photos != null)
+                    {
+                        ImageSource iss = new BitmapImage(new Uri(sheet.Player.Photos[0].Value ?? ""));
+                        imgPlayer.Source = iss;
+                    }
+                    else
+                    {
+                        imgPlayer.Source = null;
+                    }
+                }
+                catch (IndexOutOfRangeException) { imgPlayer.Source = null; }
+                catch (NullReferenceException) { imgPlayer.Source = null; }
+                catch (ArgumentOutOfRangeException) { imgPlayer.Source = null; }
+                catch (System.Net.WebException) { imgPlayer.Source = null; }
+
+                _userDataCheck = false;
+            }
+            else
+            {
+                _userDataCheck = true;
+                sheet.Player = new UserData(true);
+            }
+
+            ud = sheet.Player;
+            //ac = sheet.AC;
+            //sheetid = sheet.Id ?? "-1";
+            //version = sheet.Version;
+
+            txtCharacter.Text = sheet.Name;
+            txtLevel.Value = sheet.BaseLevel;
+            txtEcl.Value = sheet.ECL;
+            txtAlignment.Text = sheet.Alignment;
+            txtHomeland.Text = sheet.Homeland;
+            txtDeity.Text = sheet.Deity;
+
+            txtPhyRace.Text = sheet.Race;
+            txtPhyGender.Text = sheet.Gender;
+            txtPhySize.Text = sheet.Size;
+            txtPhyAge.Text = sheet.Age;
+            txtPhyHeight.Text = sheet.Height;
+            txtPhyWeight.Text = sheet.Weight;
+            txtPhyHair.Text = sheet.Hair;
+            txtPhyEyes.Text = sheet.Eyes;
+
+            Speed? spd = sheet.Speed;
+            if (spd != null)
+            {
+                txtSpeedBase.Text = spd.Base;
+                txtSpeedArmor.Text = spd.WithArmor;
+                txtSpeedBurrow.Text = spd.Burrow;
+                txtSpeedClimb.Text = spd.Climb;
+                txtSpeedFly.Text = spd.Fly;
+                txtSpeedSwim.Text = spd.Swim;
+                txtSpeedTemp.Text = spd.TempModifier;
+            }
+
+            abilities = sheet.RawAbilities;
+            potentials = sheet.RawPotential;
+
+            txtStr.Value = sheet.Strength;
+            txtPer.Value = sheet.Perception;
+            txtEnd.Value = sheet.Endurance;
+            txtCha.Value = sheet.Charisma;
+            txtInt.Value = sheet.Intellect;
+            txtAgi.Value = sheet.Agility;
+            txtLuk.Value = sheet.Luck;
+
+            txtStrm.Text = CalculateModifier(txtStr.Value);
+            txtPerm.Text = CalculateModifier(txtPer.Value);
+            txtEndm.Text = CalculateModifier(txtEnd.Value);
+            txtCham.Text = CalculateModifier(txtCha.Value);
+            txtIntm.Text = CalculateModifier(txtInt.Value);
+            txtAgim.Text = CalculateModifier(txtAgi.Value);
+            txtLukm.Text = CalculateModifier(txtLuk.Value);
+
+            txtStrp.Value = sheet.PotStrength;
+            txtPerp.Value = sheet.PotPerception;
+            txtEndp.Value = sheet.PotEndurance;
+            txtChap.Value = sheet.PotCharisma;
+            txtIntp.Value = sheet.PotIntellect;
+            txtAgip.Value = sheet.PotAgility;
+            txtLukp.Value = sheet.PotLuck;
+
+            switch (sheet.PowerStatName.ToUpperInvariant())
+            {
+                case "STR":
+                case "STRENGTH":
+                    chkStrw.IsChecked = true;
+                    break;
+                case "PER":
+                case "PERCEPTION":
+                    chkPerw.IsChecked = true;
+                    break;
+                case "END":
+                case "ENDURANCE":
+                    chkEndw.IsChecked = true;
+                    break;
+                case "CHA":
+                case "CHARISMA":
+                    chkChaw.IsChecked = true;
+                    break;
+                case "INT":
+                case "INTELLECT":
+                    chkIntw.IsChecked = true;
+                    break;
+                case "AGI":
+                case "AGILITY":
+                    chkAgiw.IsChecked = true;
+                    break;
+                case "LUK":
+                case "LUCK":
+                    chkStrw.IsChecked = true;
+                    break;
+                default:
+                    break;
+            }
+
+            if (sheet.SheetSettings != null)
+            {
+                sheetSettings = sheet.SheetSettings;
+            }
+            else
+            {
+                sheetSettings = new Dictionary<string, string?>();
+            }
+
+            // Notes tab
+            if (sheetSettings != null)
+            {
+                if (sheetSettings.ContainsKey("notesMarkdown"))
+                {
+                    if (sheetSettings["notesMarkdown"]?.ToLowerInvariant() == "enabled")
+                    {
+                        ShowMarkdownElements();
+                        OpenNotesViewTab();
+                        chkNotesMarkdown.IsChecked = true;
+                    }
+                    else
+                    {
+                        HideMarkdownElements();
+                        chkNotesMarkdown.IsChecked = false;
+                    }
+                }
+                else
+                {
+                    HideMarkdownElements();
+                    chkNotesMarkdown.IsChecked = false;
+                }
+            }
+            else
+            {
+                HideMarkdownElements();
+                chkNotesMarkdown.IsChecked = false;
+            }
+
+            //if (sheet.NotesMarkdown)
+            //{
+            //    ShowMarkdownElements();
+            //    OpenNotesViewTab();
+            //}
+            //else
+            //{
+            //    HideMarkdownElements();
+            //}
+
+            txtNotes.Text = sheet.Notes;
+            UpdateMarkdownViewerVisuals();
+
+            _isUpdating = false;
+
+            // this is a check to determine if this JSON file looks like a character sheet file or not
+            // the program will happily open and work with the file, but if the user saves the file the existing data in the file will be deleted
+            // thus, I'm most concerned about data loss for the user, in case the user accidentally opened the wrong file
+            // the check looks at two of three things being missing:
+            // 1. the character's name (name attribute)
+            // 2. the player's info (user data structure)
+            // 3. the character's base abilities structure (abilities structure)
+            // if two of them are missing, it displays a warning dialog but continues otherwise
+            if ((string.IsNullOrEmpty(sheet.Name) && (!sheet.AbilitiesPresent || _userDataCheck)) || (!sheet.AbilitiesPresent && _userDataCheck))
+            {
+                MessageDialog md = new MessageDialog(App.ColorScheme);
+                md.Message = "This JSON file doesn't seem to look like it's a character sheet at all. " +
+                    "It may be good to open the Raw JSON view to check that the file matches what you're expecting.\n\n" +
+                    "SentinelsJSON will continue, but if you save any changes, any non-character sheet data may be deleted.";
+                md.Title = "File Check Warning";
+                md.Owner = this;
+                md.Image = MessageDialogImage.Hand;
+                md.ShowDialog();
+            }
         }
 
         #endregion
 
-        #region Sync Editors / update sheet / CreatePathfinderSheetAsync
+        #region Sync Editors / update sheet / CreateSentinelsSheetAsync
 
         #region Update UI (Calculate menu)
 
@@ -2166,7 +2362,6 @@ namespace SentinelsJson
         }
 
         #endregion
-
 
         async Task UpdateCalculations(bool skills = true, bool totals = true)
         {
@@ -2192,12 +2387,13 @@ namespace SentinelsJson
             _isCalculating = true;
             brdrCalculating.Visibility = Visibility.Visible;
 
-            //txtStrm.Text = CalculateModifier(txtStr.Value);
-            //txtDexm.Text = CalculateModifier(txtDex.Value);
-            //txtCham.Text = CalculateModifier(txtCha.Value);
-            //txtConm.Text = CalculateModifier(txtCon.Value);
-            //txtIntm.Text = CalculateModifier(txtInt.Value);
-            //txtWism.Text = CalculateModifier(txtWis.Value);
+            txtStrm.Text = CalculateModifier(txtStr.Value);
+            txtPerm.Text = CalculateModifier(txtPer.Value);
+            txtEndm.Text = CalculateModifier(txtEnd.Value);
+            txtCham.Text = CalculateModifier(txtCha.Value);
+            txtIntm.Text = CalculateModifier(txtInt.Value);
+            txtAgim.Text = CalculateModifier(txtAgi.Value);
+            txtLukm.Text = CalculateModifier(txtLuk.Value);
 
             // update core modifier
 
@@ -2302,7 +2498,7 @@ namespace SentinelsJson
                     MessageDialog md = new MessageDialog(App.ColorScheme);
                     md.Message = "This JSON file doesn't seem to look like it's a character sheet at all. " +
                         "It may be good to open the Raw JSON view to check that the file matches what you're expecting.\n\n" +
-                        "PathfinderJSON will continue, but if you save any changes, any non-character sheet data may be deleted.";
+                        "SentinelsJSON will continue, but if you save any changes, any non-character sheet data may be deleted.";
                     md.Title = "File Check Warning";
                     md.Owner = this;
                     md.Image = MessageDialogImage.Hand;
@@ -2356,6 +2552,273 @@ namespace SentinelsJson
         private SentinelsSheet CreateSentinelsSheet()
         {
             return new SentinelsSheet();
+        }
+
+        #endregion
+
+        #region General sheet event handlers
+
+        private void scrSheet_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop)!;
+
+                if (!SaveDirtyChanges() || CheckCalculating())
+                {
+                    return;
+                }
+
+                LoadFile(files[0]);
+            }
+        }
+
+        private void textbox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!_isUpdating)
+            {
+                SetIsDirty();
+            }
+
+            //lastEditedBox = sender as TextBox;
+        }
+
+        private void editor_ContentChanged(object? sender, EventArgs e)
+        {
+            if (!_isUpdating)
+            {
+                SetIsDirty();
+            }
+        }
+
+        private async void txtStr_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!_isUpdating)
+            {
+                txtStrm.Text = CalculateModifier(txtStr.Value);
+                txtPerm.Text = CalculateModifier(txtPer.Value);
+                txtEndm.Text = CalculateModifier(txtEnd.Value);
+                txtCham.Text = CalculateModifier(txtCha.Value);
+                txtIntm.Text = CalculateModifier(txtInt.Value);
+                txtAgim.Text = CalculateModifier(txtAgi.Value);
+                txtLukm.Text = CalculateModifier(txtLuk.Value);
+
+                SetIsDirty();
+
+                if (mnuAutoUpdate.IsChecked)
+                {
+                    await UpdateCalculations(true, false);
+                }
+            }
+        }
+
+        private void txtCharacter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!_isUpdating)
+            {
+                if (fileTitle != txtCharacter.Text)
+                {
+                    fileTitle = txtCharacter.Text;
+                }
+
+                SetIsDirty(); // <-- this includes updating the title bar
+            }
+        }
+
+        private void btnEditPlayerData_Click(object sender, RoutedEventArgs e)
+        {
+            UserdataEditor ude = new UserdataEditor();
+            ude.LoadUserData(ud);
+            ude.Owner = this;
+
+            ude.ShowDialog();
+            if (ude.DialogResult)
+            {
+                // update userdata
+                ud = ude.GetUserData();
+
+                // update UI with new userdata
+                txtPlayerName.Text = ud.DisplayName;
+
+                string email = "";
+
+                foreach (UserData.Email item in ud.Emails)
+                {
+                    if (item.Type == "account")
+                    {
+                        email = item.Value;
+                    }
+                }
+                if (string.IsNullOrEmpty(email))
+                {
+                    try
+                    {
+                        email = ud.Emails[0].Value;
+                    }
+                    catch (IndexOutOfRangeException) { }
+                    catch (ArgumentOutOfRangeException) { }
+                }
+                txtPlayerEmail.Text = email;
+
+                try
+                {
+                    if (ud.Photos != null)
+                    {
+                        ImageSource iss = new BitmapImage(new Uri(ud.Photos[0].Value ?? ""));
+                        imgPlayer.Source = iss;
+                    }
+                    else
+                    {
+                        imgPlayer.Source = null;
+                    }
+                }
+                catch (IndexOutOfRangeException) { imgPlayer.Source = null; }
+                catch (NullReferenceException) { imgPlayer.Source = null; }
+                catch (ArgumentOutOfRangeException) { imgPlayer.Source = null; }
+                catch (System.Net.WebException) { imgPlayer.Source = null; }
+
+                SetIsDirty();
+            }
+        }
+
+        private void txtStr_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //if (mnuAutoUpdate.IsChecked)
+            //{
+            //    await UpdateCalculations(true, false, false);
+            //}
+        }
+
+        //private async void txtBab_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (mnuAutoUpdate.IsChecked)
+        //    {
+        //        await UpdateCalculations(false, false, false);
+        //    }
+        //}
+
+        //private void SkillHeaderGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        //{
+        //    if (grdSkillHeader.ActualWidth > SkillEditor.WIDE_STATE_THRESHOLD)
+        //    {
+        //        // activate wide state for the header grid
+        //        colSkillModifiers.Width = new GridLength(0);
+        //        colSkillExtra.Width = new GridLength(3, GridUnitType.Star);
+        //        colSkillExtra.MinWidth = 280;
+        //    }
+        //    else
+        //    {
+        //        // disable wide state for the header grid
+        //        colSkillModifiers.Width = new GridLength(85);
+        //        colSkillExtra.Width = new GridLength(0);
+        //        colSkillExtra.MinWidth = 0;
+        //    }
+        //}
+
+        #endregion
+
+        #region Notes tab
+
+        private void chkNotesMarkdown_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            if (!_isUpdating)
+            {
+                if (chkNotesMarkdown.IsChecked)
+                {
+                    ShowMarkdownElements();
+                }
+                else
+                {
+                    HideMarkdownElements();
+                }
+
+                SetIsDirty();
+            }
+        }
+
+        private void btnNotesEdit_Click(object sender, RoutedEventArgs e)
+        {
+            OpenNotesEditTab();
+        }
+
+        private void btnNotesView_Click(object sender, RoutedEventArgs e)
+        {
+            OpenNotesViewTab();
+        }
+
+        private void txtNotes_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!_isUpdating)
+            {
+                SetIsDirty();
+            }
+
+            vwrNotes.Markdown = txtNotes.Text;
+            UpdateMarkdownViewerVisuals();
+
+            //lastEditedBox = sender as TextBox;
+        }
+
+        void UpdateMarkdownViewerVisuals()
+        {
+            if (vwrNotes.Document != null)
+            {
+                vwrNotes.Document.PagePadding = new Thickness(2);
+
+                foreach (var item in vwrNotes.Document.Blocks)
+                {
+                    item.Padding = new Thickness(0);
+                    item.Margin = new Thickness(0, 1, 0, 4);
+                }
+            }
+        }
+
+        public void OpenNotesEditTab()
+        {
+            notesEdit = true;
+
+            vwrNotes.Visibility = Visibility.Collapsed;
+            txtNotes.Visibility = Visibility.Visible;
+
+            btnNotesView.IsSelected = false;
+            btnNotesEdit.IsSelected = true;
+
+            btnNotesView.BorderThickness = new Thickness(0, 0, 0, 1);
+            btnNotesEdit.BorderThickness = new Thickness(1, 1, 1, 0);
+        }
+
+        public void OpenNotesViewTab()
+        {
+            notesEdit = false;
+
+            vwrNotes.Visibility = Visibility.Visible;
+            txtNotes.Visibility = Visibility.Collapsed;
+
+            btnNotesView.IsSelected = true;
+            btnNotesEdit.IsSelected = false;
+
+            btnNotesView.BorderThickness = new Thickness(1, 1, 1, 0);
+            btnNotesEdit.BorderThickness = new Thickness(0, 0, 0, 1);
+        }
+
+        public void HideMarkdownElements()
+        {
+            OpenNotesEditTab();
+
+            btnNotesEdit.Visibility = Visibility.Collapsed;
+            btnNotesView.Visibility = Visibility.Collapsed;
+            brdrNotesMarkdown.Visibility = Visibility.Collapsed;
+
+            txtNotes.BorderThickness = new Thickness(1, 1, 1, 1);
+        }
+
+        public void ShowMarkdownElements()
+        {
+            btnNotesEdit.Visibility = Visibility.Visible;
+            btnNotesView.Visibility = Visibility.Visible;
+            brdrNotesMarkdown.Visibility = Visibility.Visible;
+
+            txtNotes.BorderThickness = new Thickness(1, 0, 1, 1);
         }
 
         #endregion

@@ -137,9 +137,14 @@ namespace SentinelsJson
         [JsonProperty("potential")]
         public Dictionary<string, string> RawPotential { get; set; } = new Dictionary<string, string>();
 
+        // sheet settings
+
+        [JsonProperty("sheetSettings", DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
+        public Dictionary<string, string?>? SheetSettings { get; set; }
+
         // Sentinels specific values
 
-        public int Level { get; set; } = 0;
+        public int BaseLevel { get; set; } = 0;
         public int ECL { get; set; } = 0;
 
         public int Prowess { get; set; } = 0;

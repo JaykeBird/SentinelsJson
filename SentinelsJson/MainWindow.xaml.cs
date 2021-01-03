@@ -1339,6 +1339,9 @@ namespace SentinelsJson
                     case "Attributes/Defects":
                         grdAttributes.Visibility = Visibility.Visible;
                         break;
+                    case "Feats":
+                        grdFeats.Visibility = Visibility.Visible;
+                        break;
                     case "Notes":
                         grdNotes.Visibility = Visibility.Visible;
                         break;
@@ -1361,6 +1364,9 @@ namespace SentinelsJson
                         break;
                     case "Attributes/Defects":
                         control = titAttributes;
+                        break;
+                    case "Feats":
+                        control = titFeats;
                         break;
                     case "Notes":
                         control = titNotes;
@@ -1389,6 +1395,7 @@ namespace SentinelsJson
         {
             grdGeneral.Visibility = visibility;
             grdAttributes.Visibility = visibility;
+            grdFeats.Visibility = visibility;
             grdNotes.Visibility = visibility;
         }
 
@@ -2274,6 +2281,10 @@ namespace SentinelsJson
             {
                 sheetSettings = new Dictionary<string, string?>();
             }
+
+            // Feats tab
+
+            selFeats.LoadList(sheet.Feats);
 
             // Notes tab
             if (sheetSettings != null)

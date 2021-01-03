@@ -48,6 +48,16 @@
             If this is null or empty, auto-completion suggestions will begin at the beginning of the textbox's text.
             </summary>
         </member>
+        <member name="M:SolidShineUi.AutoCompleteBehavior.GetAutoCompleteItemsSource(System.Windows.DependencyObject)">
+            <summary>
+            Return the string list/enumerable associated with a specified object; this list is used as the source for the auto complete list.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.AutoCompleteBehavior.SetAutoCompleteItemsSource(System.Windows.DependencyObject,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Set the string list/enumerable used for the auto complete list for the specified object.
+            </summary>
+        </member>
         <member name="M:SolidShineUi.AutoCompleteBehavior.OnPreviewKeyDown(System.Object,System.Windows.Input.KeyEventArgs)">
             <summary>
             Used for moving the caret to the end of the suggested auto-completion text.
@@ -61,6 +71,20 @@
             </summary>
             <param name="sender"></param>
             <param name="e"></param>
+        </member>
+        <member name="M:SolidShineUi.BindableChild.GetBindableChild(System.Windows.DependencyObject)">
+            <summary>
+            Get the bindable child element for this object.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SolidShineUi.BindableChild.SetBindableChild(System.Windows.DependencyObject,System.Windows.UIElement)">
+            <summary>
+            Set the bindable child element for this object.
+            </summary>
+            <param name="obj"></param>
+            <param name="value"></param>
         </member>
         <member name="T:SolidShineUi.BindableHighContrast">
             <summary>
@@ -76,7 +100,7 @@
         </member>
         <member name="T:SolidShineUi.BrushFactory">
             <summary>
-            A class that creates brushes to be used in coloring the user interface.
+            A class that creates various brushes conveniently.
             </summary>
         </member>
         <member name="M:SolidShineUi.BrushFactory.Create(System.Windows.Media.Color)">
@@ -116,19 +140,69 @@
             <param name="location">The location, such as a web address or file location, of the image to use.</param>
             <returns>An ImageBrush containing this image.</returns>
         </member>
-        <member name="T:SolidShineUi.HighContrastBrushes">
-            <summary>
-            Contains some <code>SolidColorBrush</code> fields for usage in High Contrast mode.
-            </summary>
-        </member>
         <member name="T:SolidShineUi.CheckBox">
             <summary>
-            A CheckBox control with more customization over the appearance.
+            A CheckBox control with more customization over the appearance, and a larger box for a more touch-friendly UI.
             </summary>
         </member>
         <member name="M:SolidShineUi.CheckBox.#ctor">
             <summary>
             Create a new CheckBox control.
+            </summary>
+        </member>
+        <member name="E:SolidShineUi.CheckBox.CheckBoxClick">
+            <summary>
+            An event that raises only when the checkbox itself is clicked.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.IsChecked">
+            <summary>
+            Get or set if the check box is checked. (Note: if in the Indeterminate state, it will still return true as checked.)
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.IsIndeterminate">
+            <summary>
+            Get or set if the check box is in the Indeterminate state. 
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.CheckState">
+            <summary>
+            Get or set the state of the checkbox, via a CheckState enum. Can be set via this property or via the IsChecked and IsIndeterminate properties.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.ColorScheme">
+            <summary>
+            Get or set the color scheme used for this checkbox. For easier color scheme management, bind this to the window or larger control you're using.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.CheckBackground">
+            <summary>
+            Get or set the brush used for the background of the checkbox's box. This is not set via a color scheme.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.CheckForeground">
+            <summary>
+            Get or set the brush used for the check mark in the checkbox's box.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.BackgroundDisabledBrush">
+            <summary>
+            Get or set the brush to use for the background of the checkbox's box when it is disabled.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.CheckDisabledBrush">
+            <summary>
+            Get or set the brush used for the check mark when the control is disabled.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.BorderBrush">
+            <summary>
+            Get or set the brush used for the border of the checkbox's box.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.BorderHighlightBrush">
+            <summary>
+            Get or set the brush used for the border of the checkbox's box, while the mouse is over the control or it has keyboard focus.
             </summary>
         </member>
         <member name="P:SolidShineUi.CheckBox.ClickOnPress">
@@ -139,6 +213,11 @@
         <member name="P:SolidShineUi.CheckBox.TriStateClick">
             <summary>
             Gets or sets whether the checkbox should cycle through three states (rather than two) when clicked. The third state is the "Indeterminate" state, which can be checked via the IsIndeterminate property.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.CheckBox.OnlyAllowCheckBoxClick">
+            <summary>
+            Gets or sets whether clicking should only occur when the checkbox's box is clicked, and not the rest of the control.
             </summary>
         </member>
         <member name="M:SolidShineUi.CheckBox.PerformPress(System.Boolean)">
@@ -304,27 +383,91 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="M:SolidShineUi.ColorPaletteLoad.ReadInt16(System.IO.Stream)">
+        <member name="T:SolidShineUi.ColorPaletteFileReader">
+            <summary>
+            A class containing methods that can be used to load colors from various color palette file formats.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.ColorPaletteFileReader.LoadPalFilePalette(System.String)">
+            <summary>
+            Loads colors from a .pal color palette file. Supports JASC and RIFF file types.
+            </summary>
+            <param name="filename">The file to load.</param>
+            <exception cref="T:System.FormatException">Thrown if the file format doesn't match the JASC or RIFF types.</exception>
+        </member>
+        <member name="M:SolidShineUi.ColorPaletteFileReader.LoadRiffPalette(System.String)">
+            <summary>
+            Loads colors from a color palette file formatted using the RIFF format.
+            </summary>
+            <param name="filename">The file to load.</param>
+            <exception cref="T:System.FormatException">Thrown if the file doesn't match the expected format.</exception>
+        </member>
+        <member name="M:SolidShineUi.ColorPaletteFileReader.LoadJascPalette(System.String)">
+            <summary>
+            Loads colors from a color palette file formatted using the JASC format.
+            </summary>
+            <param name="filename">The file to load.</param>
+            <exception cref="T:System.FormatException">Thrown if the file doesn't match the expected format.</exception>
+        </member>
+        <member name="M:SolidShineUi.ColorPaletteFileReader.LoadRawPalette(System.String)">
+            <summary>
+            Loads colors from a color palette file, reading from raw binary bytes.
+            </summary>
+            <param name="filename">The file to load.</param>
+            <exception cref="T:System.FormatException">Thrown if the file doesn't match the expected format.</exception>
+        </member>
+        <member name="M:SolidShineUi.ColorPaletteFileReader.ReadInt16(System.IO.Stream)">
             <summary>
             Reads a 16bit unsigned integer in big-endian format.
             </summary>
             <param name="stream">The stream to read the data from.</param>
             <returns>The unsigned 16bit integer cast to an <c>Int32</c>.</returns>
         </member>
-        <member name="M:SolidShineUi.ColorPaletteLoad.ReadInt32(System.IO.Stream)">
+        <member name="M:SolidShineUi.ColorPaletteFileReader.ReadInt32(System.IO.Stream)">
             <summary>
             Reads a 32bit unsigned integer in big-endian format.
             </summary>
             <param name="stream">The stream to read the data from.</param>
             <returns>The unsigned 32bit integer cast to an <c>Int32</c>.</returns>
         </member>
-        <member name="M:SolidShineUi.ColorPaletteLoad.ReadString(System.IO.Stream,System.Int32)">
+        <member name="M:SolidShineUi.ColorPaletteFileReader.LoadPhotoshopPalette(System.String)">
+            <summary>
+            Loads colors from a Photoshop color palette file (.aco). Note that Adobe Swatch Exchange files (.ase) are not supported.
+            </summary>
+            <param name="filename">The file to load.</param>
+            <exception cref="T:System.FormatException">Thrown if the file doesn't match the expected format.</exception>
+        </member>
+        <member name="M:SolidShineUi.ColorPaletteFileReader.ReadString(System.IO.Stream,System.Int32)">
             <summary>
             Reads a unicode string of the specified length.
             </summary>
             <param name="stream">The stream to read the data from.</param>
             <param name="length">The number of characters in the string.</param>
             <returns>The string read from the stream.</returns>
+        </member>
+        <member name="M:SolidShineUi.ColorPaletteFileReader.LoadPaintNetPalette(System.String)">
+            <summary>
+            Loads colors from a PAINT.NET or basic HEX color palette file (.txt;.hex).
+            </summary>
+            <param name="filename">The file to load.</param>
+            <exception cref="T:System.ArgumentException">Thrown if the file cannot be opened.</exception>
+        </member>
+        <member name="M:SolidShineUi.ColorPaletteFileReader.LoadGimpPalette(System.String)">
+            <summary>
+            Loads colors from a GIMP color palette file (.gpl).
+            </summary>
+            <param name="filename">The file to load.</param>
+            <exception cref="T:System.FormatException">Thrown if the file doesn't match the GIMP file format (the first lime must say "gimp palette").</exception>
+            <exception cref="T:System.ArgumentException">Thrown if the file cannot be opened.</exception>
+        </member>
+        <member name="M:SolidShineUi.ColorPaletteFileReader.LoadBitmapImagePalette(System.String)">
+            <summary>
+            Loads colors from the palette present in TIFF and GIF image files (.tif;.tiff;.gif). Only the first 256 colors are loaded.
+            </summary>
+            <param name="filename">The file to load.</param>
+            <exception cref="T:System.ArgumentException">Thrown if the file cannot be opened.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown if a null value is passed in or if the file cannot be opened.</exception>
+            <exception cref="T:System.UriFormatException">Thrown if the file string does not appear to be a path or URL.</exception>
         </member>
         <member name="T:SolidShineUi.ColorsHelper">
             <summary>
@@ -499,6 +642,29 @@
             Get the color that is the invert of this color. The A (alpha) value of the color is also kept.
             </summary>
         </member>
+        <member name="T:SolidShineUi.HighContrastOption">
+            <summary>
+            Available options for creating high-contrast color schemes. These are based upon color schemes available through Windows's High Contrast options.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.ColorScheme.#ctor">
+            <summary>
+            Create a color scheme with no colors preset; default values are all grey. Can be used to custom build a scheme color by color.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.ColorScheme.#ctor(System.Windows.Media.Color)">
+            <summary>
+            Create a color scheme with a single preset color as the basis. All other colors in the scheme are based off this color.
+            </summary>
+            <param name="mainColor"></param>
+        </member>
+        <member name="M:SolidShineUi.ColorScheme.#ctor(System.Windows.Media.Color,System.Windows.Media.Color)">
+            <summary>
+            Create a color scheme with a preset color for the basis, and an additional preset color to use as a secondary accent. All other colors are based off one of these two colors.
+            </summary>
+            <param name="mainColor"></param>
+            <param name="accentColor"></param>
+        </member>
         <member name="P:SolidShineUi.ColorScheme.IsHighContrast">
             <summary>
             Get or set whether this is a high-contrast color scheme.
@@ -506,7 +672,7 @@
         </member>
         <member name="P:SolidShineUi.ColorScheme.MainColor">
             <summary>
-            Main interface color. With High Contrast color schemes, do not use except for window captions
+            Main interface color. With High Contrast color schemes, this will be the same as BackgroundColor.
             </summary>
         </member>
         <member name="P:SolidShineUi.ColorScheme.SecondaryColor">
@@ -514,9 +680,52 @@
             Secondary color. Do not use with High Contrast color schemes
             </summary>
         </member>
+        <member name="M:SolidShineUi.ColorScheme.GetHighContrastScheme(SolidShineUi.HighContrastOption)">
+            <summary>
+            Create a color scheme with high-contrast colors, based upon one of the available options.
+            </summary>
+            <param name="hco">The high-contrast scheme option to create.</param>
+            <returns></returns>
+        </member>
+        <member name="P:SolidShineUi.ContextMenu.MenuBackground">
+            <summary>
+            Get or set the brush used for the background of the menu's drop-down area. This is different from the Background brush, which is not used in a ContextMenu.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.ContextMenu.BorderBrush">
+            <summary>
+            Get or set the brush used for the border of the menu's drop-down area.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.ContextMenu.HighlightBrush">
+            <summary>
+            Get or set the brush used for the top-level menu items in the menu bar. This is not used in a ContextMenu; instead look at the HighlightSubitemBrush property.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.ContextMenu.HighlightSubitemBrush">
+            <summary>
+            Get or set the brush used for menu items that aren't top-level on the menu bar, when the mouse is over them or they have keyboard focus.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.ContextMenu.CheckedBrush">
+            <summary>
+            Get or set the brush to use for the check highlight for checked menu items.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.ContextMenu.RoundedCorners">
+            <summary>
+            Get or set if the context menu has rounded corners.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.ContextMenu.VerticalScrollBarVisibility">
+            <summary>
+            Get or set if a vertical scroll bar is visible for the context menu.
+            If the context menu is longer than the screen, the scroll bar can be used.
+            </summary>
+        </member>
         <member name="T:SolidShineUi.ColorPickerDialog">
             <summary>
-            Interaction logic for ColorPickerDialog.xaml
+            A dialog for the user to be able to select a color, either from a preset list, or via sliders, an image source, or from a color palette file.
             </summary>
             <summary>
             ColorPickerDialog
@@ -529,7 +738,7 @@
         </member>
         <member name="T:SolidShineUi.FontSelectDialog">
             <summary>
-            Interaction logic for FontPickerDialog.xaml
+            A dialog for the user to select a font, as well as being able to choose a font size and styling if desired.
             </summary>
             <summary>
             FontSelectDialog
@@ -547,7 +756,7 @@
         </member>
         <member name="T:SolidShineUi.MessageDialog">
             <summary>
-            Interaction logic for MessageBox.xaml
+            A dialog to display a message to the user, and potentially allowing them to select from a few options via selecting the appropriate button. Similar to the generic WPF MessageBox.
             </summary>
             <summary>
             MessageDialog
@@ -707,7 +916,7 @@
         </member>
         <member name="T:SolidShineUi.StringInputDialog">
             <summary>
-            Interaction logic for StringInputBox.xaml
+            A dialog for the user to enter in a string (in response to a message or prompt).
             </summary>
             <summary>
             StringInputDialog
@@ -760,7 +969,7 @@
         </member>
         <member name="P:SolidShineUi.StringInputDialog.Description">
             <summary>
-            Get or set the description text to display about the text box. This text should describe what the user should enter into the text box.
+            Get or set the description text to display above the text box. This text should describe what the user should enter into the text box.
             </summary>
             <remarks>Try to keep the description to about a sentence long. 
             Ideally, the overall design of the program should make it apparent what the user should enter into the text box without reading the description.</remarks>
@@ -828,6 +1037,42 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="T:SolidShineUi.Experimental.TabControl">
+            <summary>
+            Interaction logic for TabControl.xaml
+            </summary>
+            <summary>
+            TabControl
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.Experimental.TabControl.ColorScheme">
+            <summary>
+            Get or set the color scheme to apply to the window.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.Experimental.TabControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:SolidShineUi.Experimental.TabDisplayItem">
+            <summary>
+            Interaction logic for TabDisplayItem.xaml
+            </summary>
+            <summary>
+            TabDisplayItem
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.Experimental.TabDisplayItem.ColorScheme">
+            <summary>
+            Get or set the color scheme to apply to the window.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.Experimental.TabDisplayItem.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
         <member name="T:SolidShineUi.FileSelect">
             <summary>
             Interaction logic for FileSelect.xaml
@@ -868,11 +1113,78 @@
             Perform a click programattically. The button responds the same way as if it was clicked by the user.
             </summary>
         </member>
+        <member name="P:SolidShineUi.FileSelect.SelectedFiles">
+            <summary>
+            Get or set the list of selected files. The list contains each file's path.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.FileSelect.SelectedFilesCount">
+            <summary>
+            Get the number of selected files.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.FileSelect.SelectedFile">
+            <summary>
+            Get or set the selected file. If multiple files are selected, returns the first file.
+            </summary>
+        </member>
         <member name="P:SolidShineUi.FileSelect.FileFilter">
             <summary>
-            Get or set the file filter to use when selecting files. Please use semicolons (;) to separate multiple extensions/filters (i.e. <c>"*.docx;*.xlsx;*.pptx"</c>).
+            Get or set the file filter to use when selecting files. Use semicolons (;) to separate multiple extensions/filters (i.e. <c>"*.docx;*.xlsx;*.pptx"</c>).
             </summary>
             <remarks>Default value is <c>ALL_FILES_FILTER</c>, which is <c>"*.*"</c>.</remarks>
+        </member>
+        <member name="P:SolidShineUi.FileSelect.AllowMultipleFiles">
+            <summary>
+            Get or set if multiple files can be selected or dropped in. If false, only one file can be selected.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.FileSelect.BrowseFiles">
+            <summary>
+            Display an OpenFileDialog for the user to select files.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.FileSelect.CopyFilenamesToClipboard">
+            <summary>
+            Copy the filenames for all the selected files to the clipboard. Each file path is on its own separate line.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">No files are currently selected.</exception>
+        </member>
+        <member name="M:SolidShineUi.FileSelect.OpenContainingFolders">
+            <summary>
+            Open the containing folder in Windows Explorer for each of the selected files. If multiple files are in the same folder, that folder will be opened multiple times.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.FileSelect.OpenFilesForReading">
+            <summary>
+            Create a file stream for each selected file, which can be used for reading the files.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">No files are currently selected.</exception>
+        </member>
+        <member name="M:SolidShineUi.FileSelect.OpenFilesForWriting">
+            <summary>
+            Create a file stream for each selected file, which can be used for reading or writing the files.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">No files are currently selected.</exception>
+        </member>
+        <member name="M:SolidShineUi.FileSelect.Clear">
+            <summary>
+            Remove all selected files.
+            </summary>
+        </member>
+        <member name="M:SolidShineUi.FileSelect.SelectFiles(System.String)">
+            <summary>
+            Select a file.
+            </summary>
+            <param name="file">The full path to the file.</param>
+            <remarks>If there is no file at the specified path, it is not selected.</remarks>
+        </member>
+        <member name="M:SolidShineUi.FileSelect.SelectFiles(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Select a list of files.
+            </summary>
+            <param name="files">An enumeration of files, each string being a separate full path to a file.</param>
+            <remarks>If there is no file at the specified path, it is not selected.</remarks>
         </member>
         <member name="M:SolidShineUi.FileSelect.GetStackImage(SolidShineUi.MessageDialogImageConverter.MessageDialogImageColor)">
             <summary>
@@ -880,6 +1192,11 @@
             </summary>
             <param name="color">The color to use for the image. Use black or white for high-contrast themes.</param>
             <returns></returns>
+        </member>
+        <member name="P:SolidShineUi.FileSelect.AllowContextMenu">
+            <summary>
+            Get or set whether the context menu is displayed when the control is right-clicked.
+            </summary>
         </member>
         <member name="M:SolidShineUi.FileSelect.InitializeComponent">
             <summary>
@@ -1101,6 +1418,11 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="E:SolidShineUi.LinkTextBlock.Click">
+            <summary>
+            This event is raised when the control is clicked.
+            </summary>
+        </member>
         <member name="P:SolidShineUi.LinkTextBlock.TextBrush">
             <summary>
             Get or set the standard foreground brush for the text. This overwrites the Foreground property.
@@ -1121,7 +1443,7 @@
             Get or set if the LinkTextBlock should automatically create a link based upon the Text property. See remarks for more details.
             </summary>
             <remarks>
-            When AutoSetLinkFromText is set to <c>true</c>, the LinkTextBlock attempts to open the link defined in the Text property when the user clicks on the control.
+            When AutoSetLinkFromText is set to <c>true</c>, the LinkTextBlock attempts to open a file or URL based upon the value of the Text property when the user clicks on the control.
             For example, if this property is set to <c>true</c> and the Text property is set to <c>"https://microsoft.com"</c>, the LinkTextBlock will open "https://microsoft.com" when the control is clicked,
             even if a Click event handler is not attached. Note that for web links, the scheme/protocol should be present (i.e. "http", "https", "ftp", etc.).
             <para />
@@ -1140,6 +1462,56 @@
             Gets or sets a value indicating whether this element is enabled in the user interface (UI).
             </summary>
         </member>
+        <member name="P:SolidShineUi.Menu.MenuBackground">
+            <summary>
+            Get or set the brush used for the background of the menu's drop-down area. This is different from the Background brush, which set the background of the top menu bar.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.Menu.BorderBrush">
+            <summary>
+            Get or set the brush used for the border of the menu's drop-down area.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.Menu.HighlightBrush">
+            <summary>
+            Get or set the brush used for the top-level menu items in the menu bar, when the mouse is over them or they have keyboard focus.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.Menu.HighlightSubitemBrush">
+            <summary>
+            Get or set the brush used for menu items that aren't top-level on the menu bar, when the mouse is over them or they have keyboard focus.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.Menu.CheckedBrush">
+            <summary>
+            Get or set the brush to use for the check highlight for checked menu items.
+            </summary>
+        </member>
+        <member name="T:SolidShineUi.MenuButton">
+            <summary>
+            A flat-styled button that displays a menu when it is clicked.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.MenuButton.Menu">
+            <summary>
+            Get or set the menu that appears when the button is clicked.
+            </summary>
+        </member>
+        <member name="F:SolidShineUi.MenuButton.MenuClosed">
+            <summary>
+            This event is raised when this MenuButtons's menu is closed.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.MenuButton.MenuPlacement">
+            <summary>
+            Get or set the placement mode for the MenuButton's menu.
+            </summary>
+        </member>
+        <member name="P:SolidShineUi.MenuButton.MenuPlacementRectangle">
+            <summary>
+            Get or set the placement rectangle for the MenuButton's menu. This sets the area relative to the button that the menu is positioned.
+            </summary>
+        </member>
         <member name="P:SolidShineUi.MenuButton.StaysOpen">
             <summary>
             Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
@@ -1148,6 +1520,11 @@
         <member name="P:SolidShineUi.MenuButton.ShowMenuArrow">
             <summary>
             Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
+            </summary>
+        </member>
+        <member name="T:SolidShineUi.MenuItemExtensions">
+            <summary>
+            Adds additional methods that can be used to hook into the menu item's IsEnabledChanged event.
             </summary>
         </member>
         <member name="T:SolidShineUi.NativeMethods">
@@ -1287,6 +1664,16 @@
             <param name="nXPos">The X position of the pixel.</param>
             <param name="nYPos">The Y position of the pixel.</param>
             <returns></returns>
+        </member>
+        <member name="T:SolidShineUi.RectConverter">
+            <summary>
+            A MultiValueConverter that takes 4 values and creates a Rect. This class can be used to get around the fact that a Rect cannot be used for XAML binding.
+            </summary>
+        </member>
+        <member name="F:SolidShineUi.RectConverter.ZERO">
+            <summary>
+            A double defined as zero. Can be used if there is a value in your Rect that you do not want to set (via {x:Static} in XAML).
+            </summary>
         </member>
         <member name="T:SolidShineUi.SelectableItem">
             <summary>
@@ -1449,6 +1836,11 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:SolidShineUi.StreamExtensions">
+            <summary>
+            Extension methods for Streams. Used in color palette file handling. In the future, I may remove this file.
+            </summary>
+        </member>
         <member name="M:SolidShineUi.StreamExtensions.ReadAsciiString(System.IO.Stream,System.Int32)">
             <summary>
             Reads a ASCII string of the specified length.
@@ -1493,41 +1885,43 @@
             <param name="stream">The stream to read the data from.</param>
             <returns>A 4-byte unsigned integer read from the source stream.</returns>
         </member>
-        <member name="T:SolidShineUi.Experimental.TabControl">
+        <member name="T:SolidShineUi.WildcardMatch">
             <summary>
-            Interaction logic for TabControl.xaml
-            </summary>
-            <summary>
-            TabControl
+            A class that can match a string against a given target string with wildcards (i.e. "d*g" can match "dig" or "dog" or "ding"). 
             </summary>
         </member>
-        <member name="P:SolidShineUi.Experimental.TabControl.ColorScheme">
+        <member name="M:SolidShineUi.WildcardMatch.MatchesWildcard(System.String,System.String)">
             <summary>
-            Get or set the color scheme to apply to the window.
+            Match a string against a given target string with wildcards ("*" and "?" are supported). See Remarks for more details.
             </summary>
+            <param name="text">The string to test.</param>
+            <param name="wildcardString">The string to match against, containing the wildcards.</param>
+            <returns>True if it can be matched; false if they cannot be.</returns>
+            <remarks>
+            This function can match a string against a wildcard string. This is used, for example, in Windows's file dialogs for opening or saving files.
+            Supported wildcard characters are "*", which matches any number of characters, and "?", which matches just one character.
+            (For example, "d*g" will match both "dig" and "ding", where as "d?g" will only match "dig" and not "ding".)
+            Regex (regular expressions) is a lot more powerful than what wildcards alone can provide, but regex strings can also be a lot more complicated to decipher.
+            <para/>
+            This class was written by H.A. Sullivan.
+            </remarks>
         </member>
-        <member name="M:SolidShineUi.Experimental.TabControl.InitializeComponent">
+        <member name="M:SolidShineUi.WildcardMatch.MatchesWildcard(System.String,System.String,System.Boolean)">
             <summary>
-            InitializeComponent
+            Match a string against a given target string with wildcards ("*" and "?" are supported). See Remarks for details.
             </summary>
-        </member>
-        <member name="T:SolidShineUi.Experimental.TabDisplayItem">
-            <summary>
-            Interaction logic for TabDisplayItem.xaml
-            </summary>
-            <summary>
-            TabDisplayItem
-            </summary>
-        </member>
-        <member name="P:SolidShineUi.Experimental.TabDisplayItem.ColorScheme">
-            <summary>
-            Get or set the color scheme to apply to the window.
-            </summary>
-        </member>
-        <member name="M:SolidShineUi.Experimental.TabDisplayItem.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
+            <param name="text">The string to test.</param>
+            <param name="wildcardString">The string to match against, containing the wildcards.</param>
+            <param name="ignoreCase">Set if letter casing is ignored while matching.</param>
+            <returns>True if it can be matched; false if they cannot be.</returns>
+            <remarks>
+            This function can match a string against a wildcard string. This is used, for example, in Windows's file dialogs for opening or saving files.
+            Supported wildcard characters are "*", which matches any number of characters, and "?", which matches just one character.
+            (For example, "d*g" will match both "dig" and "ding", where as "d?g" will only match "dig" and not "ding".)
+            Regex (regular expressions) is a lot more powerful than what wildcards alone can provide, but regex strings can also be a lot more complicated to decipher.
+            <para/>
+            This class was written by H.A. Sullivan.
+            </remarks>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
             <summary>

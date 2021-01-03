@@ -157,6 +157,10 @@ namespace SentinelsJson
 
         public Dictionary<string, Save> Saves { get; set; } = new Dictionary<string, Save>();
 
+        // Feats
+
+        public List<Feat> Feats { get; set; } = new List<Feat>();
+
         private void SetupSheet()
         {
             if (RawAbilities != null)

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SentinelsJson.Ild;
 using SolidShineUi;
 using static SentinelsJson.CoreUtils;
 
@@ -12,7 +13,7 @@ namespace SentinelsJson
     /// <summary>
     /// Interaction logic for FeatDisplay.xaml
     /// </summary>
-    public partial class FeatEditor : SelectableUserControl
+    public partial class FeatEditor : SelectableListItem
     {
         public FeatEditor()
         {
@@ -54,6 +55,23 @@ namespace SentinelsJson
             }
         }
 
+
+        private void btnDetails_IsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (btnDetails.IsSelected)
+            {
+                rowDetails.Height = new GridLength(1, GridUnitType.Auto);
+                rowDetails.MinHeight = 125;
+                imgDetails.ImageName = "UpArrow";
+            }
+            else
+            {
+                rowDetails.Height = new GridLength(0);
+                rowDetails.MinHeight = 0;
+                imgDetails.ImageName = "DownArrow";
+            }
+        }
+
         private void Expander_Expanded(object sender, RoutedEventArgs e)
         {
             rowDetails.Height = new GridLength(1, GridUnitType.Auto);
@@ -74,9 +92,51 @@ namespace SentinelsJson
             ContentChanged?.Invoke(this, e);
         }
 
-        private void lblSearch_Click(object sender, RoutedEventArgs e)
+        public override void ApplyColorScheme(ColorScheme cs)
         {
-            OpenBrowser("https://cse.google.com/cse?cx=006680642033474972217%3A6zo0hx_wle8&q=" + txtName.Text);
+            base.ApplyColorScheme(cs);
+
+            btnRemove.ApplyColorScheme(cs);
+            btnDetails.ApplyColorScheme(cs);
+            imgDetails.ApplyColorScheme(cs);
+        }
+
+        public override void MapProperties(Dictionary<IldPropertyInfo, object> properties)
+        {
+            foreach (var item in properties)
+            {
+                switch (item.Key.Name.ToLowerInvariant())
+                {
+                    case "name":
+                        txtName.Text = item.Value as string;
+                        break;
+                    case "notes":
+                        txtNotes.Text = item.Value as string;
+                        break;
+                    case "school":
+                        txtSchool.Text = item.Value as string;
+                        break;
+                    case "subschool":
+                        txtSubschool.Text = item.Value as string;
+                        break;
+                    case "type":
+                        txtType.Text = item.Value as string;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        {
+            DoRequestDelete();
+        }
+
+        private void SelectableListItem_Loaded(object sender, RoutedEventArgs e)
+        {
+            rowDetails.Height = new GridLength(0);
+            rowDetails.MinHeight = 0;
         }
     }
 }

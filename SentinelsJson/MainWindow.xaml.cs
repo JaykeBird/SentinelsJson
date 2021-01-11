@@ -1339,6 +1339,9 @@ namespace SentinelsJson
                     case "Attributes/Defects":
                         grdAttributes.Visibility = Visibility.Visible;
                         break;
+                    case "Combat":
+                        grdCombat.Visibility = Visibility.Visible;
+                        break;
                     case "Feats":
                         grdFeats.Visibility = Visibility.Visible;
                         break;
@@ -1364,6 +1367,9 @@ namespace SentinelsJson
                         break;
                     case "Attributes/Defects":
                         control = titAttributes;
+                        break;
+                    case "Combat":
+                        control = titCombat;
                         break;
                     case "Feats":
                         control = titFeats;
@@ -1395,6 +1401,7 @@ namespace SentinelsJson
         {
             grdGeneral.Visibility = visibility;
             grdAttributes.Visibility = visibility;
+            grdCombat.Visibility = visibility;
             grdFeats.Visibility = visibility;
             grdNotes.Visibility = visibility;
         }
@@ -1404,8 +1411,8 @@ namespace SentinelsJson
             if (App.Settings.HighContrastTheme != NO_HIGH_CONTRAST)
             {
                 MessageDialog md = new MessageDialog(App.ColorScheme);
-                if (md.ShowDialog("A high-contrast theme is currently being used. Changing the color scheme will turn off the high-contrast theme. Do you want to continue?", null, this, "High Contrast Theme In Use", MessageDialogButtonDisplay.Two,
-                    MessageDialogImage.Warning, MessageDialogResult.Cancel, "Continue", "Cancel") == MessageDialogResult.Cancel)
+                if (md.ShowDialog("A high-contrast theme is currently being used. Changing the color scheme will turn off the high-contrast theme. Do you want to continue?", null, this, "High Contrast Theme In Use", 
+                    MessageDialogButtonDisplay.Two, MessageDialogImage.Warning, MessageDialogResult.Cancel, "Continue", "Cancel") == MessageDialogResult.Cancel)
                 {
                     return;
                 }
@@ -2185,8 +2192,8 @@ namespace SentinelsJson
             //version = sheet.Version;
 
             txtCharacter.Text = sheet.Name;
-            txtLevel.Value = sheet.BaseLevel;
-            txtEcl.Value = sheet.ECL;
+            nudLevel.Value = sheet.BaseLevel;
+            nudEcl.Value = sheet.ECL;
             txtAlignment.Text = sheet.Alignment;
             txtHomeland.Text = sheet.Homeland;
             txtDeity.Text = sheet.Deity;

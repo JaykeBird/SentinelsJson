@@ -16,6 +16,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SentinelsJson;component/SearchPanel/SearchPanel.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <BooleanToVisibilityConverter x:Key="btv" />
         </ResourceDictionary>
     </flat:FlatWindow.Resources>
     <flat:FlatWindow.TopRightElement>
@@ -277,9 +279,9 @@
 
                         <TextBox x:Name="txtCharacter" MinHeight="24" Margin="0,0,10,0" VerticalAlignment="Center" TextChanged="txtCharacter_TextChanged" Grid.Row="1" />
                         <TextBlock x:Name="lblCharacter" HorizontalAlignment="Left" Text="Character name" VerticalAlignment="Center" />
-                        <flat:IntegerSpinner x:Name="txtLevel" MinHeight="23" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0" />
+                        <flat:IntegerSpinner x:Name="nudLevel" MinHeight="23" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0" />
                         <TextBlock x:Name="lblLevel" HorizontalAlignment="Left" Text="Character Level" VerticalAlignment="Center" Grid.Column="1" Margin="0,0,5,0" />
-                        <flat:IntegerSpinner x:Name="txtEcl" MinHeight="23" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Margin="5,0,0,0" />
+                        <flat:IntegerSpinner x:Name="nudEcl" MinHeight="23" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Margin="5,0,0,0" />
                         <TextBlock x:Name="lblEcl" HorizontalAlignment="Left" Text="Effective Level" VerticalAlignment="Center" Grid.Column="2" Margin="5,0,0,0" />
                     </Grid>
                     <Grid Margin="15,2,10,2" Grid.Row="3" VerticalAlignment="Top">
@@ -443,9 +445,13 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="5" />
-                        <RowDefinition Height="Auto" MinHeight="40" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="40" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid Margin="10,0,0,0">
@@ -456,14 +462,286 @@
                         <TextBlock x:Name="titCombat" Text="Combat" FontSize="16" />
                     </Grid>
 
-                    <Grid HorizontalAlignment="Left" Margin="15,0,0,0" Grid.Row="3" VerticalAlignment="Center" >
+                    <Grid HorizontalAlignment="Left" Margin="15,0,0,10" Grid.Row="3" VerticalAlignment="Top" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                         <TextBlock x:Name="lblProwess" HorizontalAlignment="Left" Text="Prowess (Pr)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                        <TextBox x:Name="txtProwess" HorizontalAlignment="Center" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxHeight="800" />
+                        <TextBox x:Name="txtProwess" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <local:DetailsButton x:Name="btnProwessDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" IsSelected="False" />
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnProwessDetails, Path=IsSelected, Converter={StaticResource btv}}" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition x:Name="rowProwessWarning" Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Margin="3">
+                                <TextBlock Text="1 per odd level" VerticalAlignment="Center" />
+                                <TextBox x:Name="txtProwessBase" IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" />
+                                <TextBlock Text="Trained Prowess (TPr)" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtProwessT" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,0" >
+                                <local:ThemedImage x:Name="imgDetails" ImageName="Warning" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Width="16" Height="16" />
+                                <TextBlock Text="Prowess cannot exceed your character's Effective Level (ECL)" Margin="3,0" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="4" Margin="15,5,0,5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Attack" FontWeight="Bold" Margin="0,0,0,5" />
+                        <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="1">
+                            <TextBlock Text="Brawl" MinWidth="60" VerticalAlignment="Center" />
+                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtBrawl" />
+                            <flat:FlatButton Margin="5,0" x:Name="btnBrawlCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+                                             ToolTip="Brawl = STR modifier + Prowess + 1 (click for more info)" TransparentBack="True" >
+                                <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                            </flat:FlatButton>
+                            <flat:CheckBox Margin="30,0,0,0" Content="Use AGI" x:Name="chkBrawlAgi" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="2">
+                            <TextBlock Text="Melee" MinWidth="60" VerticalAlignment="Center" />
+                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtMelee" />
+                            <flat:FlatButton Margin="5,0" x:Name="btnMeleeCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+                                             ToolTip="Melee = STR modifier + Prowess (click for more info)" TransparentBack="True" >
+                                <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                            </flat:FlatButton>
+                            <flat:CheckBox Margin="30,0,0,0" Content="Use AGI" x:Name="chkMeleeAgi" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="3">
+                            <TextBlock Text="Ranged" MinWidth="60" VerticalAlignment="Center" />
+                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtRangd" />
+                            <flat:FlatButton Margin="5,0" x:Name="btnRangdCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+                                             ToolTip="Ranged = AGI modifier + Prowess + 1 (click for more info)" TransparentBack="True" >
+                                <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                            </flat:FlatButton>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="5" Margin="15,5,0,5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Defense" FontWeight="Bold" Margin="0,0,0,5" />
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,5" Grid.Row="1">
+                            <TextBlock Text="Active Actions" MinWidth="60" VerticalAlignment="Center" />
+                            <TextBlock Text="(" Margin="10,0,0,0" VerticalAlignment="Center" />
+                            <flat:IntegerSpinner Margin="3,0" x:Name="nudDefenseActions" Height="24" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                            <TextBlock Text="per round )" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="2">
+                            <TextBlock Text="Block" MinWidth="60" VerticalAlignment="Center" />
+                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtBlock" />
+                            <flat:FlatButton Margin="5,0" x:Name="btnBlockCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+                                             ToolTip="Block = STR modifier + Prowess + 1/2 shield armor (click for more info)" TransparentBack="True" >
+                                <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                            </flat:FlatButton>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="3">
+                            <TextBlock Text="Dodge" MinWidth="60" VerticalAlignment="Center" />
+                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtDodge" />
+                            <flat:FlatButton Margin="5,0" x:Name="btnDodgeCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+                                             ToolTip="Dodge = AGI modifier + Prowess (click for more info)" TransparentBack="True" >
+                                <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                            </flat:FlatButton>
+                        </StackPanel>
+                        <TextBlock Text="Passive Defense" Margin="0,5,0,5" Grid.Row="4" />
+                        <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="5">
+                            <TextBlock Text="Passive" MinWidth="60" VerticalAlignment="Center" />
+                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtPassd" />
+                            <flat:FlatButton Margin="5,0" x:Name="btnPassdCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+                                             ToolTip="Passive defense = 10 + Natural armor + Trained Prowess (click for more info)" TransparentBack="True" >
+                                <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                            </flat:FlatButton>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="6">
+                            <TextBlock Text="Touch" MinWidth="60" VerticalAlignment="Center" />
+                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtTouch" />
+                            <flat:FlatButton Margin="5,0" x:Name="btnTouchCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+                                             ToolTip="Touch defense = 10 + Trained Prowess (click for more info)" TransparentBack="True" >
+                                <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                            </flat:FlatButton>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="6" Margin="35,0,0,5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" MinWidth="80" />
+                            <ColumnDefinition Width="Auto" MinWidth="80" />
+                            <ColumnDefinition Width="Auto" MinWidth="80" />
+                            <ColumnDefinition Width="Auto" MinWidth="80" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Text="Armor (Ar)" Margin="0,0,0,5" Grid.ColumnSpan="5" />
+                        <StackPanel Orientation="Horizontal" Margin="15,5,0,5" Grid.Row="1" Grid.ColumnSpan="5" >
+                            <TextBlock Text="Total" MinWidth="60" VerticalAlignment="Center" />
+                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtArmor" />
+                            <local:DetailsButton x:Name="btnArmorDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" IsSelected="False" />
+                        </StackPanel>
+
+                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="1" Width="60" Margin="0,10,0,0" x:Name="nudArmorN" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" />
+                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="2" Width="60" Margin="0,10,0,0" x:Name="nudArmorE" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" />
+                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="3" Width="60" Margin="0,10,0,0" x:Name="nudArmorA" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" />
+                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="4" Width="60" Margin="0,10,0,0" x:Name="nudArmorS" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" />
+
+                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="0,0,0,10" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" Text="Natural" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Row="3" Grid.Column="2" Margin="0,0,0,10" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" Text="Equipment" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Row="3" Grid.Column="3" Margin="0,0,0,10" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" Text="Attributes" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Row="3" Grid.Column="4" Margin="0,0,0,10" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" Text="Shield" HorizontalAlignment="Center" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Left" Margin="15,10,0,10" Grid.Row="7" VerticalAlignment="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="lblCmb" HorizontalAlignment="Left" Text="Combat Maneuver Bonus (CMB)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="txtCmb" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <local:DetailsButton x:Name="btnCmbDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnCmbDetails, Path=IsSelected, Converter={StaticResource btv}}" >
+                            <StackPanel Orientation="Horizontal" Margin="3">
+                                <TextBlock Text="STRm" VerticalAlignment="Center" />
+                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtStrm, Path=Text}" />
+                                <TextBlock Text="Pr" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" />
+                                <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtCmbM" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid HorizontalAlignment="Left" Margin="15,10,0,10" Grid.Row="8" VerticalAlignment="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="lblCmd" HorizontalAlignment="Left" Text="Combat Maneuver Defense (CMD)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="txtCmd" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <local:DetailsButton x:Name="btnCmdDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnCmdDetails, Path=IsSelected, Converter={StaticResource btv}}" >
+                            <StackPanel Orientation="Horizontal" Margin="3">
+                                <TextBlock Text="STRm" VerticalAlignment="Center" />
+                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtStrm, Path=Text}" />
+                                <TextBlock Text="AGIm" VerticalAlignment="Center" />
+                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtAgim, Path=Text}" />
+                                <TextBlock Text="Pr" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" />
+                                <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtCmdM" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid HorizontalAlignment="Left" Margin="15,10,0,10" Grid.Row="9" VerticalAlignment="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="lblMmb" HorizontalAlignment="Left" Text="Mystic Maneuver Bonus (MMB)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="txtMmb" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <local:DetailsButton x:Name="btnMmbDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnMmbDetails, Path=IsSelected, Converter={StaticResource btv}}" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Margin="3">
+                                <TextBlock Text="PWRm" VerticalAlignment="Center" />
+                                <TextBox x:Name="txtMmbPwrm" IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" />
+                                <TextBlock Text="Pr" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" />
+                                <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtMmbM" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
+                            </StackPanel>
+                            <TextBlock Margin="3,0" Grid.Row="1" x:Name="lblMmbPwrm" Text="(NAME) is your Power stat." />
+                        </Grid>
+                    </Grid>
+                    <Grid HorizontalAlignment="Left" Margin="15,10,0,10" Grid.Row="10" VerticalAlignment="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="lblMmd" HorizontalAlignment="Left" Text="Mystic Maneuver Defense (MMD)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="txtMmd" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <local:DetailsButton x:Name="btnMmdDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnMmdDetails, Path=IsSelected, Converter={StaticResource btv}}" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Margin="3">
+                                <TextBlock Text="STRm" VerticalAlignment="Center" />
+                                <TextBox x:Name="txtMmdStrm" IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtStrm, Path=Text}" />
+                                <TextBlock Text="AGIm" VerticalAlignment="Center" />
+                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtAgim, Path=Text}" />
+                                <TextBlock Text="Pr" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" />
+                                <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtMmdM" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
+                            </StackPanel>
+                            <TextBlock Margin="3,0" Grid.Row="1" x:Name="lblMmdPwrm" Text="(NAME) is your Power stat." />
+                        </Grid>
                     </Grid>
                 </Grid>
                 <Grid Margin="5,5,5,0" x:Name="grdAttributes" Visibility="Collapsed" >
@@ -533,7 +811,7 @@
                     <ild:ItemListDisplay x:Name="selFeats" Grid.Row="2" Title="Feats" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" BorderThickness="1"
                                          SheetClassType="{x:Type local:Feat}" DisplayElementType="{x:Type local:FeatEditor}" />
                 </Grid>
-                <Grid Margin="5,5,5,0" x:Name="grdNotes">
+                <Grid Margin="5,5,5,0" x:Name="grdNotes" Visibility="Collapsed" >
                     <TextBlock x:Name="titNotes" Text="Notes" FontSize="16" Margin="10,0,0,0" VerticalAlignment="Top" />
                     <TextBox x:Name="txtNotes" AcceptsReturn="True" MinHeight="200" Height="Auto" Margin="10,60,10,25" TextWrapping="Wrap" SpellCheck.IsEnabled="True" TextChanged="txtNotes_TextChanged"/>
                     <md:MarkdownViewer x:Name="vwrNotes" MinHeight="200" Height="Auto" Margin="10,60,10,25" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" />

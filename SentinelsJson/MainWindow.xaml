@@ -18,6 +18,7 @@
             </ResourceDictionary.MergedDictionaries>
             
             <BooleanToVisibilityConverter x:Key="btv" />
+            <flat:ColorToBrushConverter x:Key="ctb" />
         </ResourceDictionary>
     </flat:FlatWindow.Resources>
     <flat:FlatWindow.TopRightElement>
@@ -128,9 +129,8 @@
             </MenuItem>
             <MenuItem Header="_Calculate" x:Name="mnuEditSheet" >
                 <MenuItem Header="_Update Calculations" x:Name="mnuUpdate" Click="mnuUpdate_Click" />
-                <MenuItem Header="Change _Totals with Updates" IsChecked="True" x:Name="mnuUpdateTotals" Click="mnuUpdateTotals_Click" />
                 <Separator />
-                <MenuItem Header="_Auto Update Modifiers" x:Name="mnuAutoUpdate" IsChecked="True" Click="mnuAutoUpdate_Click" />
+                <MenuItem Header="_Auto Update Calculations" x:Name="mnuAutoUpdate" IsChecked="True" Click="mnuAutoUpdate_Click" />
                 <Separator Visibility="Collapsed" />
                 <MenuItem Header="Update Text Editor from Sheet" x:Name="mnuRefreshEditor" Click="mnuRefreshEditor_Click" Visibility="Collapsed" />
                 <MenuItem Header="Update Sheet from Text Editor" x:Name="mnuRefresh" Click="mnuRefresh_Click" Visibility="Collapsed" />
@@ -279,9 +279,9 @@
 
                         <TextBox x:Name="txtCharacter" MinHeight="24" Margin="0,0,10,0" VerticalAlignment="Center" TextChanged="txtCharacter_TextChanged" Grid.Row="1" />
                         <TextBlock x:Name="lblCharacter" HorizontalAlignment="Left" Text="Character name" VerticalAlignment="Center" />
-                        <flat:IntegerSpinner x:Name="nudLevel" MinHeight="23" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0" />
+                        <flat:IntegerSpinner x:Name="nudLevel" MinHeight="23" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="LevelValueChanged" />
                         <TextBlock x:Name="lblLevel" HorizontalAlignment="Left" Text="Character Level" VerticalAlignment="Center" Grid.Column="1" Margin="0,0,5,0" />
-                        <flat:IntegerSpinner x:Name="nudEcl" MinHeight="23" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Margin="5,0,0,0" />
+                        <flat:IntegerSpinner x:Name="nudEcl" MinHeight="23" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Margin="5,0,0,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
                         <TextBlock x:Name="lblEcl" HorizontalAlignment="Left" Text="Effective Level" VerticalAlignment="Center" Grid.Column="2" Margin="5,0,0,0" />
                     </Grid>
                     <Grid Margin="15,2,10,2" Grid.Row="3" VerticalAlignment="Top">
@@ -402,13 +402,13 @@
                         <TextBlock x:Name="lblInt" HorizontalAlignment="Left" Text="INT" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="5"/>
                         <TextBlock x:Name="lblAgi" HorizontalAlignment="Left" Text="AGI" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="6"/>
                         <TextBlock x:Name="lblLuk" HorizontalAlignment="Left" Text="LUK" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="7"/>
-                        <TextBlock x:Name="lblStr_Copy" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Strength" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1"/>
-                        <TextBlock x:Name="lblDex_Copy" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Perception" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2"/>
-                        <TextBlock x:Name="lblCon_Copy" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Endurance" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3"/>
-                        <TextBlock x:Name="lblInt_Copy" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Charisma" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4"/>
-                        <TextBlock x:Name="lblWis_Copy" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Intellect" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5"/>
-                        <TextBlock x:Name="lblCha_Copy" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Charisma" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6"/>
-                        <TextBlock x:Name="lblLuk_Copy" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Luck" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7"/>
+                        <TextBlock x:Name="lblStrF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Strength" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1"/>
+                        <TextBlock x:Name="lblPerF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Perception" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2"/>
+                        <TextBlock x:Name="lblEndF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Endurance" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3"/>
+                        <TextBlock x:Name="lblChaF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Charisma" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4"/>
+                        <TextBlock x:Name="lblIntF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Intellect" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5"/>
+                        <TextBlock x:Name="lblAgiF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Agility" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6"/>
+                        <TextBlock x:Name="lblLukF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Luck" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7"/>
 
                         <TextBox x:Name="txtStrm" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="50" IsReadOnly="True" Grid.Column="3" Grid.Row="1"/>
                         <TextBox x:Name="txtPerm" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="50" IsReadOnly="True" Grid.Column="3" Grid.Row="2"/>
@@ -428,13 +428,13 @@
                         <flat:IntegerSpinner x:Name="txtLukp" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" Grid.Column="4" Grid.Row="7" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
                         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Potential" VerticalAlignment="Bottom" Grid.Column="4"/>
 
-                        <flat:CheckBox x:Name="chkStrw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="1" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
-                        <flat:CheckBox x:Name="chkPerw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="2" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
-                        <flat:CheckBox x:Name="chkEndw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="3" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
-                        <flat:CheckBox x:Name="chkIntw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="4" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
-                        <flat:CheckBox x:Name="chkChaw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="5" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
-                        <flat:CheckBox x:Name="chkAgiw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="6" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
-                        <flat:CheckBox x:Name="chkLukw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="7" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
+                        <flat:CheckBox x:Name="chkStrw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="1" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                        <flat:CheckBox x:Name="chkPerw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="2" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                        <flat:CheckBox x:Name="chkEndw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="3" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                        <flat:CheckBox x:Name="chkChaw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="4" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                        <flat:CheckBox x:Name="chkIntw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="5" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                        <flat:CheckBox x:Name="chkAgiw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="6" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                        <flat:CheckBox x:Name="chkLukw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="7" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
                         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Power" VerticalAlignment="Bottom" Grid.Column="5"/>
 
                         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Score" VerticalAlignment="Bottom" Grid.Column="2"/>
@@ -475,7 +475,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="lblProwess" HorizontalAlignment="Left" Text="Prowess (Pr)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                        <TextBox x:Name="txtProwess" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <TextBox x:Name="txtProwess" HorizontalAlignment="Center" IsReadOnly="True" MinHeight="23" Width="80" VerticalAlignment="Center" Grid.Column="1" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                         <local:DetailsButton x:Name="btnProwessDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" IsSelected="False" />
 
                         <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnProwessDetails, Path=IsSelected, Converter={StaticResource btv}}" >
@@ -485,9 +485,9 @@
                             </Grid.RowDefinitions>
                             <StackPanel Orientation="Horizontal" Margin="3">
                                 <TextBlock Text="1 per odd level" VerticalAlignment="Center" />
-                                <TextBox x:Name="txtProwessBase" IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" />
+                                <TextBox x:Name="txtProwessBase" IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="Trained Prowess (TPr)" VerticalAlignment="Center" Margin="3,0,0,0" />
-                                <flat:IntegerSpinner x:Name="txtProwessT" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <flat:IntegerSpinner x:Name="nudProwessT" Margin="5,0" MinWidth="60" MinValue="0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
                                 <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
                             </StackPanel>
                             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,0" >
@@ -507,25 +507,25 @@
                         <TextBlock Text="Attack" FontWeight="Bold" Margin="0,0,0,5" />
                         <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="1">
                             <TextBlock Text="Brawl" MinWidth="60" VerticalAlignment="Center" />
-                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtBrawl" />
+                            <TextBox IsReadOnly="True" MinWidth="60" MinHeight="24" x:Name="txtBrawl" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                             <flat:FlatButton Margin="5,0" x:Name="btnBrawlCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                              ToolTip="Brawl = STR modifier + Prowess + 1 (click for more info)" TransparentBack="True" >
                                 <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
                             </flat:FlatButton>
-                            <flat:CheckBox Margin="30,0,0,0" Content="Use AGI" x:Name="chkBrawlAgi" />
+                            <flat:CheckBox Margin="30,0,0,0" Content="Use AGI" x:Name="chkBrawlAgi" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" CheckChanged="CombatTabChange" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="2">
                             <TextBlock Text="Melee" MinWidth="60" VerticalAlignment="Center" />
-                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtMelee" />
+                            <TextBox IsReadOnly="True" MinWidth="60" MinHeight="24" x:Name="txtMelee" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                             <flat:FlatButton Margin="5,0" x:Name="btnMeleeCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                              ToolTip="Melee = STR modifier + Prowess (click for more info)" TransparentBack="True" >
                                 <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
                             </flat:FlatButton>
-                            <flat:CheckBox Margin="30,0,0,0" Content="Use AGI" x:Name="chkMeleeAgi" />
+                            <flat:CheckBox Margin="30,0,0,0" Content="Use AGI" x:Name="chkMeleeAgi" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" CheckChanged="CombatTabChange" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="3">
                             <TextBlock Text="Ranged" MinWidth="60" VerticalAlignment="Center" />
-                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtRangd" />
+                            <TextBox IsReadOnly="True" MinWidth="60" MinHeight="24" x:Name="txtRangd" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                             <flat:FlatButton Margin="5,0" x:Name="btnRangdCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                              ToolTip="Ranged = AGI modifier + Prowess + 1 (click for more info)" TransparentBack="True" >
                                 <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
@@ -547,12 +547,12 @@
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,5" Grid.Row="1">
                             <TextBlock Text="Active Actions" MinWidth="60" VerticalAlignment="Center" />
                             <TextBlock Text="(" Margin="10,0,0,0" VerticalAlignment="Center" />
-                            <flat:IntegerSpinner Margin="3,0" x:Name="nudDefenseActions" Height="24" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                            <flat:IntegerSpinner Margin="3,0" x:Name="nudDefenseActions" Height="24" MinWidth="60" MinValue="0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
                             <TextBlock Text="per round )" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="2">
                             <TextBlock Text="Block" MinWidth="60" VerticalAlignment="Center" />
-                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtBlock" />
+                            <TextBox IsReadOnly="True" MinWidth="60" MinHeight="24" x:Name="txtBlock" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                             <flat:FlatButton Margin="5,0" x:Name="btnBlockCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                              ToolTip="Block = STR modifier + Prowess + 1/2 shield armor (click for more info)" TransparentBack="True" >
                                 <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
@@ -560,7 +560,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="3">
                             <TextBlock Text="Dodge" MinWidth="60" VerticalAlignment="Center" />
-                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtDodge" />
+                            <TextBox IsReadOnly="True" MinWidth="60" MinHeight="24" x:Name="txtDodge" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                             <flat:FlatButton Margin="5,0" x:Name="btnDodgeCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                              ToolTip="Dodge = AGI modifier + Prowess (click for more info)" TransparentBack="True" >
                                 <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
@@ -569,7 +569,7 @@
                         <TextBlock Text="Passive Defense" Margin="0,5,0,5" Grid.Row="4" />
                         <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="5">
                             <TextBlock Text="Passive" MinWidth="60" VerticalAlignment="Center" />
-                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtPassd" />
+                            <TextBox IsReadOnly="True" MinWidth="60" MinHeight="24" x:Name="txtPassd" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                             <flat:FlatButton Margin="5,0" x:Name="btnPassdCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                              ToolTip="Passive defense = 10 + Natural armor + Trained Prowess (click for more info)" TransparentBack="True" >
                                 <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
@@ -577,7 +577,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="20,5,0,5" Grid.Row="6">
                             <TextBlock Text="Touch" MinWidth="60" VerticalAlignment="Center" />
-                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtTouch" />
+                            <TextBox IsReadOnly="True" MinWidth="60" MinHeight="24" x:Name="txtTouch" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                             <flat:FlatButton Margin="5,0" x:Name="btnTouchCalc" Height="24" Width="24" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                              ToolTip="Touch defense = 10 + Trained Prowess (click for more info)" TransparentBack="True" >
                                 <local:ThemedImage ImageName="Info" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
@@ -603,14 +603,18 @@
                         <TextBlock Text="Armor (Ar)" Margin="0,0,0,5" Grid.ColumnSpan="5" />
                         <StackPanel Orientation="Horizontal" Margin="15,5,0,5" Grid.Row="1" Grid.ColumnSpan="5" >
                             <TextBlock Text="Total" MinWidth="60" VerticalAlignment="Center" />
-                            <TextBox IsEnabled="False" MinWidth="60" MinHeight="24" x:Name="txtArmor" />
+                            <TextBox IsReadOnly="True" MinWidth="60" MinHeight="24" x:Name="txtArmor" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                             <local:DetailsButton x:Name="btnArmorDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" IsSelected="False" />
                         </StackPanel>
 
-                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="1" Width="60" Margin="0,10,0,0" x:Name="nudArmorN" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" />
-                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="2" Width="60" Margin="0,10,0,0" x:Name="nudArmorE" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" />
-                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="3" Width="60" Margin="0,10,0,0" x:Name="nudArmorA" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" />
-                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="4" Width="60" Margin="0,10,0,0" x:Name="nudArmorS" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" />
+                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="1" Width="60" Margin="0,10,0,0" x:Name="nudArmorN" ValueChanged="CombatTabValueChanged"
+                                             Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="2" Width="60" Margin="0,10,0,0" x:Name="nudArmorE" ValueChanged="CombatTabValueChanged"
+                                             Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="3" Width="60" Margin="0,10,0,0" x:Name="nudArmorA" ValueChanged="CombatTabValueChanged"
+                                             Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                        <flat:IntegerSpinner Grid.Row="2" Grid.Column="4" Width="60" Margin="0,10,0,0" x:Name="nudArmorS" ValueChanged="CombatTabValueChanged"
+                                             Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
 
                         <TextBlock Grid.Row="3" Grid.Column="1" Margin="0,0,0,10" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" Text="Natural" HorizontalAlignment="Center" />
                         <TextBlock Grid.Row="3" Grid.Column="2" Margin="0,0,0,10" Visibility="{Binding ElementName=btnArmorDetails, Path=IsSelected, Converter={StaticResource btv}}" Text="Equipment" HorizontalAlignment="Center" />
@@ -630,17 +634,17 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="lblCmb" HorizontalAlignment="Left" Text="Combat Maneuver Bonus (CMB)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                        <TextBox x:Name="txtCmb" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <TextBox x:Name="txtCmb" HorizontalAlignment="Center" IsReadOnly="True" MinHeight="23" VerticalAlignment="Center" MinWidth="80" Grid.Column="1" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                         <local:DetailsButton x:Name="btnCmbDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
 
                         <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnCmbDetails, Path=IsSelected, Converter={StaticResource btv}}" >
                             <StackPanel Orientation="Horizontal" Margin="3">
                                 <TextBlock Text="STRm" VerticalAlignment="Center" />
-                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtStrm, Path=Text}" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtStrm, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="Pr" VerticalAlignment="Center" Margin="3,0,0,0" />
-                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
-                                <flat:IntegerSpinner x:Name="txtCmbM" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <flat:IntegerSpinner x:Name="txtCmbM" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
                                 <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
                             </StackPanel>
                         </Grid>
@@ -658,19 +662,19 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="lblCmd" HorizontalAlignment="Left" Text="Combat Maneuver Defense (CMD)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                        <TextBox x:Name="txtCmd" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <TextBox x:Name="txtCmd" HorizontalAlignment="Center" IsReadOnly="True" MinHeight="23" VerticalAlignment="Center" MinWidth="80" Grid.Column="1" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                         <local:DetailsButton x:Name="btnCmdDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
 
                         <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnCmdDetails, Path=IsSelected, Converter={StaticResource btv}}" >
                             <StackPanel Orientation="Horizontal" Margin="3">
                                 <TextBlock Text="STRm" VerticalAlignment="Center" />
-                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtStrm, Path=Text}" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtStrm, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="AGIm" VerticalAlignment="Center" />
-                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtAgim, Path=Text}" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtAgim, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="Pr" VerticalAlignment="Center" Margin="3,0,0,0" />
-                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
-                                <flat:IntegerSpinner x:Name="txtCmdM" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <flat:IntegerSpinner x:Name="txtCmdM" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
                                 <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
                             </StackPanel>
                         </Grid>
@@ -688,7 +692,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="lblMmb" HorizontalAlignment="Left" Text="Mystic Maneuver Bonus (MMB)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                        <TextBox x:Name="txtMmb" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <TextBox x:Name="txtMmb" HorizontalAlignment="Center" IsReadOnly="True" MinHeight="23" VerticalAlignment="Center" MinWidth="80" Grid.Column="1" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                         <local:DetailsButton x:Name="btnMmbDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
 
                         <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnMmbDetails, Path=IsSelected, Converter={StaticResource btv}}" >
@@ -698,11 +702,11 @@
                             </Grid.RowDefinitions>
                             <StackPanel Orientation="Horizontal" Margin="3">
                                 <TextBlock Text="PWRm" VerticalAlignment="Center" />
-                                <TextBox x:Name="txtMmbPwrm" IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" />
+                                <TextBox x:Name="txtMmbPwrm" IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="Pr" VerticalAlignment="Center" Margin="3,0,0,0" />
-                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
-                                <flat:IntegerSpinner x:Name="txtMmbM" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <flat:IntegerSpinner x:Name="txtMmbM" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
                                 <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
                             </StackPanel>
                             <TextBlock Margin="3,0" Grid.Row="1" x:Name="lblMmbPwrm" Text="(NAME) is your Power stat." />
@@ -721,7 +725,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="lblMmd" HorizontalAlignment="Left" Text="Mystic Maneuver Defense (MMD)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                        <TextBox x:Name="txtMmd" HorizontalAlignment="Center" IsEnabled="False" MinHeight="23" VerticalAlignment="Center" MinWidth="80" TextChanged="textbox_TextChanged" Grid.Column="1" MaxWidth="200" />
+                        <TextBox x:Name="txtMmd" HorizontalAlignment="Center" IsReadOnly="True" MinHeight="23" VerticalAlignment="Center" MinWidth="80" Grid.Column="1" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                         <local:DetailsButton x:Name="btnMmdDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
 
                         <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnMmdDetails, Path=IsSelected, Converter={StaticResource btv}}" >
@@ -730,14 +734,12 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <StackPanel Orientation="Horizontal" Margin="3">
-                                <TextBlock Text="STRm" VerticalAlignment="Center" />
-                                <TextBox x:Name="txtMmdStrm" IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtStrm, Path=Text}" />
-                                <TextBlock Text="AGIm" VerticalAlignment="Center" />
-                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtAgim, Path=Text}" />
+                                <TextBlock Text="PWRm" VerticalAlignment="Center" />
+                                <TextBox x:Name="txtMmdPwrm" IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtStrm, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="Pr" VerticalAlignment="Center" Margin="3,0,0,0" />
-                                <TextBox IsEnabled="False" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtProwess, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
                                 <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
-                                <flat:IntegerSpinner x:Name="txtMmdM" Margin="5,0" MinWidth="60" MinValue="0" />
+                                <flat:IntegerSpinner x:Name="txtMmdM" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
                                 <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
                             </StackPanel>
                             <TextBlock Margin="3,0" Grid.Row="1" x:Name="lblMmdPwrm" Text="(NAME) is your Power stat." />

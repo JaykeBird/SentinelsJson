@@ -142,16 +142,47 @@ namespace SentinelsJson
         [JsonProperty("sheetSettings", DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<string, string?>? SheetSettings { get; set; }
 
-        // Sentinels specific values
+        // Sentinels specific general values
 
         public int BaseLevel { get; set; } = 0;
         public int ECL { get; set; } = 0;
 
-        public int Prowess { get; set; } = 0;
-
         public int UsedBulsh { get; set; } = 0;
 
         public string PowerStatName { get; set; } = "PER";
+
+        // Sentinels attributes / CP
+
+        [JsonProperty("pointsPerLevel")]
+        public int PointsPerLevel { get; set; } = 10;
+
+        [JsonProperty("pointsLevel0")]
+        public int Level0Points { get; set; } = 10;
+
+        // Sentinels combat
+        // Unlike PathfinderJson, Sentinels's combat values are mostly calculated by existing values without much modification or variability
+        // thus, the big main values (i.e. "CMB", "Melee attack bonus", etc.) won't be stored in the JSON, as they're calcuated based upon the ones below
+        // (if desired in the future, I can have the program write in the final calculated values as well)
+
+        public int TrainedProwess { get; set; } = 0;
+
+        [JsonProperty("brawlAgi")]
+        public bool BrawlUseAgi { get; set; } = false;
+
+        [JsonProperty("meleeAgi")]
+        public bool MeleeUseAgi { get; set; } = false;
+
+        public int DefenseActions { get; set; }
+
+        public int CmbMisc { get; set; } = 0;
+
+        public int CmdMisc { get; set; } = 0;
+
+        public int MmbMisc { get; set; } = 0;
+
+        public int MmdMisc { get; set; } = 0;
+
+        public Armor Armor { get; set; } = new Armor();
 
         // Other general stats
 
@@ -221,25 +252,25 @@ namespace SentinelsJson
                         switch (item.Key)
                         {
                             case "luk":
-                                try { PotLuck = int.Parse(item.Value); } catch (FormatException) { PotLuck = 0; }
+                                try { PotLuck = int.Parse(item.Value); } catch (FormatException) { PotLuck = 20; }
                                 break;
                             case "int":
-                                try { PotIntellect = int.Parse(item.Value); } catch (FormatException) { PotIntellect = 0; }
+                                try { PotIntellect = int.Parse(item.Value); } catch (FormatException) { PotIntellect = 20; }
                                 break;
                             case "cha":
-                                try { PotCharisma = int.Parse(item.Value); } catch (FormatException) { PotCharisma = 0; }
+                                try { PotCharisma = int.Parse(item.Value); } catch (FormatException) { PotCharisma = 20; }
                                 break;
                             case "str":
-                                try { PotStrength = int.Parse(item.Value); } catch (FormatException) { PotStrength = 0; }
+                                try { PotStrength = int.Parse(item.Value); } catch (FormatException) { PotStrength = 20; }
                                 break;
                             case "agi":
-                                try { PotAgility = int.Parse(item.Value); } catch (FormatException) { PotAgility = 0; }
+                                try { PotAgility = int.Parse(item.Value); } catch (FormatException) { PotAgility = 20; }
                                 break;
                             case "end":
-                                try { PotEndurance = int.Parse(item.Value); } catch (FormatException) { PotEndurance = 0; }
+                                try { PotEndurance = int.Parse(item.Value); } catch (FormatException) { PotEndurance = 20; }
                                 break;
                             case "per":
-                                try { PotPerception = int.Parse(item.Value); } catch (FormatException) { PotPerception = 0; }
+                                try { PotPerception = int.Parse(item.Value); } catch (FormatException) { PotPerception = 20; }
                                 break;
                             default:
                                 break;
@@ -251,6 +282,20 @@ namespace SentinelsJson
             else
             {
                 DefaultLoadPotential();
+            }
+
+            // also, let's check the saving throws
+            if (Saves.Count == 0)
+            {
+                Saves["fort"] = new Save();
+                Saves["reflex"] = new Save();
+                Saves["will"] = new Save();
+            }
+            else
+            {
+                if (!Saves.ContainsKey("fort")) Saves["fort"] = new Save();
+                if (!Saves.ContainsKey("reflex")) Saves["reflex"] = new Save();
+                if (!Saves.ContainsKey("will")) Saves["will"] = new Save();
             }
 
             void DefaultLoadAbilities()
@@ -270,14 +315,14 @@ namespace SentinelsJson
             void DefaultLoadPotential()
             {
                 // the user didn't fill in the potential scores for the character at all
-                // so just set everything to 0
-                PotLuck = 0;
-                PotIntellect = 0;
-                PotCharisma = 0;
-                PotStrength = 0;
-                PotAgility = 0;
-                PotEndurance = 0;
-                PotPerception = 0;
+                // so just set everything to 20 (default value)
+                PotLuck = 20;
+                PotIntellect = 20;
+                PotCharisma = 20;
+                PotStrength = 20;
+                PotAgility = 20;
+                PotEndurance = 20;
+                PotPerception = 20;
                 PotentialPresent = false;
             }
         }
@@ -287,5 +332,14 @@ namespace SentinelsJson
     {
         public int Ranks { get; set; } = 0;
         public string TempModifier { get; set; } = "";
+    }
+
+    public class Armor
+    {
+        public int Equipment { get; set; } = 0;
+        public int Natural { get; set; } = 0;
+        public int Attributes { get; set; } = 0;
+        public int Shield { get; set; } = 0;
+        public int Misc { get; set; } = 0;
     }
 }

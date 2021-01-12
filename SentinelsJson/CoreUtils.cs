@@ -75,6 +75,16 @@ namespace SentinelsJson
                 }
             }
         }
+
+        public static int CalculateModifierInt(int score)
+        {
+            return (int)Math.Floor((score - 10) / 2d);
+        }
+
+        public static string ModifierIntToStr(int modifier)
+        {
+            if (modifier >= 0) return "+" + modifier.ToString(); else return modifier.ToString();
+        }
         
         public static string CalculateModifier(int score)
         {

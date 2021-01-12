@@ -72,6 +72,8 @@ namespace SentinelsJson
         Dictionary<string, string> abilities = new Dictionary<string, string>();
         Dictionary<string, string> potentials = new Dictionary<string, string>();
         Dictionary<string, string?> sheetSettings = new Dictionary<string, string?>();
+        Dictionary<string, int> abModifiers = new Dictionary<string, int>();
+        string powerStat = "PER";
         string? version;
 
         // keyboard/method data
@@ -1411,7 +1413,7 @@ namespace SentinelsJson
             if (App.Settings.HighContrastTheme != NO_HIGH_CONTRAST)
             {
                 MessageDialog md = new MessageDialog(App.ColorScheme);
-                if (md.ShowDialog("A high-contrast theme is currently being used. Changing the color scheme will turn off the high-contrast theme. Do you want to continue?", null, this, "High Contrast Theme In Use", 
+                if (md.ShowDialog("A high-contrast theme is currently being used. Changing the color scheme will turn off the high-contrast theme. Do you want to continue?", null, this, "High Contrast Theme In Use",
                     MessageDialogButtonDisplay.Two, MessageDialogImage.Warning, MessageDialogResult.Cancel, "Continue", "Cancel") == MessageDialogResult.Cancel)
                 {
                     return;
@@ -2230,13 +2232,7 @@ namespace SentinelsJson
             txtAgi.Value = sheet.Agility;
             txtLuk.Value = sheet.Luck;
 
-            txtStrm.Text = CalculateModifier(txtStr.Value);
-            txtPerm.Text = CalculateModifier(txtPer.Value);
-            txtEndm.Text = CalculateModifier(txtEnd.Value);
-            txtCham.Text = CalculateModifier(txtCha.Value);
-            txtIntm.Text = CalculateModifier(txtInt.Value);
-            txtAgim.Text = CalculateModifier(txtAgi.Value);
-            txtLukm.Text = CalculateModifier(txtLuk.Value);
+            UpdateModifiers();
 
             txtStrp.Value = sheet.PotStrength;
             txtPerp.Value = sheet.PotPerception;
@@ -2251,30 +2247,37 @@ namespace SentinelsJson
                 case "STR":
                 case "STRENGTH":
                     chkStrw.IsChecked = true;
+                    powerStat = "STR";
                     break;
                 case "PER":
                 case "PERCEPTION":
                     chkPerw.IsChecked = true;
+                    powerStat = "PER";
                     break;
                 case "END":
                 case "ENDURANCE":
                     chkEndw.IsChecked = true;
+                    powerStat = "END";
                     break;
                 case "CHA":
                 case "CHARISMA":
                     chkChaw.IsChecked = true;
+                    powerStat = "CHA";
                     break;
                 case "INT":
                 case "INTELLECT":
                     chkIntw.IsChecked = true;
+                    powerStat = "INT";
                     break;
                 case "AGI":
                 case "AGILITY":
                     chkAgiw.IsChecked = true;
+                    powerStat = "AGI";
                     break;
                 case "LUK":
                 case "LUCK":
                     chkStrw.IsChecked = true;
+                    powerStat = "LUK";
                     break;
                 default:
                     break;
@@ -2288,6 +2291,22 @@ namespace SentinelsJson
             {
                 sheetSettings = new Dictionary<string, string?>();
             }
+
+            // Combat tab
+
+            nudDefenseActions.Value = sheet.DefenseActions;
+
+            nudArmorA.Value = sheet.Armor.Attributes;
+            nudArmorE.Value = sheet.Armor.Equipment;
+            nudArmorN.Value = sheet.Armor.Natural;
+            nudArmorS.Value = sheet.Armor.Shield;
+
+            txtCmbM.Value = sheet.CmbMisc;
+            txtCmdM.Value = sheet.CmdMisc;
+            txtMmbM.Value = sheet.MmbMisc;
+            txtMmdM.Value = sheet.MmdMisc;
+
+            UpdateCombatTab();
 
             // Feats tab
 
@@ -2366,7 +2385,7 @@ namespace SentinelsJson
 
         private async void mnuUpdate_Click(object sender, RoutedEventArgs e)
         {
-            await UpdateCalculations(true, mnuUpdateTotals.IsChecked);
+            await UpdateCalculations(true);
         }
 
         private void mnuAutoUpdate_Click(object sender, RoutedEventArgs e)
@@ -2374,14 +2393,9 @@ namespace SentinelsJson
             mnuAutoUpdate.IsChecked = !mnuAutoUpdate.IsChecked;
         }
 
-        private void mnuUpdateTotals_Click(object sender, RoutedEventArgs e)
-        {
-            mnuUpdateTotals.IsChecked = !mnuUpdateTotals.IsChecked;
-        }
-
         #endregion
 
-        async Task UpdateCalculations(bool skills = true, bool totals = true)
+        async Task UpdateCalculations(bool skills = true)
         {
             if (!_sheetLoaded)
             {
@@ -2405,15 +2419,11 @@ namespace SentinelsJson
             _isCalculating = true;
             brdrCalculating.Visibility = Visibility.Visible;
 
-            txtStrm.Text = CalculateModifier(txtStr.Value);
-            txtPerm.Text = CalculateModifier(txtPer.Value);
-            txtEndm.Text = CalculateModifier(txtEnd.Value);
-            txtCham.Text = CalculateModifier(txtCha.Value);
-            txtIntm.Text = CalculateModifier(txtInt.Value);
-            txtAgim.Text = CalculateModifier(txtAgi.Value);
-            txtLukm.Text = CalculateModifier(txtLuk.Value);
+            // start updates/calculations
 
-            // update core modifier
+            UpdateModifiers();
+
+            UpdateCombatTab();
 
             if (skills)
             {
@@ -2458,12 +2468,6 @@ namespace SentinelsJson
                 //}
             }
 
-
-            if (totals)
-            {
-                // update totals for editors
-            }
-
             if (currentView == RAWJSON_VIEW)
             {
                 SyncEditorFromSheet();
@@ -2475,6 +2479,55 @@ namespace SentinelsJson
             _isUpdating = false;
 
             SetIsDirty();
+        }
+
+        public void UpdateModifiers()
+        {
+            abModifiers["STR"] = CalculateModifierInt(txtStr.Value);
+            abModifiers["PER"] = CalculateModifierInt(txtPer.Value);
+            abModifiers["END"] = CalculateModifierInt(txtEnd.Value);
+            abModifiers["CHA"] = CalculateModifierInt(txtCha.Value);
+            abModifiers["INT"] = CalculateModifierInt(txtInt.Value);
+            abModifiers["AGI"] = CalculateModifierInt(txtAgi.Value);
+            abModifiers["LUK"] = CalculateModifierInt(txtLuk.Value);
+
+            txtStrm.Text = ModifierIntToStr(abModifiers["STR"]);
+            txtPerm.Text = ModifierIntToStr(abModifiers["PER"]);
+            txtEndm.Text = ModifierIntToStr(abModifiers["END"]);
+            txtCham.Text = ModifierIntToStr(abModifiers["CHA"]);
+            txtIntm.Text = ModifierIntToStr(abModifiers["INT"]);
+            txtAgim.Text = ModifierIntToStr(abModifiers["AGI"]);
+            txtLukm.Text = ModifierIntToStr(abModifiers["LUK"]);
+        }
+
+        public void UpdateCombatTab()
+        {
+            int prBase = (int)Math.Ceiling(nudLevel.Value / 2d);
+            txtProwessBase.Text = prBase.ToString();
+            int pr = prBase + nudProwessT.Value;
+            if (pr > nudEcl.Value) pr = nudEcl.Value;
+            txtProwess.Text = pr.ToString();
+
+            txtBrawl.Text = ModifierIntToStr((chkBrawlAgi.IsChecked ? abModifiers["AGI"] : abModifiers["STR"]) + pr + 1);
+            txtMelee.Text = ModifierIntToStr((chkMeleeAgi.IsChecked ? abModifiers["AGI"] : abModifiers["STR"]) + pr);
+            txtRangd.Text = ModifierIntToStr(abModifiers["AGI"] + pr);
+
+            txtBlock.Text = ModifierIntToStr(abModifiers["STR"] + pr + (int)Math.Floor(nudArmorS.Value / 2d));
+            txtDodge.Text = ModifierIntToStr(abModifiers["AGI"] + pr);
+            txtPassd.Text = (10 + nudArmorN.Value + nudProwessT.Value).ToString();
+            txtTouch.Text = (10 + nudProwessT.Value).ToString();
+
+            txtArmor.Text = (nudArmorA.Value + nudArmorE.Value + nudArmorN.Value + nudArmorS.Value).ToString();
+
+            txtCmb.Text = ModifierIntToStr(abModifiers["STR"] + pr + txtCmbM.Value);
+            txtCmd.Text = ModifierIntToStr(abModifiers["STR"] + abModifiers["AGI"] + pr + txtCmdM.Value);
+            txtMmb.Text = ModifierIntToStr(abModifiers[powerStat] + pr + txtMmbM.Value);
+            txtMmd.Text = ModifierIntToStr(abModifiers[powerStat] + pr + txtMmdM.Value);
+
+            txtMmbPwrm.Text = ModifierIntToStr(abModifiers[powerStat]);
+            lblMmbPwrm.Text = powerStat + " is your Power stat.";
+            txtMmdPwrm.Text = ModifierIntToStr(abModifiers[powerStat]);
+            lblMmdPwrm.Text = powerStat + " is your Power stat.";
         }
 
         #region Sync
@@ -2613,20 +2666,12 @@ namespace SentinelsJson
         {
             if (!_isUpdating)
             {
-                txtStrm.Text = CalculateModifier(txtStr.Value);
-                txtPerm.Text = CalculateModifier(txtPer.Value);
-                txtEndm.Text = CalculateModifier(txtEnd.Value);
-                txtCham.Text = CalculateModifier(txtCha.Value);
-                txtIntm.Text = CalculateModifier(txtInt.Value);
-                txtAgim.Text = CalculateModifier(txtAgi.Value);
-                txtLukm.Text = CalculateModifier(txtLuk.Value);
-
-                SetIsDirty();
-
                 if (mnuAutoUpdate.IsChecked)
                 {
-                    await UpdateCalculations(true, false);
+                    await UpdateCalculations(false);
                 }
+
+                SetIsDirty();
             }
         }
 
@@ -2705,15 +2750,83 @@ namespace SentinelsJson
             //{
             //    await UpdateCalculations(true, false, false);
             //}
+            //UpdateCombatTab();
         }
 
-        //private async void txtBab_LostFocus(object sender, RoutedEventArgs e)
-        //{
-        //    if (mnuAutoUpdate.IsChecked)
-        //    {
-        //        await UpdateCalculations(false, false, false);
-        //    }
-        //}
+        bool _updatePowerCheck = true;
+
+        private void PowerStat_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            if (!_updatePowerCheck) return;
+
+            _updatePowerCheck = false;
+
+            chkStrw.IsChecked = false;
+            chkPerw.IsChecked = false;
+            chkEndw.IsChecked = false;
+            chkIntw.IsChecked = false;
+            chkChaw.IsChecked = false;
+            chkAgiw.IsChecked = false;
+            chkLukw.IsChecked = false;
+
+            if (sender is SolidShineUi.CheckBox c)
+            {
+                if (c == chkStrw)
+                {
+                    SetPowerStat("STR");
+                    c.IsChecked = true;
+                }
+                else if (c == chkPerw)
+                {
+                    SetPowerStat("PER");
+                    c.IsChecked = true;
+                }
+                else if (c == chkEndw)
+                {
+                    SetPowerStat("END");
+                    c.IsChecked = true;
+                }
+                else if (c == chkIntw)
+                {
+                    SetPowerStat("INT");
+                    c.IsChecked = true;
+                }
+                else if (c == chkChaw)
+                {
+                    SetPowerStat("CHA");
+                    c.IsChecked = true;
+                }
+                else if (c == chkAgiw)
+                {
+                    SetPowerStat("AGI");
+                    c.IsChecked = true;
+                }
+                else if (c == chkLukw)
+                {
+                    SetPowerStat("LUK");
+                    c.IsChecked = true;
+                }
+                else
+                {
+                    // not sure what happened, but let's set the default to PER
+                    SetPowerStat("PER");
+                    chkPerw.IsChecked = true;
+                }
+            }
+
+            // update MMB and MMD
+            if (mnuAutoUpdate.IsChecked)
+            {
+                UpdateCombatTab();
+            }
+
+            _updatePowerCheck = true;
+
+            void SetPowerStat(string stat)
+            {
+                powerStat = stat;
+            }
+        }
 
         //private void SkillHeaderGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         //{
@@ -2732,6 +2845,33 @@ namespace SentinelsJson
         //        colSkillExtra.MinWidth = 0;
         //    }
         //}
+
+
+        private void CombatTabChange(object sender, RoutedEventArgs e)
+        {
+            if (mnuAutoUpdate.IsChecked)
+            {
+                UpdateCombatTab();
+            }
+        }
+
+        private void LevelValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (nudEcl.Value < nudLevel.Value) nudEcl.Value = nudLevel.Value;
+
+            if (mnuAutoUpdate.IsChecked)
+            {
+                UpdateCombatTab();
+            }
+        }
+
+        private void CombatTabValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (mnuAutoUpdate.IsChecked)
+            {
+                UpdateCombatTab();
+            }
+        }
 
         #endregion
 
@@ -2840,5 +2980,7 @@ namespace SentinelsJson
         }
 
         #endregion
+
+
     }
 }

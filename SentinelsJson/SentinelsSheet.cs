@@ -44,6 +44,21 @@ namespace SentinelsJson
             return ss;
         }
 
+        public static SentinelsSheet CreateNewSheet(string name, int level, int pointsPerLevel = 10, int level0Points = 0, UserData? userdata = null)
+        {
+            string newjson = "{\"_id\":\"-1\"," +
+                "\"user\":{\"provider\":\"local\",\"id\":\"null\",\"displayName\":\"-\"," +
+                "\"username\":\"\",\"profileUrl\":\"\",\"emails\":[]}," +
+                "\"name\":\"" + name + "\",\"modified\":\"" + string.Concat(DateTime.UtcNow.ToString("s"), ".000Z") +
+                "\",\"charLevel\":" + level + ",\"ecl\":" + level + ",\"pointsPerLevel\":" + level + ",\"pointsLevel0\":" + level + "," +
+                "\"defenseActions\":2 }";
+
+            SentinelsSheet ps = LoadJsonText(newjson);
+            if (userdata != null) ps.Player = userdata;
+
+            return ps;
+        }
+
         public string SaveJsonText(bool indented = false, string file = "StoredText", bool updateModified = false)
         {
             if (updateModified) Modified = string.Concat(DateTime.UtcNow.ToString("s"), ".000Z");
@@ -62,6 +77,9 @@ namespace SentinelsJson
         }
 
         // Meta properties
+
+        [JsonProperty("id", Order = -50)]
+        public string Id { get; set; } = "-1";
 
         [JsonProperty(Order = -2, DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
         public string? Modified { get; set; } // ISO 8601 datetime (with UTC mark)
@@ -144,11 +162,16 @@ namespace SentinelsJson
 
         // Sentinels specific general values
 
+        [JsonProperty("charLevel")]
         public int BaseLevel { get; set; } = 0;
+
+        [JsonProperty("ecl")]
         public int ECL { get; set; } = 0;
+
 
         public int UsedBulsh { get; set; } = 0;
 
+        [JsonProperty("powerStat")]
         public string PowerStatName { get; set; } = "PER";
 
         // Sentinels attributes / CP
@@ -164,6 +187,7 @@ namespace SentinelsJson
         // thus, the big main values (i.e. "CMB", "Melee attack bonus", etc.) won't be stored in the JSON, as they're calcuated based upon the ones below
         // (if desired in the future, I can have the program write in the final calculated values as well)
 
+        [JsonProperty("trainedPr")]
         public int TrainedProwess { get; set; } = 0;
 
         [JsonProperty("brawlAgi")]
@@ -330,8 +354,19 @@ namespace SentinelsJson
 
     public class Save
     {
+        public Save()
+        {
+
+        }
+
+        public Save(int ranks, int temp)
+        {
+            Ranks = ranks;
+            TempModifier = temp;
+        }
+
         public int Ranks { get; set; } = 0;
-        public string TempModifier { get; set; } = "";
+        public int TempModifier { get; set; } = 0;
     }
 
     public class Armor

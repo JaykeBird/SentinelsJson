@@ -1,0 +1,151 @@
+﻿<flat:FlatWindow x:Class="SentinelsJson.NewSheet" x:Name="window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi" 
+        mc:Ignorable="d" Title="New Character Sheet" Height="650" MinHeight="580" Width="400" MinWidth="400" CaptionDisplayType="Close" SourceInitialized="window_SourceInitialized">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="lblCreate" Margin="15,10,15,10" Text="To create a new Sentinels character sheet, &#x0d;&#x0a;begin with filling in the data below:" />
+            <Grid Margin="10,0,10,0" Grid.Row="1" VerticalAlignment="Center" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="Auto" MinWidth="80" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="lblCharacterName" HorizontalAlignment="Left" Text="Character name" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtCharacterName" MinHeight="24" VerticalAlignment="Top" Grid.Row="1"/>
+                <TextBlock x:Name="lblLevel" HorizontalAlignment="Left" Text="Level" VerticalAlignment="Center" Grid.Column="2" />
+                <flat:IntegerSpinner x:Name="nudLevel" Grid.Column="2" Grid.Row="1" MinValue="1" Value="1" ColorScheme="{Binding ColorScheme, ElementName=window}" />
+            </Grid>
+
+            <Grid HorizontalAlignment="Left" Margin="20,5,0,10" Grid.Row="3">
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="28"/>
+                        <RowDefinition Height="Auto" MinHeight="28" />
+                        <RowDefinition Height="Auto" MinHeight="28" />
+                        <RowDefinition Height="Auto" MinHeight="28" />
+                        <RowDefinition Height="Auto" MinHeight="28" />
+                        <RowDefinition Height="Auto" MinHeight="28" />
+                        <RowDefinition Height="Auto" MinHeight="28" />
+                        <RowDefinition Height="Auto" MinHeight="28"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="33"/>
+                        <ColumnDefinition Width="Auto" MinWidth="75"/>
+                        <ColumnDefinition Width="Auto" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" MinWidth="45"/>
+                    </Grid.ColumnDefinitions>
+
+                    <flat:IntegerSpinner x:Name="txtStr" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" Value="10" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="1" />
+                    <flat:IntegerSpinner x:Name="txtPer" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" Value="10" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="2" />
+                    <flat:IntegerSpinner x:Name="txtEnd" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" Value="10" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="3" />
+                    <flat:IntegerSpinner x:Name="txtCha" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" Value="10" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="4" />
+                    <flat:IntegerSpinner x:Name="txtInt" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" Value="10" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="5" />
+                    <flat:IntegerSpinner x:Name="txtAgi" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" Value="10" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="6" />
+                    <flat:IntegerSpinner x:Name="txtLuk" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" Value="10" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="7" />
+                    <TextBlock x:Name="lblStr" HorizontalAlignment="Left" Text="STR" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="1" />
+                    <TextBlock x:Name="lblPer" HorizontalAlignment="Left" Text="PER" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="2"/>
+                    <TextBlock x:Name="lblEnd" HorizontalAlignment="Left" Text="END" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="3"/>
+                    <TextBlock x:Name="lblCha" HorizontalAlignment="Left" Text="CHA" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="4"/>
+                    <TextBlock x:Name="lblInt" HorizontalAlignment="Left" Text="INT" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="5"/>
+                    <TextBlock x:Name="lblAgi" HorizontalAlignment="Left" Text="AGI" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="6"/>
+                    <TextBlock x:Name="lblLuk" HorizontalAlignment="Left" Text="LUK" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="7"/>
+                    <TextBlock x:Name="lblStrF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Strength" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1"/>
+                    <TextBlock x:Name="lblPerF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Perception" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2"/>
+                    <TextBlock x:Name="lblEndF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Endurance" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3"/>
+                    <TextBlock x:Name="lblChaF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Charisma" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4"/>
+                    <TextBlock x:Name="lblIntF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Intellect" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5"/>
+                    <TextBlock x:Name="lblAgiF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Agility" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6"/>
+                    <TextBlock x:Name="lblLukF" HorizontalAlignment="Left" Margin="2,0,0,0" Text="Luck" VerticalAlignment="Center" Grid.Column="1" Grid.Row="7"/>
+
+                    <TextBox x:Name="txtStrm" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="50" IsReadOnly="True" Grid.Column="3" Grid.Row="1"/>
+                    <TextBox x:Name="txtPerm" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="50" IsReadOnly="True" Grid.Column="3" Grid.Row="2"/>
+                    <TextBox x:Name="txtEndm" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="50" IsReadOnly="True" Grid.Column="3" Grid.Row="3"/>
+                    <TextBox x:Name="txtCham" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="50" IsReadOnly="True" Grid.Column="3" Grid.Row="4"/>
+                    <TextBox x:Name="txtIntm" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="50" IsReadOnly="True" Grid.Column="3" Grid.Row="5"/>
+                    <TextBox x:Name="txtAgim" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="50" IsReadOnly="True" Grid.Column="3" Grid.Row="6"/>
+                    <TextBox x:Name="txtLukm" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="50" IsReadOnly="True" Grid.Column="3" Grid.Row="7"/>
+                    <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Modifier" VerticalAlignment="Bottom" Grid.Column="3"/>
+
+                    <flat:IntegerSpinner x:Name="txtPerp" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" Grid.Column="4" Grid.Row="2" MinValue="-99" MaxValue="999" Value="20" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
+                    <flat:IntegerSpinner x:Name="txtEndp" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" Grid.Column="4" Grid.Row="3" MinValue="-99" MaxValue="999" Value="20" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
+                    <flat:IntegerSpinner x:Name="txtChap" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" Grid.Column="4" Grid.Row="4" MinValue="-99" MaxValue="999" Value="20" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
+                    <flat:IntegerSpinner x:Name="txtIntp" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" Grid.Column="4" Grid.Row="5" MinValue="-99" MaxValue="999" Value="20" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
+                    <flat:IntegerSpinner x:Name="txtStrp" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" Grid.Column="4" Grid.Row="1" MinValue="-99" MaxValue="999" Value="20" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
+                    <flat:IntegerSpinner x:Name="txtAgip" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" Grid.Column="4" Grid.Row="6" MinValue="-99" MaxValue="999" Value="20" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
+                    <flat:IntegerSpinner x:Name="txtLukp" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" Grid.Column="4" Grid.Row="7" MinValue="-99" MaxValue="999" Value="20" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}"/>
+                    <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Potential" VerticalAlignment="Bottom" Grid.Column="4"/>
+
+                    <flat:CheckBox x:Name="chkStrw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="1" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                    <flat:CheckBox x:Name="chkPerw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="2" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" IsChecked="True" />
+                    <flat:CheckBox x:Name="chkEndw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="3" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                    <flat:CheckBox x:Name="chkChaw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="4" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                    <flat:CheckBox x:Name="chkIntw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="5" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                    <flat:CheckBox x:Name="chkAgiw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="6" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                    <flat:CheckBox x:Name="chkLukw" HorizontalAlignment="Center" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Content="*" Grid.Column="5" Grid.Row="7" ColorScheme="{Binding ColorScheme, ElementName=window}" CheckChanged="PowerStat_CheckChanged" />
+                    <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Power" VerticalAlignment="Bottom" Grid.Column="5"/>
+
+                    <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Score" VerticalAlignment="Bottom" Grid.Column="2"/>
+                </Grid>
+
+            <TextBlock x:Name="lblCharacterScores" HorizontalAlignment="Left" Margin="15,10,0,3" Text="Base Ability Scores" VerticalAlignment="Top" Grid.Row="2" />
+            <TextBlock x:Name="lblSentinelsSettings" HorizontalAlignment="Left" Margin="15,5" Text="Sheet settings:" VerticalAlignment="Center" Grid.Row="4"/>
+            <TextBlock x:Name="lblPlayer" HorizontalAlignment="Left" Margin="15,5" Text="Edit player data (optional)" VerticalAlignment="Center" Grid.Row="6"/>
+
+            <Grid Margin="40,10,10,10" Grid.Row="5" VerticalAlignment="Center" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="Auto" MinWidth="80" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="lblCpLevel" HorizontalAlignment="Left" Text="Character points per level:" VerticalAlignment="Center"/>
+                <TextBlock x:Name="lblCpStart" HorizontalAlignment="Left" Text="Level 0 character points (racial points):" VerticalAlignment="Center" Grid.Row="1" />
+                <flat:IntegerSpinner x:Name="nudCpLevel" Grid.Column="2" Grid.Row="0" MinValue="1" Value="10" ColorScheme="{Binding ColorScheme, ElementName=window}" />
+                <flat:IntegerSpinner x:Name="nudCpStart" Grid.Column="2" Grid.Row="1" MinValue="0" Value="0" ColorScheme="{Binding ColorScheme, ElementName=window}" />
+            </Grid>
+
+            <Grid Margin="40,15,10,15" Grid.Row="7" VerticalAlignment="Center" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="lblPlayerName" Text="Player name:" VerticalAlignment="Center" />
+                <TextBlock x:Name="txtPlayerName" Margin="10,0,0,0" Text="(not set)" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <flat:FlatButton x:Name="btnEditData" ColorScheme="{Binding ColorScheme, ElementName=window}" Content="Edit Player Data..." Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="120" Click="btnEditData_Click" Grid.Row="1" Grid.ColumnSpan="2" />
+                <flat:FlatButton x:Name="btnImportData" Content="Import from File..." ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="120" Click="btnImportData_Click" Grid.Row="1" Grid.Column="2" />
+
+            </Grid>
+            <flat:FlatButton x:Name="btnCreate" ColorScheme="{Binding ColorScheme, ElementName=window}" Content="Create" Margin="0,10,105,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="80" Click="btnCreate_Click" Grid.Row="8" />
+            <flat:FlatButton x:Name="btnClose" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,10,20,10" VerticalAlignment="Bottom" Width="80" Click="btnClose_Click" Grid.Row="8" />
+        </Grid>
+    </ScrollViewer>
+</flat:FlatWindow>

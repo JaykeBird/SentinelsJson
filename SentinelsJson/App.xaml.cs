@@ -249,7 +249,7 @@ namespace SentinelsJson
 
             MainWindow mw = new MainWindow();
             MainWindow = mw;
-            //if (file != "") mw.OpenFile(file);
+            if (file != "") mw.OpenFile(file);
             mw.Show();
         }
 

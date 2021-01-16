@@ -2090,7 +2090,6 @@ namespace SentinelsJson
                 _isUpdating = false;
                 ChangeView(App.Settings.StartView, false, false);
                 LoadSentinelsSheet(ss);
-                //LoadPathfinderSheet(ps);
             }
             catch (FileFormatException)
             {

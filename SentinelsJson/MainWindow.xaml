@@ -44,7 +44,7 @@
 
         <flat:Menu Grid.Row="0" x:Name="menu" IsMainMenu="True" Grid.ColumnSpan="2" >
             <MenuItem Header="_File">
-                <MenuItem Header="_New Character..." x:Name="mnuNew" Click="mnuNew_Click" IsEnabled="False">
+                <MenuItem Header="_New Character..." x:Name="mnuNew" Click="mnuNew_Click" >
                     <MenuItem.Icon>
                         <Image Source="/SentinelsJson;component/Images/Color/NewFile.png" />
                     </MenuItem.Icon>
@@ -191,7 +191,7 @@
 
         <Border Grid.Row="1" Grid.ColumnSpan="2" x:Name="toolbar" IsEnabled="False" >
             <StackPanel Orientation="Horizontal" Margin="3,0,0,0" x:Name="stkToolbar" UseLayoutRounding="True" >
-                <flat:FlatButton TransparentBack="True" x:Name="btnNew" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="mnuNew_Click" Margin="0,2" Padding="3,2" ToolTip="New Character" IsEnabled="False" >
+                <flat:FlatButton TransparentBack="True" x:Name="btnNew" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="mnuNew_Click" Margin="0,2" Padding="3,2" ToolTip="New Character" >
                     <local:ThemedImage ImageName="NewFile" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Width="16" Height="16" />
                 </flat:FlatButton>
                 <flat:FlatButton TransparentBack="True" x:Name="btnOpen" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="mnuOpen_Click" Margin="0,2" Padding="3,2" ToolTip="Open" >
@@ -388,13 +388,13 @@
                             <ColumnDefinition Width="Auto" MinWidth="45"/>
                         </Grid.ColumnDefinitions>
 
-                        <flat:IntegerSpinner x:Name="txtStr" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" LostFocus="txtStr_LostFocus" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="1" />
-                        <flat:IntegerSpinner x:Name="txtPer" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" LostFocus="txtStr_LostFocus" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="2" />
-                        <flat:IntegerSpinner x:Name="txtEnd" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" LostFocus="txtStr_LostFocus" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="3" />
-                        <flat:IntegerSpinner x:Name="txtCha" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" LostFocus="txtStr_LostFocus" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="4" />
-                        <flat:IntegerSpinner x:Name="txtInt" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" LostFocus="txtStr_LostFocus" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="5" />
-                        <flat:IntegerSpinner x:Name="txtAgi" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" LostFocus="txtStr_LostFocus" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="6" />
-                        <flat:IntegerSpinner x:Name="txtLuk" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" LostFocus="txtStr_LostFocus" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="7" />
+                        <flat:IntegerSpinner x:Name="txtStr" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="1" />
+                        <flat:IntegerSpinner x:Name="txtPer" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="2" />
+                        <flat:IntegerSpinner x:Name="txtEnd" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="3" />
+                        <flat:IntegerSpinner x:Name="txtCha" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="4" />
+                        <flat:IntegerSpinner x:Name="txtInt" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="5" />
+                        <flat:IntegerSpinner x:Name="txtAgi" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="6" />
+                        <flat:IntegerSpinner x:Name="txtLuk" HorizontalAlignment="Left" Margin="3,0" MinHeight="24" VerticalAlignment="Center" Width="60" ValueChanged="txtStr_ValueChanged" MinValue="-99" MaxValue="999" AcceptExpressions="True" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="2" Grid.Row="7" />
                         <TextBlock x:Name="lblStr" HorizontalAlignment="Left" Text="STR" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="1" />
                         <TextBlock x:Name="lblPer" HorizontalAlignment="Left" Text="PER" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="2"/>
                         <TextBlock x:Name="lblEnd" HorizontalAlignment="Left" Text="END" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="3"/>
@@ -438,6 +438,96 @@
                         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Power" VerticalAlignment="Bottom" Grid.Column="5"/>
 
                         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Score" VerticalAlignment="Bottom" Grid.Column="2"/>
+                    </Grid>
+                    <Grid HorizontalAlignment="Left" Margin="15,10,0,10" Grid.Row="7" VerticalAlignment="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="lblSaveF" HorizontalAlignment="Left" Text="Fortitude Save (END)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="txtSaveF" HorizontalAlignment="Center" IsReadOnly="True" MinHeight="23" VerticalAlignment="Center" MinWidth="80" Grid.Column="1" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
+                        <local:DetailsButton x:Name="btnSaveFDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnSaveFDetails, Path=IsSelected, Converter={StaticResource btv}}" >
+                            <StackPanel Orientation="Horizontal" Margin="3">
+                                <TextBlock Text="ENDm" VerticalAlignment="Center" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtEndm, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
+                                <TextBlock Text="1/2 level" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <TextBox IsReadOnly="True" x:Name="txtSaveFLvl" Margin="5,0" MinWidth="60" MinHeight="23" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
+                                <TextBlock Text="Ranks" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtSaveFRanks" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
+                                <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtSaveFMisc" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
+                                <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid HorizontalAlignment="Left" Margin="15,10,0,10" Grid.Row="8" VerticalAlignment="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="lblSaveR" HorizontalAlignment="Left" Text="Reflex Save (AGI)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="txtSaveR" HorizontalAlignment="Center" IsReadOnly="True" MinHeight="23" VerticalAlignment="Center" MinWidth="80" Grid.Column="1" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
+                        <local:DetailsButton x:Name="btnSaveRDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnSaveRDetails, Path=IsSelected, Converter={StaticResource btv}}" >
+                            <StackPanel Orientation="Horizontal" Margin="3">
+                                <TextBlock Text="AGIm" VerticalAlignment="Center" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtAgim, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
+                                <TextBlock Text="1/2 level" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <TextBox IsReadOnly="True" x:Name="txtSaveRLvl" Margin="5,0" MinWidth="60" MinHeight="23" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
+                                <TextBlock Text="Ranks" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtSaveRRanks" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
+                                <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtSaveRMisc" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
+                                <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid HorizontalAlignment="Left" Margin="15,10,0,10" Grid.Row="9" VerticalAlignment="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="lblSaveW" HorizontalAlignment="Left" Text="Will Save (PER)" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="txtSaveW" HorizontalAlignment="Center" IsReadOnly="True" MinHeight="23" VerticalAlignment="Center" MinWidth="80" Grid.Column="1" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
+                        <local:DetailsButton x:Name="btnSaveWDetails" Grid.Column="2" Margin="10,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="5" Margin="0,3,0,0" Visibility="{Binding ElementName=btnSaveWDetails, Path=IsSelected, Converter={StaticResource btv}}" >
+                            <StackPanel Orientation="Horizontal" Margin="3">
+                                <TextBlock Text="PERm" VerticalAlignment="Center" />
+                                <TextBox IsReadOnly="True" Margin="5,0" MinWidth="60" MinHeight="23" Text="{Binding ElementName=txtPerm, Path=Text}" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
+                                <TextBlock Text="1/2 level" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <TextBox IsReadOnly="True" x:Name="txtSaveWLvl" Margin="5,0" MinWidth="60" MinHeight="23" Background="{Binding ElementName=window, Path=ColorScheme.SecondHighlightColor, Converter={StaticResource ctb}}" />
+                                <TextBlock Text="Ranks" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtSaveWRanks" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
+                                <TextBlock Text="Misc" VerticalAlignment="Center" Margin="3,0,0,0" />
+                                <flat:IntegerSpinner x:Name="txtSaveWMisc" Margin="5,0" MinWidth="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" ValueChanged="CombatTabValueChanged" />
+                                <!--MaxValue="{Binding ElementName=nudEcl, Path=Value}"-->
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </Grid>
                 <Grid Margin="5,5,5,0" x:Name="grdCombat">

@@ -574,29 +574,29 @@ namespace SentinelsJson
                 return;
             }
 
-            //NewSheet ns = new NewSheet();
-            //ns.Owner = this;
-            //ns.ShowDialog();
+            NewSheet ns = new NewSheet();
+            ns.Owner = this;
+            ns.ShowDialog();
 
-            //if (ns.DialogResult)
-            //{
-            //    PathfinderSheet ps = ns.Sheet;
+            if (ns.DialogResult)
+            {
+                SentinelsSheet ps = ns.Sheet;
 
-            //    filePath = ns.FileLocation;
-            //    fileTitle = ps.Name;
-            //    _sheetLoaded = true;
+                filePath = string.Empty;
+                fileTitle = ps.Name;
+                _sheetLoaded = true;
 
-            //    isDirty = false;
-            //    _isEditorDirty = false;
-            //    _isTabsDirty = false;
+                isDirty = false;
+                _isEditorDirty = false;
+                _isTabsDirty = false;
 
-            //    UpdateTitlebar();
+                UpdateTitlebar();
 
-            //    txtEditRaw.Text = ps.SaveJsonText(App.Settings.IndentJsonData);
-            //    ChangeView(App.Settings.StartView, false, false);
-            //    LoadPathfinderSheet(ps);
-            //    await UpdateCalculations();
-            //}
+                txtEditRaw.Text = ps.SaveJsonText(App.Settings.IndentJsonData);
+                ChangeView(App.Settings.StartView, false, false);
+                LoadSentinelsSheet(ps);
+                await UpdateCalculations();
+            }
         }
 
         private void mnuNewWindow_Click(object sender, RoutedEventArgs e)
@@ -669,14 +669,14 @@ namespace SentinelsJson
                     }
                 }
                 txtEditRaw.Save(file);
-                //SyncSheetFromEditor();
+                SyncSheetFromEditor();
             }
             else
             {
-                //SyncEditorFromSheet();
+                SyncEditorFromSheet();
                 txtEditRaw.Save(file);
-                //PathfinderSheet ps = await CreatePathfinderSheetAsync();
-                //ps.SaveJsonFile(file, App.Settings.IndentJsonData);
+                SentinelsSheet ss = CreateSentinelsSheet();
+                ss.SaveJsonFile(file, App.Settings.IndentJsonData);
             }
 
             _isEditorDirty = false;
@@ -1563,7 +1563,7 @@ namespace SentinelsJson
                     if (_isEditorDirty && updateSheet)
                     {
                         // update sheet from editor
-                        //SyncSheetFromEditor();
+                        SyncSheetFromEditor();
                     }
                     break;
                 case TABS_VIEW:
@@ -1582,7 +1582,7 @@ namespace SentinelsJson
                     if (_isEditorDirty && updateSheet)
                     {
                         // update sheet from editor
-                        //SyncSheetFromEditor();
+                        SyncSheetFromEditor();
                     }
                     break;
                 case RAWJSON_VIEW:
@@ -1598,7 +1598,7 @@ namespace SentinelsJson
 
                     if (_isTabsDirty && updateSheet)
                     {
-                        //SyncEditorFromSheet();
+                        SyncEditorFromSheet();
                     }
                     break;
                 default:
@@ -2292,6 +2292,14 @@ namespace SentinelsJson
                 sheetSettings = new Dictionary<string, string?>();
             }
 
+            txtSaveFRanks.Value = sheet.Saves["fort"].Ranks;
+            txtSaveRRanks.Value = sheet.Saves["reflex"].Ranks;
+            txtSaveWRanks.Value = sheet.Saves["will"].Ranks;
+
+            txtSaveFMisc.Value = sheet.Saves["fort"].TempModifier;
+            txtSaveRMisc.Value = sheet.Saves["reflex"].TempModifier;
+            txtSaveWMisc.Value = sheet.Saves["will"].TempModifier;
+
             // Combat tab
 
             nudDefenseActions.Value = sheet.DefenseActions;
@@ -2503,6 +2511,7 @@ namespace SentinelsJson
         public void UpdateCombatTab()
         {
             int prBase = (int)Math.Ceiling(nudLevel.Value / 2d);
+            int svBase = (int)Math.Floor(nudLevel.Value / 2d);
             txtProwessBase.Text = prBase.ToString();
             int pr = prBase + nudProwessT.Value;
             if (pr > nudEcl.Value) pr = nudEcl.Value;
@@ -2528,6 +2537,14 @@ namespace SentinelsJson
             lblMmbPwrm.Text = powerStat + " is your Power stat.";
             txtMmdPwrm.Text = ModifierIntToStr(abModifiers[powerStat]);
             lblMmdPwrm.Text = powerStat + " is your Power stat.";
+
+            txtSaveFLvl.Text = svBase.ToString();
+            txtSaveRLvl.Text = svBase.ToString();
+            txtSaveWLvl.Text = svBase.ToString();
+
+            txtSaveF.Text = ModifierIntToStr(svBase + abModifiers["END"] + txtSaveFRanks.Value + txtSaveFMisc.Value);
+            txtSaveR.Text = ModifierIntToStr(svBase + abModifiers["AGI"] + txtSaveRRanks.Value + txtSaveRMisc.Value);
+            txtSaveW.Text = ModifierIntToStr(svBase + abModifiers["PER"] + txtSaveWRanks.Value + txtSaveWMisc.Value);
         }
 
         #region Sync
@@ -2617,12 +2634,112 @@ namespace SentinelsJson
         #endregion
 
         /// <summary>
-        /// Create a PathfinderSheet object by loading in all the values from the sheet view.
+        /// Create a SentinelsSheet object by loading in all the values from the sheet view.
         /// </summary>
         /// <returns></returns>
         private SentinelsSheet CreateSentinelsSheet()
         {
-            return new SentinelsSheet();
+            SentinelsSheet sheet = new SentinelsSheet();
+
+            sheet.Player = ud;
+            sheet.Id = sheetid;
+            //sheet.Version = version;
+
+            sheet.Notes = txtNotes.Text;
+
+            if (chkNotesMarkdown.IsChecked)
+            {
+                sheetSettings["notesMarkdown"] = "enabled";
+            }
+
+            sheet.Name = txtCharacter.Text;
+            sheet.BaseLevel = nudLevel.Value;
+            sheet.ECL = nudEcl.Value;
+            sheet.Alignment = GetStringOrNull(txtAlignment.Text);
+            sheet.Homeland = GetStringOrNull(txtHomeland.Text);
+            sheet.Deity = GetStringOrNull(txtDeity.Text);
+
+            sheet.Race = GetStringOrNull(txtPhyRace.Text);
+            sheet.Gender = GetStringOrNull(txtPhyGender.Text);
+            sheet.Size = GetStringOrNull(txtPhySize.Text);
+            sheet.Age = GetStringOrNull(txtPhyAge.Text);
+            sheet.Height = GetStringOrNull(txtPhyHeight.Text);
+            sheet.Weight = GetStringOrNull(txtPhyWeight.Text);
+            sheet.Hair = GetStringOrNull(txtPhyHair.Text);
+            sheet.Eyes = GetStringOrNull(txtPhyEyes.Text);
+
+            Speed? sp = new Speed();
+            sp.Base = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.Burrow = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.Climb = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.Fly = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.Swim = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.WithArmor = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.TempModifier = GetStringOrNull(txtSpeedTemp.Text);
+
+            if (sp.Base == null && sp.Burrow == null && sp.Climb == null &&
+                sp.Fly == null && sp.Swim == null && sp.WithArmor == null
+                && sp.TempModifier == null)
+            {
+                sp = null;
+            }
+            sheet.Speed = sp;
+
+            if (sheetSettings.Count > 0)
+            {
+                sheet.SheetSettings = sheetSettings;
+            }
+
+            abilities["str"] = txtStr.Value.ToString();
+            abilities["per"] = txtPer.Value.ToString();
+            abilities["end"] = txtEnd.Value.ToString();
+            abilities["cha"] = txtCha.Value.ToString();
+            abilities["int"] = txtInt.Value.ToString();
+            abilities["agi"] = txtAgi.Value.ToString();
+            abilities["luk"] = txtLuk.Value.ToString();
+
+            sheet.RawAbilities = abilities;
+
+            potentials["str"] = txtStrp.Value.ToString();
+            potentials["per"] = txtPerp.Value.ToString();
+            potentials["end"] = txtEndp.Value.ToString();
+            potentials["cha"] = txtChap.Value.ToString();
+            potentials["int"] = txtIntp.Value.ToString();
+            potentials["agi"] = txtAgip.Value.ToString();
+            potentials["luk"] = txtLukp.Value.ToString();
+
+            sheet.RawPotential = potentials;
+
+            Dictionary<string, Save> saves = new Dictionary<string, Save>()
+            {
+                { "fort", new Save(txtSaveFRanks.Value, txtSaveFMisc.Value) },
+                { "reflex", new Save(txtSaveRRanks.Value, txtSaveRMisc.Value) },
+                { "will", new Save(txtSaveWRanks.Value, txtSaveWMisc.Value) },
+            };
+
+            sheet.Saves = saves;
+            
+            // combat tab
+            
+            sheet.TrainedProwess = nudProwessT.Value;
+            var a = new Armor() { Natural = nudArmorN.Value, Equipment = nudArmorE.Value, Shield = nudArmorS.Value, Attributes = nudArmorA.Value };
+            sheet.Armor = a;
+
+            sheet.BrawlUseAgi = chkBrawlAgi.IsChecked;
+            sheet.MeleeUseAgi = chkMeleeAgi.IsChecked;
+
+            sheet.DefenseActions = nudDefenseActions.Value;
+
+            sheet.CmbMisc = txtCmbM.Value;
+            sheet.CmdMisc = txtCmdM.Value;
+            sheet.MmbMisc = txtMmbM.Value;
+            sheet.MmdMisc = txtMmdM.Value;
+
+            // feats tab
+
+            //sheet.Feats = selFeats.ExportList<Feat>();
+
+            return sheet;
         }
 
         #endregion
@@ -2744,15 +2861,6 @@ namespace SentinelsJson
             }
         }
 
-        private void txtStr_LostFocus(object sender, RoutedEventArgs e)
-        {
-            //if (mnuAutoUpdate.IsChecked)
-            //{
-            //    await UpdateCalculations(true, false, false);
-            //}
-            //UpdateCombatTab();
-        }
-
         bool _updatePowerCheck = true;
 
         private void PowerStat_CheckChanged(object sender, RoutedEventArgs e)
@@ -2822,6 +2930,8 @@ namespace SentinelsJson
 
             _updatePowerCheck = true;
 
+            SetIsDirty();
+
             void SetPowerStat(string stat)
             {
                 powerStat = stat;
@@ -2849,28 +2959,40 @@ namespace SentinelsJson
 
         private void CombatTabChange(object sender, RoutedEventArgs e)
         {
+            if (_isUpdating) return;
+
             if (mnuAutoUpdate.IsChecked)
             {
                 UpdateCombatTab();
             }
+
+            SetIsDirty();
         }
 
         private void LevelValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if (_isUpdating) return;
+
             if (nudEcl.Value < nudLevel.Value) nudEcl.Value = nudLevel.Value;
 
             if (mnuAutoUpdate.IsChecked)
             {
                 UpdateCombatTab();
             }
+
+            SetIsDirty();
         }
 
         private void CombatTabValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if (_isUpdating) return;
+
             if (mnuAutoUpdate.IsChecked)
             {
                 UpdateCombatTab();
             }
+
+            SetIsDirty();
         }
 
         #endregion

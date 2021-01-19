@@ -23,6 +23,8 @@ namespace SentinelsJson.Ild
             InitializeComponent();
         }
 
+        public event EventHandler? ContentChanged;
+
         #region ColorScheme
 
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
@@ -348,8 +350,16 @@ namespace SentinelsJson.Ild
             sli.RequestDelete += sli_RequestDelete;
             sli.RequestMoveDown += sli_RequestMoveDown;
             sli.RequestMoveUp += sli_RequestMoveUp;
+            sli.ContentChanged += sli_ContentChanged;
 
             selPanel.AddItem(sli);
+
+            ContentChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void sli_ContentChanged(object? sender, EventArgs e)
+        {
+            ContentChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void sli_RequestMoveUp(object? sender, EventArgs e)
@@ -367,6 +377,8 @@ namespace SentinelsJson.Ild
             if (sender is SelectableListItem sli)
             {
                 selPanel.RemoveItem(sli);
+
+                ContentChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 

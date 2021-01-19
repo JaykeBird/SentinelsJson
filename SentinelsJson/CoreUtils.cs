@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 
 namespace SentinelsJson
 {
+#nullable enable
+
     public static class CoreUtils
     {
 
@@ -19,10 +21,12 @@ namespace SentinelsJson
             // This is best-effort only, but should work most of the time.
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                // See https://stackoverflow.com/a/6040946/44360 for why this is required
-                url = System.Text.RegularExpressions.Regex.Replace(url, @"(\\*)" + "\"", @"$1$1\" + "\"");
-                url = System.Text.RegularExpressions.Regex.Replace(url, @"(\\+)$", @"$1$1");
-                Process.Start(new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\"") { CreateNoWindow = true });
+                //// See https://stackoverflow.com/a/6040946/44360 for why this is required
+                //url = System.Text.RegularExpressions.Regex.Replace(url, @"(\\*)" + "\"", @"$1$1\" + "\"");
+                //url = System.Text.RegularExpressions.Regex.Replace(url, @"(\\+)$", @"$1$1");
+                //Process.Start(new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\"") { CreateNoWindow = true });
+                //return true;
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
                 return true;
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -81,15 +85,16 @@ namespace SentinelsJson
             return (int)Math.Floor((score - 10) / 2d);
         }
 
-        public static string ModifierIntToStr(int modifier)
-        {
-            if (modifier >= 0) return "+" + modifier.ToString(); else return modifier.ToString();
-        }
-        
         public static string CalculateModifier(int score)
         {
             int r = (int)Math.Floor((score - 10) / 2d);
             if (r >= 0) return "+" + r.ToString(); else return r.ToString();
         }
+
+        public static string DisplayModifier(int mod)
+        {
+            if (mod >= 0) return "+" + mod; else return mod.ToString();
+        }
     }
 }
+#nullable restore

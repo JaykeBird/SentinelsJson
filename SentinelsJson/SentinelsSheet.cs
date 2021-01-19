@@ -362,11 +362,13 @@ namespace SentinelsJson
         public Save(int ranks, int temp)
         {
             Ranks = ranks;
-            TempModifier = temp;
+            Misc = temp;
         }
 
         public int Ranks { get; set; } = 0;
-        public int TempModifier { get; set; } = 0;
+
+        [JsonProperty("misc")]
+        public int Misc { get; set; } = 0;
     }
 
     public class Armor

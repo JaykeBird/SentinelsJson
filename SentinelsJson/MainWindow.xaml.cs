@@ -2295,9 +2295,9 @@ namespace SentinelsJson
             txtSaveRRanks.Value = sheet.Saves["reflex"].Ranks;
             txtSaveWRanks.Value = sheet.Saves["will"].Ranks;
 
-            txtSaveFMisc.Value = sheet.Saves["fort"].TempModifier;
-            txtSaveRMisc.Value = sheet.Saves["reflex"].TempModifier;
-            txtSaveWMisc.Value = sheet.Saves["will"].TempModifier;
+            txtSaveFMisc.Value = sheet.Saves["fort"].Misc;
+            txtSaveRMisc.Value = sheet.Saves["reflex"].Misc;
+            txtSaveWMisc.Value = sheet.Saves["will"].Misc;
 
             // Combat tab
 
@@ -2307,6 +2307,7 @@ namespace SentinelsJson
             nudArmorE.Value = sheet.Armor.Equipment;
             nudArmorN.Value = sheet.Armor.Natural;
             nudArmorS.Value = sheet.Armor.Shield;
+            nudArmorM.Value = sheet.Armor.Misc;
 
             txtCmbM.Value = sheet.CmbMisc;
             txtCmdM.Value = sheet.CmdMisc;
@@ -2498,13 +2499,13 @@ namespace SentinelsJson
             abModifiers["AGI"] = CalculateModifierInt(txtAgi.Value);
             abModifiers["LUK"] = CalculateModifierInt(txtLuk.Value);
 
-            txtStrm.Text = ModifierIntToStr(abModifiers["STR"]);
-            txtPerm.Text = ModifierIntToStr(abModifiers["PER"]);
-            txtEndm.Text = ModifierIntToStr(abModifiers["END"]);
-            txtCham.Text = ModifierIntToStr(abModifiers["CHA"]);
-            txtIntm.Text = ModifierIntToStr(abModifiers["INT"]);
-            txtAgim.Text = ModifierIntToStr(abModifiers["AGI"]);
-            txtLukm.Text = ModifierIntToStr(abModifiers["LUK"]);
+            txtStrm.Text = DisplayModifier(abModifiers["STR"]);
+            txtPerm.Text = DisplayModifier(abModifiers["PER"]);
+            txtEndm.Text = DisplayModifier(abModifiers["END"]);
+            txtCham.Text = DisplayModifier(abModifiers["CHA"]);
+            txtIntm.Text = DisplayModifier(abModifiers["INT"]);
+            txtAgim.Text = DisplayModifier(abModifiers["AGI"]);
+            txtLukm.Text = DisplayModifier(abModifiers["LUK"]);
         }
 
         public void UpdateCombatTab()
@@ -2516,34 +2517,34 @@ namespace SentinelsJson
             if (pr > nudEcl.Value) pr = nudEcl.Value;
             txtProwess.Text = pr.ToString();
 
-            txtBrawl.Text = ModifierIntToStr((chkBrawlAgi.IsChecked ? abModifiers["AGI"] : abModifiers["STR"]) + pr + 1);
-            txtMelee.Text = ModifierIntToStr((chkMeleeAgi.IsChecked ? abModifiers["AGI"] : abModifiers["STR"]) + pr);
-            txtRangd.Text = ModifierIntToStr(abModifiers["AGI"] + pr);
+            txtBrawl.Text = DisplayModifier((chkBrawlAgi.IsChecked ? abModifiers["AGI"] : abModifiers["STR"]) + pr + 1);
+            txtMelee.Text = DisplayModifier((chkMeleeAgi.IsChecked ? abModifiers["AGI"] : abModifiers["STR"]) + pr);
+            txtRangd.Text = DisplayModifier(abModifiers["AGI"] + pr);
 
-            txtBlock.Text = ModifierIntToStr(abModifiers["STR"] + pr + (int)Math.Floor(nudArmorS.Value / 2d));
-            txtDodge.Text = ModifierIntToStr(abModifiers["AGI"] + pr);
+            txtBlock.Text = DisplayModifier(abModifiers["STR"] + pr + (int)Math.Floor(nudArmorS.Value / 2d));
+            txtDodge.Text = DisplayModifier(abModifiers["AGI"] + pr);
             txtPassd.Text = (10 + nudArmorN.Value + nudProwessT.Value).ToString();
             txtTouch.Text = (10 + nudProwessT.Value).ToString();
 
-            txtArmor.Text = (nudArmorA.Value + nudArmorE.Value + nudArmorN.Value + nudArmorS.Value).ToString();
+            txtArmor.Text = (nudArmorA.Value + nudArmorE.Value + nudArmorN.Value + nudArmorS.Value + nudArmorM.Value).ToString();
 
-            txtCmb.Text = ModifierIntToStr(abModifiers["STR"] + pr + txtCmbM.Value);
-            txtCmd.Text = ModifierIntToStr(abModifiers["STR"] + abModifiers["AGI"] + pr + txtCmdM.Value);
-            txtMmb.Text = ModifierIntToStr(abModifiers[powerStat] + pr + txtMmbM.Value);
-            txtMmd.Text = ModifierIntToStr(abModifiers[powerStat] + pr + txtMmdM.Value);
+            txtCmb.Text = DisplayModifier(abModifiers["STR"] + pr + txtCmbM.Value);
+            txtCmd.Text = DisplayModifier(abModifiers["STR"] + abModifiers["AGI"] + pr + txtCmdM.Value);
+            txtMmb.Text = DisplayModifier(abModifiers[powerStat] + pr + txtMmbM.Value);
+            txtMmd.Text = DisplayModifier(abModifiers[powerStat] + pr + txtMmdM.Value);
 
-            txtMmbPwrm.Text = ModifierIntToStr(abModifiers[powerStat]);
+            txtMmbPwrm.Text = DisplayModifier(abModifiers[powerStat]);
             lblMmbPwrm.Text = powerStat + " is your Power stat.";
-            txtMmdPwrm.Text = ModifierIntToStr(abModifiers[powerStat]);
+            txtMmdPwrm.Text = DisplayModifier(abModifiers[powerStat]);
             lblMmdPwrm.Text = powerStat + " is your Power stat.";
 
             txtSaveFLvl.Text = svBase.ToString();
             txtSaveRLvl.Text = svBase.ToString();
             txtSaveWLvl.Text = svBase.ToString();
 
-            txtSaveF.Text = ModifierIntToStr(svBase + abModifiers["END"] + txtSaveFRanks.Value + txtSaveFMisc.Value);
-            txtSaveR.Text = ModifierIntToStr(svBase + abModifiers["AGI"] + txtSaveRRanks.Value + txtSaveRMisc.Value);
-            txtSaveW.Text = ModifierIntToStr(svBase + abModifiers["PER"] + txtSaveWRanks.Value + txtSaveWMisc.Value);
+            txtSaveF.Text = DisplayModifier(svBase + abModifiers["END"] + txtSaveFRanks.Value + txtSaveFMisc.Value);
+            txtSaveR.Text = DisplayModifier(svBase + abModifiers["AGI"] + txtSaveRRanks.Value + txtSaveRMisc.Value);
+            txtSaveW.Text = DisplayModifier(svBase + abModifiers["PER"] + txtSaveWRanks.Value + txtSaveWMisc.Value);
         }
 
         #region Sync
@@ -2721,7 +2722,7 @@ namespace SentinelsJson
             // combat tab
             
             sheet.TrainedProwess = nudProwessT.Value;
-            var a = new Armor() { Natural = nudArmorN.Value, Equipment = nudArmorE.Value, Shield = nudArmorS.Value, Attributes = nudArmorA.Value };
+            var a = new Armor() { Natural = nudArmorN.Value, Equipment = nudArmorE.Value, Shield = nudArmorS.Value, Attributes = nudArmorA.Value, Misc = nudArmorM.Value };
             sheet.Armor = a;
 
             sheet.BrawlUseAgi = chkBrawlAgi.IsChecked;

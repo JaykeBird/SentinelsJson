@@ -20,28 +20,28 @@ namespace SentinelsJson
             InitializeComponent();
         }
 
-        public void LoadFeat(Feat f)
-        {
-            txtName.Text = f.Name;
-            txtNotes.Text = f.Notes;
-            txtSchool.Text = f.School;
-            txtSubschool.Text = f.Subschool;
-            txtType.Text = f.Type;
-        }
+        //public void LoadFeat(Feat f)
+        //{
+        //    txtName.Text = f.Name;
+        //    txtNotes.Text = f.Notes;
+        //    txtSchool.Text = f.School;
+        //    txtSubschool.Text = f.Subschool;
+        //    txtType.Text = f.Type;
+        //}
 
-        public Feat GetFeat()
-        {
-            Feat f = new Feat
-            {
-                Name = txtName.Text,
-                Notes = txtNotes.Text,
-                School = txtSchool.Text,
-                Subschool = txtSubschool.Text,
-                Type = txtType.Text
-            };
+        //public Feat GetFeat()
+        //{
+        //    Feat f = new Feat
+        //    {
+        //        Name = txtName.Text,
+        //        Notes = txtNotes.Text,
+        //        School = txtSchool.Text,
+        //        Subschool = txtSubschool.Text,
+        //        Type = txtType.Text
+        //    };
 
-            return f;
-        }
+        //    return f;
+        //}
 
         public bool EnableSpellCheck
         {
@@ -55,41 +55,9 @@ namespace SentinelsJson
             }
         }
 
-
-        private void btnDetails_IsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (btnDetails.IsSelected)
-            {
-                rowDetails.Height = new GridLength(1, GridUnitType.Auto);
-                rowDetails.MinHeight = 125;
-                imgDetails.ImageName = "UpArrow";
-            }
-            else
-            {
-                rowDetails.Height = new GridLength(0);
-                rowDetails.MinHeight = 0;
-                imgDetails.ImageName = "DownArrow";
-            }
-        }
-
-        private void Expander_Expanded(object sender, RoutedEventArgs e)
-        {
-            rowDetails.Height = new GridLength(1, GridUnitType.Auto);
-            rowDetails.MinHeight = 125;
-        }
-
-        private void Expander_Collapsed(object sender, RoutedEventArgs e)
-        {
-            rowDetails.Height = new GridLength(0);
-            rowDetails.MinHeight = 0;
-        }
-
-        // event just to update main window's "isDirty" value
-        public event EventHandler? ContentChanged;
-
         private void textbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ContentChanged?.Invoke(this, e);
+            DoContentChanged();
         }
 
         public override void ApplyColorScheme(ColorScheme cs)
@@ -98,7 +66,6 @@ namespace SentinelsJson
 
             btnRemove.ApplyColorScheme(cs);
             btnDetails.ApplyColorScheme(cs);
-            imgDetails.ApplyColorScheme(cs);
         }
 
         public override void MapProperties(Dictionary<IldPropertyInfo, object> properties)
@@ -126,17 +93,6 @@ namespace SentinelsJson
                         break;
                 }
             }
-        }
-
-        private void btnRemove_Click(object sender, RoutedEventArgs e)
-        {
-            DoRequestDelete();
-        }
-
-        private void SelectableListItem_Loaded(object sender, RoutedEventArgs e)
-        {
-            rowDetails.Height = new GridLength(0);
-            rowDetails.MinHeight = 0;
         }
     }
 }

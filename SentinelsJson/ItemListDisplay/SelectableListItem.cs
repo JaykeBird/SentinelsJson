@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using SolidShineUi;
 
 namespace SentinelsJson.Ild
@@ -11,6 +12,7 @@ namespace SentinelsJson.Ild
         public event EventHandler? RequestMoveUp;
         public event EventHandler? RequestMoveDown;
         public event EventHandler? RequestDelete;
+        public event EventHandler? ContentChanged; // event just to update main window's "isDirty" value
 
         public abstract void MapProperties(Dictionary<IldPropertyInfo, object> properties);
 
@@ -28,6 +30,16 @@ namespace SentinelsJson.Ild
         public void DoRequestMoveDown()
         {
             RequestMoveDown?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void DoContentChanged()
+        {
+            ContentChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestDeleteEventHandler(object sender, RoutedEventArgs e)
+        {
+            DoRequestDelete();
         }
     }
 }

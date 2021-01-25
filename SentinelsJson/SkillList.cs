@@ -61,7 +61,7 @@ namespace SentinelsJson
     public class SkillListEntry
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Include)]
-        public string? Name { get; set; };
+        public string? Name { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? DisplayName { get; set; }

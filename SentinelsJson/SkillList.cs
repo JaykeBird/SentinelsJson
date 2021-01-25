@@ -51,6 +51,8 @@ namespace SentinelsJson
             serializer.Serialize(file, this);
         }
 
+        public string Name { get; set; } = "Unnamed";
+
         [JsonProperty("skills")]
         public List<SkillListEntry>? SkillEntries { get; private set; }
 
@@ -58,13 +60,16 @@ namespace SentinelsJson
 
     public class SkillListEntry
     {
-        public string Name { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Include)]
+        public string? Name { get; set; };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
-        public string Modifier { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Include)]
+        public string Modifier { get; set; } = "PER";
 
-        public string InfoUrl { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string? InfoUrl { get; set; }
     }
 }

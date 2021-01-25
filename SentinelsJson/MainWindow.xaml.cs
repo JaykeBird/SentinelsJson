@@ -1338,6 +1338,9 @@ namespace SentinelsJson
                     case "General":
                         grdGeneral.Visibility = Visibility.Visible;
                         break;
+                    case "Skills":
+                        grdSkills.Visibility = Visibility.Visible;
+                        break;
                     case "Attributes/Defects":
                         grdAttributes.Visibility = Visibility.Visible;
                         break;
@@ -1366,6 +1369,9 @@ namespace SentinelsJson
                 {
                     case "General":
                         control = titGeneral;
+                        break;
+                    case "Skills":
+                        control = titSkills;
                         break;
                     case "Attributes/Defects":
                         control = titAttributes;
@@ -1402,6 +1408,7 @@ namespace SentinelsJson
         void SetAllTabsVisibility(Visibility visibility = Visibility.Visible)
         {
             grdGeneral.Visibility = visibility;
+            grdSkills.Visibility = Visibility;
             grdAttributes.Visibility = visibility;
             grdCombat.Visibility = visibility;
             grdFeats.Visibility = visibility;

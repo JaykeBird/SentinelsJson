@@ -530,7 +530,7 @@
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid Margin="5,5,5,0" x:Name="grdCombat">
+                <Grid Margin="5,5,5,0" x:Name="grdCombat" Visibility="Collapsed" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -839,6 +839,23 @@
                             <TextBlock Margin="3,0" Grid.Row="1" x:Name="lblMmdPwrm" Text="(NAME) is your Power stat." />
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid Margin="5,5,5,0" x:Name="grdSkills">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Margin="10,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" MinHeight="25" />
+                            <RowDefinition Height="5" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="titSkills" Text="Skills" FontSize="16" />
+                    </Grid>
+                    <local:SkillEditor Grid.Row="2" SkillName="Acrobatics" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                    <local:SkillEditor Grid.Row="3" SkillName="Perform" HasSpecialization="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
                 </Grid>
                 <Grid Margin="5,5,5,0" x:Name="grdAttributes" Visibility="Collapsed" >
                     <Grid.RowDefinitions>

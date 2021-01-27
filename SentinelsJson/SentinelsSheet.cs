@@ -39,7 +39,13 @@ namespace SentinelsJson
 
         public static SentinelsSheet LoadJsonText(string text)
         {
-            SentinelsSheet ss = JsonConvert.DeserializeObject<SentinelsSheet>(text);
+            JsonSerializerSettings sss = new JsonSerializerSettings();
+            sss.DefaultValueHandling = DefaultValueHandling.Ignore;
+            sss.NullValueHandling = NullValueHandling.Ignore;
+            sss.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            sss.Error += (object? sender, Newtonsoft.Json.Serialization.ErrorEventArgs e) => ErrorHandler(sender, e, "");
+
+            SentinelsSheet ss = JsonConvert.DeserializeObject<SentinelsSheet>(text, sss)!;
             ss.SetupSheet();
             return ss;
         }
@@ -207,6 +213,13 @@ namespace SentinelsJson
         public int MmdMisc { get; set; } = 0;
 
         public Armor Armor { get; set; } = new Armor();
+
+        // Skills tab
+
+        public string SkillList { get; set; } = "None";
+
+        [JsonProperty("charSkills")]
+        public Dictionary<string, Skill> Skills { get; set; } = new Dictionary<string, Skill>();
 
         // Other general stats
 
@@ -378,5 +391,25 @@ namespace SentinelsJson
         public int Attributes { get; set; } = 0;
         public int Shield { get; set; } = 0;
         public int Misc { get; set; } = 0;
+    }
+
+    public class Skill
+    {
+        public Skill() { }
+
+        public Skill(bool trained, int ranks, int misc, string? modifier, string? specialization)
+        {
+            Trained = trained;
+            Ranks = ranks;
+            Misc = misc;
+            Modifier = modifier;
+            Specialization = specialization;
+        }
+
+        public bool Trained { get; set; } = false;
+        public int Ranks { get; set; } = 0;
+        public int Misc { get; set; } = 0;
+        public string? Modifier { get; set; }
+        public string? Specialization { get; set; }
     }
 }

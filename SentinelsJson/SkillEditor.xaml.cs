@@ -4,13 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SentinelsJson
 {
@@ -24,6 +20,8 @@ namespace SentinelsJson
         {
             InitializeComponent();
             _init = false;
+
+            //UpdateCalculations();
         }
 
 
@@ -70,6 +68,48 @@ namespace SentinelsJson
         }
 
         #endregion
+
+        public string InternalSkillName { get; set; } = "Unnamed";
+
+        public static DependencyProperty SkillRanksProperty
+            = DependencyProperty.Register("SkillRanks", typeof(int), typeof(SkillEditor),
+            new FrameworkPropertyMetadata(0));
+
+        public int SkillRanks
+        {
+            get => (int)GetValue(SkillRanksProperty);
+            set => SetValue(SkillRanksProperty, value);
+        }
+
+        public static DependencyProperty MiscModifierProperty
+            = DependencyProperty.Register("MiscModifier", typeof(int), typeof(SkillEditor),
+            new FrameworkPropertyMetadata(0));
+
+        public int MiscModifier
+        {
+            get => (int)GetValue(MiscModifierProperty);
+            set => SetValue(MiscModifierProperty, value);
+        }
+
+        public static DependencyProperty ModifierValueProperty
+            = DependencyProperty.Register("ModifierValue", typeof(int), typeof(SkillEditor),
+            new FrameworkPropertyMetadata(0));
+
+        public int ModifierValue
+        {
+            get => (int)GetValue(ModifierValueProperty);
+            set => SetValue(ModifierValueProperty, value);
+        }
+
+        public static DependencyProperty IsTrainedProperty
+            = DependencyProperty.Register("IsTrained", typeof(bool), typeof(SkillEditor),
+            new FrameworkPropertyMetadata(false));
+
+        public bool IsTrained
+        {
+            get => (bool)GetValue(IsTrainedProperty);
+            set => SetValue(IsTrainedProperty, value);
+        }
 
         public static DependencyProperty HasSpecializationProperty
             = DependencyProperty.Register("HasSpecialization", typeof(bool), typeof(SkillEditor),
@@ -170,6 +210,7 @@ namespace SentinelsJson
                     ModifierName = s;
                     ModifierChanged?.Invoke(this, EventArgs.Empty);
                     ContentChanged?.Invoke(this, EventArgs.Empty);
+                    UpdateCalculations();
                     _cbbc = false;
                 }
             }
@@ -194,10 +235,10 @@ namespace SentinelsJson
             }
         }
 
-        void UpdateCalculations()
+        public void UpdateCalculations()
         {
             int miscTotal = nudRanks.Value + nudMisc.Value + (chkSkill.IsChecked ? 3 : 0);
-            int modifier = 0;
+            int modifier = ModifierValue;
 
             txtMiscTotal.Text = miscTotal.ToString();
             txtMod.Text = modifier.ToString();
@@ -207,12 +248,16 @@ namespace SentinelsJson
 
         private void chkSkill_CheckChanged(object sender, RoutedEventArgs e)
         {
+            if (_init) return;
+
             UpdateCalculations();
             ContentChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void nudRanks_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if (_init) return;
+
             UpdateCalculations();
             ContentChanged?.Invoke(this, EventArgs.Empty);
         }

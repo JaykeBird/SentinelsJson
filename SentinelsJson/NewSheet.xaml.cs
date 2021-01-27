@@ -92,6 +92,14 @@ namespace SentinelsJson
             Sheet.RawPotential = potentials;
             Sheet.PowerStatName = powerStat;
 
+            Sheet.SkillList = cbbSkillList.SelectedIndex switch
+            {
+                0 => "standard",
+                1 => "simplified",
+                2 => "pathfinder",
+                _ => "standard" // TODO: add handling for custom skill list files
+            };
+
             if (!string.IsNullOrEmpty(FileLocation))
             {
                 Sheet.SaveJsonFile(FileLocation, App.Settings.IndentJsonData);

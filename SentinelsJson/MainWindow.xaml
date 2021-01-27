@@ -854,8 +854,9 @@
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="titSkills" Text="Skills" FontSize="16" />
                     </Grid>
-                    <local:SkillEditor Grid.Row="2" SkillName="Acrobatics" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                    <local:SkillEditor Grid.Row="3" SkillName="Perform" HasSpecialization="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                    <StackPanel x:Name="stkSkills" Grid.Row="2" >
+
+                    </StackPanel>
                 </Grid>
                 <Grid Margin="5,5,5,0" x:Name="grdAttributes" Visibility="Collapsed" >
                     <Grid.RowDefinitions>

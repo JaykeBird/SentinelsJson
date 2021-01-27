@@ -75,6 +75,7 @@ namespace SentinelsJson
         Dictionary<string, int> abModifiers = new Dictionary<string, int>();
         string powerStat = "PER";
         string? version;
+        string skillList = "None";
 
         // keyboard/method data
         RoutedMethodRegistry mr = new RoutedMethodRegistry();
@@ -1405,14 +1406,14 @@ namespace SentinelsJson
             }
         }
 
-        void SetAllTabsVisibility(Visibility visibility = Visibility.Visible)
+        void SetAllTabsVisibility(Visibility vis = Visibility.Visible)
         {
-            grdGeneral.Visibility = visibility;
-            grdSkills.Visibility = Visibility;
-            grdAttributes.Visibility = visibility;
-            grdCombat.Visibility = visibility;
-            grdFeats.Visibility = visibility;
-            grdNotes.Visibility = visibility;
+            grdGeneral.Visibility = vis;
+            grdSkills.Visibility = vis;
+            grdAttributes.Visibility = vis;
+            grdCombat.Visibility = vis;
+            grdFeats.Visibility = vis;
+            grdNotes.Visibility = vis;
         }
 
         private void mnuColors_Click(object sender, RoutedEventArgs e)
@@ -2323,6 +2324,82 @@ namespace SentinelsJson
 
             UpdateCombatTab();
 
+            bool invalidSkillFile = false;
+
+            skillList = sheet.SkillList.ToLowerInvariant().Trim();
+
+            // Skills tab
+            SkillList sl = skillList switch
+            {
+                "none" => new SkillList(),
+                "pathfinder" => SkillList.LoadPathfinderList(),
+                "standard" => SkillList.LoadStandardList(),
+                "full" => SkillList.LoadStandardList(),
+                "simplified" => SkillList.LoadSimplifiedList(),
+                "" => new SkillList(),
+                null => new SkillList(),
+                _ => LoadSkillListFromFile(),
+            };
+
+            SkillList LoadSkillListFromFile()
+            {
+                try
+                {
+                    return SkillList.LoadFile(skillList);
+                }
+                catch (FormatException)
+                {
+                    invalidSkillFile = true;
+                    return new SkillList();
+                }
+                catch (FileNotFoundException)
+                {
+                    invalidSkillFile = true;
+                    return new SkillList();
+                }
+            }
+
+            if (invalidSkillFile)
+            {
+                // display message to user about file
+            }
+
+            stkSkills.Children.Clear();
+
+            foreach (SkillListEntry item in sl.SkillEntries)
+            {
+                if (string.IsNullOrEmpty(item.Name)) continue;
+
+                sheet.Skills.TryGetValue(item.Name, out Skill? s);
+
+                if (s == null) s = new Skill();
+
+                SkillEditor se = new SkillEditor()
+                {
+                    InternalSkillName = item.Name,
+                    SkillName = item.DisplayName ?? (item.Name.First().ToString().ToUpperInvariant() + item.Name.Substring(1)),
+                    HasSpecialization = item.HasSpecialization,
+                    ModifierName = string.IsNullOrEmpty(s.Modifier) ? item.Modifier : s.Modifier,
+
+                    SkillRanks = s.Ranks,
+                    Specialization = s.Specialization ?? "",
+                    MiscModifier = s.Misc,
+                    IsTrained = s.Trained,
+
+                    Margin = new Thickness(0, 2, 5, 2),
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    ColorScheme = ColorScheme,
+                };
+
+                se.ModifierValue = abModifiers[se.ModifierName];
+                se.UpdateCalculations();
+
+                se.ModifierChanged += se_ModifierChanged;
+                se.ContentChanged += editor_ContentChanged;
+
+                stkSkills.Children.Add(se);
+            }
+
             // Feats tab
 
             selFeats.LoadList(sheet.Feats);
@@ -2394,7 +2471,130 @@ namespace SentinelsJson
 
         #endregion
 
-        #region Sync Editors / update sheet / CreateSentinelsSheetAsync
+        #region Create Sheet
+
+        /// <summary>
+        /// Create a SentinelsSheet object by loading in all the values from the sheet view.
+        /// </summary>
+        /// <returns></returns>
+        private SentinelsSheet CreateSentinelsSheet()
+        {
+            SentinelsSheet sheet = new SentinelsSheet();
+
+            sheet.Player = ud;
+            sheet.Id = sheetid;
+            //sheet.Version = version;
+
+            sheet.Notes = txtNotes.Text;
+
+            if (chkNotesMarkdown.IsChecked)
+            {
+                sheetSettings["notesMarkdown"] = "enabled";
+            }
+
+            sheet.Name = txtCharacter.Text;
+            sheet.BaseLevel = nudLevel.Value;
+            sheet.ECL = nudEcl.Value;
+            sheet.Alignment = GetStringOrNull(txtAlignment.Text);
+            sheet.Homeland = GetStringOrNull(txtHomeland.Text);
+            sheet.Deity = GetStringOrNull(txtDeity.Text);
+
+            sheet.Race = GetStringOrNull(txtPhyRace.Text);
+            sheet.Gender = GetStringOrNull(txtPhyGender.Text);
+            sheet.Size = GetStringOrNull(txtPhySize.Text);
+            sheet.Age = GetStringOrNull(txtPhyAge.Text);
+            sheet.Height = GetStringOrNull(txtPhyHeight.Text);
+            sheet.Weight = GetStringOrNull(txtPhyWeight.Text);
+            sheet.Hair = GetStringOrNull(txtPhyHair.Text);
+            sheet.Eyes = GetStringOrNull(txtPhyEyes.Text);
+
+            Speed? sp = new Speed();
+            sp.Base = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.Burrow = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.Climb = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.Fly = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.Swim = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.WithArmor = GetStringOrNull(txtSpeedBase.Text, true);
+            sp.TempModifier = GetStringOrNull(txtSpeedTemp.Text);
+
+            if (sp.Base == null && sp.Burrow == null && sp.Climb == null &&
+                sp.Fly == null && sp.Swim == null && sp.WithArmor == null
+                && sp.TempModifier == null)
+            {
+                sp = null;
+            }
+            sheet.Speed = sp;
+
+            if (sheetSettings.Count > 0)
+            {
+                sheet.SheetSettings = sheetSettings;
+            }
+
+            abilities["str"] = txtStr.Value.ToString();
+            abilities["per"] = txtPer.Value.ToString();
+            abilities["end"] = txtEnd.Value.ToString();
+            abilities["cha"] = txtCha.Value.ToString();
+            abilities["int"] = txtInt.Value.ToString();
+            abilities["agi"] = txtAgi.Value.ToString();
+            abilities["luk"] = txtLuk.Value.ToString();
+
+            sheet.RawAbilities = abilities;
+
+            potentials["str"] = txtStrp.Value.ToString();
+            potentials["per"] = txtPerp.Value.ToString();
+            potentials["end"] = txtEndp.Value.ToString();
+            potentials["cha"] = txtChap.Value.ToString();
+            potentials["int"] = txtIntp.Value.ToString();
+            potentials["agi"] = txtAgip.Value.ToString();
+            potentials["luk"] = txtLukp.Value.ToString();
+
+            sheet.RawPotential = potentials;
+
+            Dictionary<string, Save> saves = new Dictionary<string, Save>()
+            {
+                { "fort", new Save(txtSaveFRanks.Value, txtSaveFMisc.Value) },
+                { "reflex", new Save(txtSaveRRanks.Value, txtSaveRMisc.Value) },
+                { "will", new Save(txtSaveWRanks.Value, txtSaveWMisc.Value) },
+            };
+
+            sheet.Saves = saves;
+
+            // combat tab
+
+            sheet.TrainedProwess = nudProwessT.Value;
+            var a = new Armor() { Natural = nudArmorN.Value, Equipment = nudArmorE.Value, Shield = nudArmorS.Value, Attributes = nudArmorA.Value, Misc = nudArmorM.Value };
+            sheet.Armor = a;
+
+            sheet.BrawlUseAgi = chkBrawlAgi.IsChecked;
+            sheet.MeleeUseAgi = chkMeleeAgi.IsChecked;
+
+            sheet.DefenseActions = nudDefenseActions.Value;
+
+            sheet.CmbMisc = txtCmbM.Value;
+            sheet.CmdMisc = txtCmdM.Value;
+            sheet.MmbMisc = txtMmbM.Value;
+            sheet.MmdMisc = txtMmdM.Value;
+
+            // skills tab
+
+            sheet.SkillList = skillList;
+            sheet.Skills = new Dictionary<string, Skill>();
+
+            foreach (SkillEditor se in stkSkills.Children.OfType<SkillEditor>())
+            {
+                sheet.Skills[se.InternalSkillName] = new Skill(se.IsTrained, se.SkillRanks, se.MiscModifier, se.ModifierName, string.IsNullOrEmpty(se.Specialization) ? null : se.Specialization);
+            }
+
+            // feats tab
+
+            //sheet.Feats = selFeats.ExportList<Feat>();
+
+            return sheet;
+        }
+
+        #endregion
+
+        #region Sync Editors / update sheet
 
         #region Update UI (Calculate menu)
 
@@ -2640,115 +2840,6 @@ namespace SentinelsJson
 
         #endregion
 
-        /// <summary>
-        /// Create a SentinelsSheet object by loading in all the values from the sheet view.
-        /// </summary>
-        /// <returns></returns>
-        private SentinelsSheet CreateSentinelsSheet()
-        {
-            SentinelsSheet sheet = new SentinelsSheet();
-
-            sheet.Player = ud;
-            sheet.Id = sheetid;
-            //sheet.Version = version;
-
-            sheet.Notes = txtNotes.Text;
-
-            if (chkNotesMarkdown.IsChecked)
-            {
-                sheetSettings["notesMarkdown"] = "enabled";
-            }
-
-            sheet.Name = txtCharacter.Text;
-            sheet.BaseLevel = nudLevel.Value;
-            sheet.ECL = nudEcl.Value;
-            sheet.Alignment = GetStringOrNull(txtAlignment.Text);
-            sheet.Homeland = GetStringOrNull(txtHomeland.Text);
-            sheet.Deity = GetStringOrNull(txtDeity.Text);
-
-            sheet.Race = GetStringOrNull(txtPhyRace.Text);
-            sheet.Gender = GetStringOrNull(txtPhyGender.Text);
-            sheet.Size = GetStringOrNull(txtPhySize.Text);
-            sheet.Age = GetStringOrNull(txtPhyAge.Text);
-            sheet.Height = GetStringOrNull(txtPhyHeight.Text);
-            sheet.Weight = GetStringOrNull(txtPhyWeight.Text);
-            sheet.Hair = GetStringOrNull(txtPhyHair.Text);
-            sheet.Eyes = GetStringOrNull(txtPhyEyes.Text);
-
-            Speed? sp = new Speed();
-            sp.Base = GetStringOrNull(txtSpeedBase.Text, true);
-            sp.Burrow = GetStringOrNull(txtSpeedBase.Text, true);
-            sp.Climb = GetStringOrNull(txtSpeedBase.Text, true);
-            sp.Fly = GetStringOrNull(txtSpeedBase.Text, true);
-            sp.Swim = GetStringOrNull(txtSpeedBase.Text, true);
-            sp.WithArmor = GetStringOrNull(txtSpeedBase.Text, true);
-            sp.TempModifier = GetStringOrNull(txtSpeedTemp.Text);
-
-            if (sp.Base == null && sp.Burrow == null && sp.Climb == null &&
-                sp.Fly == null && sp.Swim == null && sp.WithArmor == null
-                && sp.TempModifier == null)
-            {
-                sp = null;
-            }
-            sheet.Speed = sp;
-
-            if (sheetSettings.Count > 0)
-            {
-                sheet.SheetSettings = sheetSettings;
-            }
-
-            abilities["str"] = txtStr.Value.ToString();
-            abilities["per"] = txtPer.Value.ToString();
-            abilities["end"] = txtEnd.Value.ToString();
-            abilities["cha"] = txtCha.Value.ToString();
-            abilities["int"] = txtInt.Value.ToString();
-            abilities["agi"] = txtAgi.Value.ToString();
-            abilities["luk"] = txtLuk.Value.ToString();
-
-            sheet.RawAbilities = abilities;
-
-            potentials["str"] = txtStrp.Value.ToString();
-            potentials["per"] = txtPerp.Value.ToString();
-            potentials["end"] = txtEndp.Value.ToString();
-            potentials["cha"] = txtChap.Value.ToString();
-            potentials["int"] = txtIntp.Value.ToString();
-            potentials["agi"] = txtAgip.Value.ToString();
-            potentials["luk"] = txtLukp.Value.ToString();
-
-            sheet.RawPotential = potentials;
-
-            Dictionary<string, Save> saves = new Dictionary<string, Save>()
-            {
-                { "fort", new Save(txtSaveFRanks.Value, txtSaveFMisc.Value) },
-                { "reflex", new Save(txtSaveRRanks.Value, txtSaveRMisc.Value) },
-                { "will", new Save(txtSaveWRanks.Value, txtSaveWMisc.Value) },
-            };
-
-            sheet.Saves = saves;
-            
-            // combat tab
-            
-            sheet.TrainedProwess = nudProwessT.Value;
-            var a = new Armor() { Natural = nudArmorN.Value, Equipment = nudArmorE.Value, Shield = nudArmorS.Value, Attributes = nudArmorA.Value, Misc = nudArmorM.Value };
-            sheet.Armor = a;
-
-            sheet.BrawlUseAgi = chkBrawlAgi.IsChecked;
-            sheet.MeleeUseAgi = chkMeleeAgi.IsChecked;
-
-            sheet.DefenseActions = nudDefenseActions.Value;
-
-            sheet.CmbMisc = txtCmbM.Value;
-            sheet.CmdMisc = txtCmdM.Value;
-            sheet.MmbMisc = txtMmbM.Value;
-            sheet.MmdMisc = txtMmdM.Value;
-
-            // feats tab
-
-            //sheet.Feats = selFeats.ExportList<Feat>();
-
-            return sheet;
-        }
-
         #endregion
 
         #region General sheet event handlers
@@ -2783,6 +2874,14 @@ namespace SentinelsJson
             if (!_isUpdating)
             {
                 SetIsDirty();
+            }
+        }
+
+        private void se_ModifierChanged(object? sender, EventArgs e)
+        {
+            if (sender is SkillEditor se)
+            {
+                se.ModifierValue = abModifiers[se.ModifierName];
             }
         }
 

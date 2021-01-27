@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -10,31 +11,62 @@ namespace SentinelsJson
     public class SkillList
     {
 
-        public static SkillList LoadFile(string filename)
+        public static SkillList LoadStandardList()
         {
+            return Load(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SentinelsJson.SkillsLists.standard-full.json"), throwOnNull: false);
+            //return Load(Application.GetResourceStream(new Uri("pack://application:,,,/SkillLists/standard-full.json")).Stream);
+        }
+
+        public static SkillList LoadSimplifiedList()
+        {
+            return Load(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SentinelsJson.SkillsLists.simplified.json"), throwOnNull: false);
+            //return Load(Application.GetResourceStream(new Uri("pack://application:,,,/SkillLists/modern-simplified.json")).Stream);
+        }
+
+        public static SkillList LoadPathfinderList()
+        {
+            return Load(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SentinelsJson.SkillsLists.pathfinder.json"), throwOnNull: false);
+            //return Load(Application.GetResourceStream(new Uri("pack://application:,,,/SkillLists/pathfinder.json")).Stream);
+        }
+
+        public static SkillList Load(Stream? s, string filename = "", bool throwOnNull = true)
+        {
+            if (s == null)
+            {
+                if (throwOnNull) throw new ArgumentNullException(nameof(s), "Stream cannot be null. Function can be set to return an empty list if \"throwOnNull\" is set to false.");
+                else return new SkillList();
+            }
+
             try
             {
-                using StreamReader file = File.OpenText(filename);
+                using StreamReader file = new StreamReader(s);
                 JsonSerializer serializer = new JsonSerializer();
 
                 SkillList? ss = serializer.Deserialize<SkillList>(new JsonTextReader(file));
                 if (ss == null) ss = new SkillList();
                 return ss;
             }
-            catch (JsonReaderException)
+            catch (JsonReaderException e)
             {
+                throw new FormatException("This file does not match the format of a skill list JSON file.", e);
                 //MessageBox.Show("The SkillList file for SentinelsJson was corrupted. SentinelsJson will continue with default SkillList.",
                 //    "SkillList Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                SkillList sn = new SkillList();
-                sn.Save(filename); // exception handling not needed for these as calling function handles exceptions
-                return sn;
+                //SkillList sn = new SkillList();
+                //sn.Save(filename); // exception handling not needed for these as calling function handles exceptions
+                //return sn;
             }
             catch (FileNotFoundException)
             {
-                SkillList sn = new SkillList();
-                sn.Save(filename); // exception handling not needed for these as calling function handles exceptions
-                return sn;
+                throw;
+                //SkillList sn = new SkillList();
+                //sn.Save(filename); // exception handling not needed for these as calling function handles exceptions
+                //return sn;
             }
+        }
+
+        public static SkillList LoadFile(string filename)
+        {
+            return Load(File.OpenRead(filename));
         }
 
         public void Save(string filename)
@@ -54,14 +86,18 @@ namespace SentinelsJson
         public string Name { get; set; } = "Unnamed";
 
         [JsonProperty("skills")]
-        public List<SkillListEntry>? SkillEntries { get; private set; }
+        public List<SkillListEntry> SkillEntries { get; private set; } = new List<SkillListEntry>();
 
+        public void AddSkill(SkillListEntry sle)
+        {
+            SkillEntries.Add(sle);
+        }
     }
 
     public class SkillListEntry
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Include)]
-        public string? Name { get; set; }
+        public string Name { get; set; } = "Unnamed";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? DisplayName { get; set; }
@@ -71,5 +107,7 @@ namespace SentinelsJson
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? InfoUrl { get; set; }
+
+        public bool HasSpecialization { get; set; }
     }
 }

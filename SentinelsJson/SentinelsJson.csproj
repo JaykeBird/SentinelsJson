@@ -49,12 +49,18 @@
     <None Remove="Images\**" />
     <None Remove="Json.xshd" />
     <None Remove="None.xshd" />
+    <None Remove="SkillsLists\pathfinder.json" />
+    <None Remove="SkillsLists\simplified.json" />
+    <None Remove="SkillsLists\standard-full.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\**" />
     <EmbeddedResource Include="Json.xshd" />
     <EmbeddedResource Include="None.xshd" />
+    <EmbeddedResource Include="SkillsLists\simplified.json" />
+    <EmbeddedResource Include="SkillsLists\pathfinder.json" />
+    <EmbeddedResource Include="SkillsLists\standard-full.json" />
   </ItemGroup>
 
 </Project>

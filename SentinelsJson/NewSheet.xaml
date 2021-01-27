@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi" 
-        mc:Ignorable="d" Title="New Character Sheet" Height="650" MinHeight="580" Width="400" MinWidth="400" CaptionDisplayType="Close" SourceInitialized="window_SourceInitialized">
+        mc:Ignorable="d" Title="New Character Sheet" Height="680" MinHeight="580" Width="400" MinWidth="400" CaptionDisplayType="Close" SourceInitialized="window_SourceInitialized">
     <ScrollViewer VerticalScrollBarVisibility="Auto" >
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -109,11 +110,14 @@
 
             <TextBlock x:Name="lblCharacterScores" HorizontalAlignment="Left" Margin="15,10,0,3" Text="Base Ability Scores" VerticalAlignment="Top" Grid.Row="2" />
             <TextBlock x:Name="lblSentinelsSettings" HorizontalAlignment="Left" Margin="15,5" Text="Sheet settings:" VerticalAlignment="Center" Grid.Row="4"/>
-            <TextBlock x:Name="lblPlayer" HorizontalAlignment="Left" Margin="15,5" Text="Edit player data (optional)" VerticalAlignment="Center" Grid.Row="6"/>
+            <TextBlock x:Name="lblPlayer" HorizontalAlignment="Left" Margin="15,5" Text="Edit player data (optional)" VerticalAlignment="Center" Grid.Row="7"/>
 
-            <Grid Margin="40,10,10,10" Grid.Row="5" VerticalAlignment="Center" >
+            <Grid Margin="40,10,10,5" Grid.Row="5" VerticalAlignment="Center" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5" />
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -123,12 +127,25 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="lblCpLevel" HorizontalAlignment="Left" Text="Character points per level:" VerticalAlignment="Center"/>
-                <TextBlock x:Name="lblCpStart" HorizontalAlignment="Left" Text="Level 0 character points (racial points):" VerticalAlignment="Center" Grid.Row="1" />
                 <flat:IntegerSpinner x:Name="nudCpLevel" Grid.Column="2" Grid.Row="0" MinValue="1" Value="10" ColorScheme="{Binding ColorScheme, ElementName=window}" />
-                <flat:IntegerSpinner x:Name="nudCpStart" Grid.Column="2" Grid.Row="1" MinValue="0" Value="0" ColorScheme="{Binding ColorScheme, ElementName=window}" />
+                <TextBlock x:Name="lblCpStart" HorizontalAlignment="Left" Text="Level 0 character points (racial points):" VerticalAlignment="Center" Grid.Row="2" />
+                <flat:IntegerSpinner x:Name="nudCpStart" Grid.Column="2" Grid.Row="2" MinValue="0" Value="0" ColorScheme="{Binding ColorScheme, ElementName=window}" />
             </Grid>
-
-            <Grid Margin="40,15,10,15" Grid.Row="7" VerticalAlignment="Center" >
+            <Grid Margin="40,5,10,10" Grid.Row="6" VerticalAlignment="Center" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="Auto" MinWidth="135" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="lblSkillList" HorizontalAlignment="Left" Text="Skill list:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cbbSkillList" Grid.Column="2" SelectedIndex="0" >
+                    <ComboBoxItem Content="Standard (Full)" />
+                    <ComboBoxItem Content="Simplified" />
+                    <ComboBoxItem Content="Pathfinder" />
+                </ComboBox>
+            </Grid>
+            <Grid Margin="40,15,10,15" Grid.Row="8" VerticalAlignment="Center" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -142,10 +159,9 @@
                 <TextBlock x:Name="txtPlayerName" Margin="10,0,0,0" Text="(not set)" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="2"/>
                 <flat:FlatButton x:Name="btnEditData" ColorScheme="{Binding ColorScheme, ElementName=window}" Content="Edit Player Data..." Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="120" Click="btnEditData_Click" Grid.Row="1" Grid.ColumnSpan="2" />
                 <flat:FlatButton x:Name="btnImportData" Content="Import from File..." ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" MinWidth="120" Click="btnImportData_Click" Grid.Row="1" Grid.Column="2" />
-
             </Grid>
-            <flat:FlatButton x:Name="btnCreate" ColorScheme="{Binding ColorScheme, ElementName=window}" Content="Create" Margin="0,10,105,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="80" Click="btnCreate_Click" Grid.Row="8" />
-            <flat:FlatButton x:Name="btnClose" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,10,20,10" VerticalAlignment="Bottom" Width="80" Click="btnClose_Click" Grid.Row="8" />
+            <flat:FlatButton x:Name="btnCreate" ColorScheme="{Binding ColorScheme, ElementName=window}" Content="Create" Margin="0,10,105,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="80" Click="btnCreate_Click" Grid.Row="9" />
+            <flat:FlatButton x:Name="btnClose" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,10,20,10" VerticalAlignment="Bottom" Width="80" Click="btnClose_Click" Grid.Row="9" />
         </Grid>
     </ScrollViewer>
 </flat:FlatWindow>

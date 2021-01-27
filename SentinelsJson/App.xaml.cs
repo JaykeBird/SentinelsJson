@@ -247,6 +247,11 @@ namespace SentinelsJson
                 }
             }
 
+            foreach (string s in ResourceAssembly.GetManifestResourceNames())
+            {
+                Console.WriteLine(s);
+            }
+
             MainWindow mw = new MainWindow();
             MainWindow = mw;
             if (file != "") mw.OpenFile(file);

@@ -35,7 +35,7 @@ Fun note: the main window seems to lag Visual Studio pretty bad, due to how many
 ## Roadmap
 Roadmap:
 
-1.0 release - match features of PathfinderJson 1.2 (late 2020)
+1.0 release - match features of PathfinderJson 1.3 (mid-2021)
 
 ## License
 **SentinelsJson is released under the [MIT License](License.md).**

@@ -47,7 +47,7 @@ namespace SentinelsJson
                 return;
             }
 
-            // Create Pathfinder sheet
+            // Create Sentinels sheet
             // Including ability scores
             // (I also set up the RawAbilities property despite it not really being used, in case it may become an issue later on)
             Sheet = SentinelsSheet.CreateNewSheet(txtCharacterName.Text, nudLevel.Value, nudCpLevel.Value, nudCpStart.Value, ud);
@@ -97,6 +97,7 @@ namespace SentinelsJson
                 0 => "standard",
                 1 => "simplified",
                 2 => "pathfinder",
+                3 => "none",
                 _ => "standard" // TODO: add handling for custom skill list files
             };
 

@@ -143,6 +143,7 @@
                     <ComboBoxItem Content="Standard (Full)" />
                     <ComboBoxItem Content="Simplified" />
                     <ComboBoxItem Content="Pathfinder" />
+                    <ComboBoxItem Content="None" />
                 </ComboBox>
             </Grid>
             <Grid Margin="40,15,10,15" Grid.Row="8" VerticalAlignment="Center" >

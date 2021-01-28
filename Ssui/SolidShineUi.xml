@@ -1128,6 +1128,11 @@
             Get or set the selected file. If multiple files are selected, returns the first file.
             </summary>
         </member>
+        <member name="E:SolidShineUi.FileSelect.SelectionChanged">
+            <summary>
+            Raised when the user clicks on the button, via a mouse click, touch, a stylus, or via the keyboard.
+            </summary>
+        </member>
         <member name="P:SolidShineUi.FileSelect.FileFilter">
             <summary>
             Get or set the file filter to use when selecting files. Use semicolons (;) to separate multiple extensions/filters (i.e. <c>"*.docx;*.xlsx;*.pptx"</c>).

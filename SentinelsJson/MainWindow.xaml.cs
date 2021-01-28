@@ -76,6 +76,8 @@ namespace SentinelsJson
         string powerStat = "PER";
         string? version;
         string skillList = "None";
+        int cpPerLevel = 10;
+        int cpLevel0 = 10;
 
         // keyboard/method data
         RoutedMethodRegistry mr = new RoutedMethodRegistry();
@@ -639,6 +641,11 @@ namespace SentinelsJson
             SaveAsFile();
         }
 
+        private void mnuSheetSettings_Click(object sender, RoutedEventArgs e)
+        {
+            ShowSheetSettings();
+        }
+
         void SaveFile(string file)
         {
             if (CheckCalculating()) return;
@@ -812,6 +819,53 @@ namespace SentinelsJson
             else
             {
                 return true;
+            }
+        }
+
+        bool ShowSheetSettings()
+        {
+            // if there's no sheet loaded, then there should be no dirty changes to save
+            if (!_sheetLoaded)
+            {
+                MessageDialog md = new MessageDialog(App.ColorScheme);
+                md.ShowDialog("No sheet is currently open.", null, this, "No Sheet Open", MessageDialogButtonDisplay.Auto, image: MessageDialogImage.Error);
+                return false;
+            }
+
+            SheetSettings ss = new SheetSettings();
+            ss.CpPerLevel = cpPerLevel;
+            ss.Level0Cp = cpLevel0;
+            ss.SkillList = skillList;
+            ss.SheetSettingsList = sheetSettings;
+            ss.UpdateUi();
+
+            ss.ShowDialog();
+
+            if (ss.DialogResult)
+            {
+                string origSkillList = skillList;
+
+                cpPerLevel = ss.CpPerLevel;
+                cpLevel0 = ss.Level0Cp;
+                skillList = ss.SkillList;
+                sheetSettings = ss.SheetSettingsList;
+
+                // reload sheet sections
+
+                // only update skills if the skillList has changed
+                if (skillList != origSkillList)
+                {
+                    SentinelsSheet sh = CreateSentinelsSheet();
+                    LoadSkills(sh);
+                }
+
+                SetIsDirty();
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -2200,6 +2254,9 @@ namespace SentinelsJson
             //sheetid = sheet.Id ?? "-1";
             //version = sheet.Version;
 
+            cpPerLevel = sheet.PointsPerLevel;
+            cpLevel0 = sheet.Level0Points;
+
             txtCharacter.Text = sheet.Name;
             nudLevel.Value = sheet.BaseLevel;
             nudEcl.Value = sheet.ECL;
@@ -2324,81 +2381,10 @@ namespace SentinelsJson
 
             UpdateCombatTab();
 
-            bool invalidSkillFile = false;
-
+            // Skills tab
             skillList = sheet.SkillList.ToLowerInvariant().Trim();
 
-            // Skills tab
-            SkillList sl = skillList switch
-            {
-                "none" => new SkillList(),
-                "pathfinder" => SkillList.LoadPathfinderList(),
-                "standard" => SkillList.LoadStandardList(),
-                "full" => SkillList.LoadStandardList(),
-                "simplified" => SkillList.LoadSimplifiedList(),
-                "" => new SkillList(),
-                null => new SkillList(),
-                _ => LoadSkillListFromFile(),
-            };
-
-            SkillList LoadSkillListFromFile()
-            {
-                try
-                {
-                    return SkillList.LoadFile(skillList);
-                }
-                catch (FormatException)
-                {
-                    invalidSkillFile = true;
-                    return new SkillList();
-                }
-                catch (FileNotFoundException)
-                {
-                    invalidSkillFile = true;
-                    return new SkillList();
-                }
-            }
-
-            if (invalidSkillFile)
-            {
-                // display message to user about file
-            }
-
-            stkSkills.Children.Clear();
-
-            foreach (SkillListEntry item in sl.SkillEntries)
-            {
-                if (string.IsNullOrEmpty(item.Name)) continue;
-
-                sheet.Skills.TryGetValue(item.Name, out Skill? s);
-
-                if (s == null) s = new Skill();
-
-                SkillEditor se = new SkillEditor()
-                {
-                    InternalSkillName = item.Name,
-                    SkillName = item.DisplayName ?? (item.Name.First().ToString().ToUpperInvariant() + item.Name.Substring(1)),
-                    HasSpecialization = item.HasSpecialization,
-                    ModifierName = string.IsNullOrEmpty(s.Modifier) ? item.Modifier : s.Modifier,
-
-                    SkillRanks = s.Ranks,
-                    Specialization = s.Specialization ?? "",
-                    MiscModifier = s.Misc,
-                    IsTrained = s.Trained,
-
-                    Margin = new Thickness(0, 2, 5, 2),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    ColorScheme = ColorScheme,
-                };
-
-                se.ModifierValue = abModifiers[se.ModifierName];
-                se.UpdateCalculations();
-
-                se.ModifierChanged += se_ModifierChanged;
-                se.ContentChanged += editor_ContentChanged;
-
-                stkSkills.Children.Add(se);
-            }
+            LoadSkills(sheet);
 
             // Feats tab
 
@@ -2467,6 +2453,93 @@ namespace SentinelsJson
                 md.Image = MessageDialogImage.Hand;
                 md.ShowDialog();
             }
+
+        }
+
+        void LoadSkills(SentinelsSheet sheet)
+        {
+            bool invalidSkillFile = false;
+
+            SkillList sl = skillList switch
+            {
+                "none" => new SkillList(),
+                "pathfinder" => SkillList.LoadPathfinderList(),
+                "standard" => SkillList.LoadStandardList(),
+                "full" => SkillList.LoadStandardList(),
+                "simplified" => SkillList.LoadSimplifiedList(),
+                "" => new SkillList(),
+                null => new SkillList(),
+                _ => LoadSkillListFromFile(), // any other value, let's assume it's a file
+            };
+
+            SkillList LoadSkillListFromFile()
+            {
+                // if the skillList entry is a file, attempt to load it
+                if (File.Exists(skillList))
+                {
+                    try
+                    {
+                        return SkillList.LoadFile(skillList);
+                    }
+                    catch (FormatException)
+                    {
+                        invalidSkillFile = true;
+                        return new SkillList();
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        invalidSkillFile = true;
+                        return new SkillList();
+                    }
+                }
+                else
+                {
+                    // otherwise, just give out an empty list
+                    invalidSkillFile = true;
+                    return new SkillList();
+                }
+            }
+
+            if (invalidSkillFile)
+            {
+                // display message to user about file
+            }
+
+            stkSkills.Children.Clear();
+
+            foreach (SkillListEntry item in sl.SkillEntries)
+            {
+                if (string.IsNullOrEmpty(item.Name)) continue;
+
+                sheet.Skills.TryGetValue(item.Name, out Skill? s);
+
+                if (s == null) s = new Skill();
+
+                SkillEditor se = new SkillEditor()
+                {
+                    InternalSkillName = item.Name,
+                    SkillName = item.DisplayName ?? (item.Name.First().ToString().ToUpperInvariant() + item.Name.Substring(1)),
+                    HasSpecialization = item.HasSpecialization,
+                    ModifierName = string.IsNullOrEmpty(s.Modifier) ? item.Modifier : s.Modifier,
+
+                    SkillRanks = s.Ranks,
+                    Specialization = s.Specialization ?? "",
+                    MiscModifier = s.Misc,
+                    IsTrained = s.Trained,
+
+                    Margin = new Thickness(0, 2, 5, 2),
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    ColorScheme = ColorScheme,
+                };
+
+                se.ModifierValue = abModifiers[se.ModifierName];
+                se.UpdateCalculations();
+
+                se.ModifierChanged += se_ModifierChanged;
+                se.ContentChanged += editor_ContentChanged;
+
+                stkSkills.Children.Add(se);
+            }
         }
 
         #endregion
@@ -2491,6 +2564,9 @@ namespace SentinelsJson
             {
                 sheetSettings["notesMarkdown"] = "enabled";
             }
+
+            sheet.PointsPerLevel = cpPerLevel;
+            sheet.Level0Points = cpLevel0;
 
             sheet.Name = txtCharacter.Text;
             sheet.BaseLevel = nudLevel.Value;
@@ -3036,7 +3112,10 @@ namespace SentinelsJson
 
             _updatePowerCheck = true;
 
-            SetIsDirty();
+            if (!_isUpdating)
+            {
+                SetIsDirty();
+            }
 
             void SetPowerStat(string stat)
             {
@@ -3207,8 +3286,7 @@ namespace SentinelsJson
             txtNotes.BorderThickness = new Thickness(1, 0, 1, 1);
         }
 
+
         #endregion
-
-
     }
 }

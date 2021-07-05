@@ -151,6 +151,16 @@ namespace SentinelsJson
             set => SetValue(ModifierNameProperty, value);
         }
 
+        public static DependencyProperty InfoUrlProperty
+            = DependencyProperty.Register("InfoUrl", typeof(string), typeof(SkillEditor),
+            new FrameworkPropertyMetadata("https://d20pfsrd.com/skills", new PropertyChangedCallback(OnModifierNameChanged)));
+
+        public string InfoUrl
+        {
+            get => (string)GetValue(InfoUrlProperty);
+            set => SetValue(InfoUrlProperty, value);
+        }
+
         private static void OnModifierNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is SkillEditor s)
@@ -260,6 +270,11 @@ namespace SentinelsJson
 
             UpdateCalculations();
             ContentChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void btnInfo_Click(object sender, RoutedEventArgs e)
+        {
+            CoreUtils.OpenBrowser(InfoUrl);
         }
     }
 }

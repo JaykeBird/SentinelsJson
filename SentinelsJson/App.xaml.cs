@@ -92,7 +92,7 @@ namespace SentinelsJson
             };
         }
 
-        public static ColorScheme ColorScheme { get; set; } = new ColorScheme(Colors.Peru);
+        public static ColorScheme ColorScheme { get; set; } = new ColorScheme(Colors.MediumSeaGreen);
 
         public static Settings Settings { get; set; } = new Settings();
 

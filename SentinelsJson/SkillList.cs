@@ -108,6 +108,7 @@ namespace SentinelsJson
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? InfoUrl { get; set; }
 
-        public bool HasSpecialization { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool HasSpecialization { get; set; } = false;
     }
 }

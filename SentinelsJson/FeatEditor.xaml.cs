@@ -68,10 +68,12 @@ namespace SentinelsJson
             btnDetails.ApplyColorScheme(cs);
         }
 
-        public override void MapProperties(Dictionary<IldPropertyInfo, object> properties)
+        public override void LoadValues(Dictionary<IldPropertyInfo, object> properties)
         {
             foreach (var item in properties)
             {
+                //var pi = this.GetType().GetProperty(item.Key.Name);
+                //pi.SetValue(this, item.Value);
                 switch (item.Key.Name.ToLowerInvariant())
                 {
                     case "name":
@@ -93,6 +95,37 @@ namespace SentinelsJson
                         break;
                 }
             }
+        }
+
+        public override object? GetPropertyValue(IldPropertyInfo property)
+        {
+            switch (property.Name.ToLowerInvariant())
+            {
+                case "name":
+                    return txtName.Text;
+                case "notes":
+                    return txtNotes.Text;
+                case "school":
+                    return txtSchool.Text;
+                case "subschool":
+                    return txtSubschool.Text;
+                case "type":
+                    return txtType.Text;
+                default:
+                    return null;
+            }
+        }
+
+        public override Dictionary<string, object> GetAllProperties()
+        {
+            return new Dictionary<string, object>()
+            {
+                {"name", txtName.Text },
+                {"notes", txtNotes.Text },
+                {"school", txtSchool.Text },
+                {"subschool", txtSubschool.Text },
+                {"type", txtType.Text },
+            };
         }
     }
 }

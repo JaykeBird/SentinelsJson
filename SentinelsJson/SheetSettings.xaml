@@ -12,10 +12,8 @@
             <RowDefinition Height="48"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
-            <RowDefinition Height="44.872"/>
+            <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
-        <flat:FlatButton x:Name="btnSave" ColorScheme="{Binding ColorScheme, ElementName=window}" Content="Save" Margin="0,0,105,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="80" Click="btnSave_Click" Grid.Row="3" />
-        <flat:FlatButton x:Name="btnClose" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Center" Width="80" Click="btnClose_Click" Grid.Row="3" />
         <TextBlock x:Name="lblDesc" HorizontalAlignment="Left" Margin="15,0,0,0" Text="Edit settings for this character sheet:" VerticalAlignment="Center"/>
         <Grid Grid.Row="1" >
             <Grid.RowDefinitions>
@@ -90,5 +88,7 @@
                 <flat:FlatButton Margin="5,0" Content="Remove..." MinWidth="80" x:Name="btnRemoveSetting" Click="btnRemoveSetting_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
             </StackPanel>
         </Grid>
+        <flat:FlatButton x:Name="btnSave" ColorScheme="{Binding ColorScheme, ElementName=window}" Content="Save" Margin="0,0,105,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="80" Click="btnSave_Click" Grid.Row="3" />
+        <flat:FlatButton x:Name="btnClose" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Center" Width="80" Click="btnClose_Click" Grid.Row="3" />
     </Grid>
 </flat:FlatWindow>

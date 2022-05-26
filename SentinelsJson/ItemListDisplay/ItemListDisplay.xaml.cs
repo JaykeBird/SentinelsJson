@@ -69,6 +69,9 @@ namespace SentinelsJson.Ild
             set => txtTitle.Text = value;
         }
 
+        /// <summary>
+        /// Get or set the type of the source item, which serves as the backend.
+        /// </summary>
         public Type? SheetClassType
         {
             get => sheetType;
@@ -95,6 +98,9 @@ namespace SentinelsJson.Ild
 
         private List<IldPropertyInfo> propertyNames = new List<IldPropertyInfo>();
 
+        /// <summary>
+        /// Get or set the type of the UI element that is used to display the source item <c>SheetClassType</c>. This type must inherit from <see cref="SelectableListItem"/>.
+        /// </summary>
         public Type? DisplayElementType
         {
             get
@@ -114,6 +120,11 @@ namespace SentinelsJson.Ild
             }
         }
 
+        /// <summary>
+        /// Generate a list of UI elements, each one corresponding to the element in the source item enumerable. Make sure the <c>SheetClassType</c> and <c>DisplayElementType</c> properties are already set.
+        /// </summary>
+        /// <typeparam name="T">The type of the source item.</typeparam>
+        /// <param name="items">The list/enumerable of source items to load.</param>
         public void LoadList<T>(IEnumerable<T> items)
         {
             if (typeof(T) != SheetClassType)
@@ -132,7 +143,7 @@ namespace SentinelsJson.Ild
 
                 SelectableListItem sli = (SelectableListItem)newItem!;
 
-                sli.MapProperties(GenerateMappedProperties(item));
+                sli.LoadValues(GetAllPropertyValues(item));
 
                 sli.RequestDelete += sli_RequestDelete;
                 sli.RequestMoveDown += sli_RequestMoveDown;
@@ -148,6 +159,11 @@ namespace SentinelsJson.Ild
         //    return ListProperties(type);
         //}
 
+        /// <summary>
+        /// Generate a list of property info from a source type. The IldDisplayAttribute is handled here.
+        /// </summary>
+        /// <param name="type">The source type to load.</param>
+        /// <returns>A list of property info.</returns>
         private List<IldPropertyInfo> ListProperties(Type type)
         {
             List<IldPropertyInfo> props = new List<IldPropertyInfo>();
@@ -191,7 +207,8 @@ namespace SentinelsJson.Ild
                 }
                 else
                 {
-                    throw new NotSupportedException("This property uses a type that isn't supported by the ItemListDisplay.");
+                    continue;
+                    //throw new NotSupportedException("This property uses a type that isn't supported by the ItemListDisplay.");
                 }
 
                 IldPropertyInfo prop = new IldPropertyInfo(property.Name, ildType, name);
@@ -203,7 +220,13 @@ namespace SentinelsJson.Ild
             return props;
         }
 
-        private Dictionary<IldPropertyInfo, object> GenerateMappedProperties<T>(T item)
+        /// <summary>
+        /// Generate the dictionary of properties from the <c>SheetClassType</c>, alongside the value of these properties from a source item.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private Dictionary<IldPropertyInfo, object> GetAllPropertyValues<T>(T item)
         {
             Dictionary<IldPropertyInfo, object> props = new Dictionary<IldPropertyInfo, object>();
             Type type = typeof(T);
@@ -212,6 +235,7 @@ namespace SentinelsJson.Ild
             {
                 PropertyInfo? property = type.GetProperty(prop.Name);
 
+                // failsafe in case there's some weird mixup and this property isn't actually present
                 if (property == null) continue;
 
                 //var attr = property.GetCustomAttribute<IldDisplayAttribute>();
@@ -262,22 +286,37 @@ namespace SentinelsJson.Ild
                 mi.Header = item.DisplayName;
                 mi.Tag = item;
 
+                MenuItem mcf = new MenuItem();
+                mcf.Header = "Clear Filter";
+
                 switch (item.IldType)
                 {
                     case IldType.String:
                         MenuItem msi1 = new MenuItem();
                         msi1.Header = "Contains...";
+                        msi1.Click += (s, e) => { StringFilterAction(STRING_CONTAINS, item, mi, mcf); };
                         mi.Items.Add(msi1);
 
                         MenuItem msi2 = new MenuItem();
                         msi2.Header = "Does Not Contain...";
+                        msi2.Click += (s, e) => { StringFilterAction(STRING_NOT_CONTAINS, item, mi, mcf); };
                         mi.Items.Add(msi2);
+
+                        MenuItem msi3 = new MenuItem();
+                        msi3.Header = "Starts With...";
+                        msi3.Click += (s, e) => { StringFilterAction(STRING_STARTS_WITH, item, mi, mcf); };
+                        mi.Items.Add(msi3);
+
+                        MenuItem msi4 = new MenuItem();
+                        msi4.Header = "Matches (Exactly)...";
+                        msi4.Click += (s, e) => { StringFilterAction(STRING_MATCHES, item, mi, mcf); };
+                        mi.Items.Add(msi4);
                         break;
                     case IldType.Integer:
-                        ListNumberMenuItems(item, mi);
+                        ListNumberMenuItems(item, mi, mcf);
                         break;
                     case IldType.Double:
-                        ListNumberMenuItems(item, mi);
+                        ListNumberMenuItems(item, mi, mcf);
                         break;
                     case IldType.Boolean:
                         MenuItem mbi1 = new MenuItem();
@@ -289,8 +328,17 @@ namespace SentinelsJson.Ild
                         mi.Items.Add(mbi2);
                         break;
                     default:
+                        MenuItem mdi1 = new MenuItem();
+                        mdi1.Header = "Data type not supported for filtering";
+                        mdi1.IsEnabled = false;
+                        mi.Items.Add(mdi1);
                         break;
                 }
+
+                mi.Items.Add(new Separator());
+
+                mcf.IsEnabled = false;
+                mi.Items.Add(mcf);
 
                 cm.Items.Add(mi);
             }
@@ -299,18 +347,19 @@ namespace SentinelsJson.Ild
 
             MenuItem mcli = new MenuItem();
             mcli.Header = "Clear All Filters";
+            mcli.Click += (s, e) => { ClearAllFilters(); };
             cm.Items.Add(mcli);
 
             btnFilter.Menu = cm;
 
-            void ListNumberMenuItems(IldPropertyInfo item, MenuItem mi)
+            void ListNumberMenuItems(IldPropertyInfo item, MenuItem mi, MenuItem cancelItem)
             {
                 if (item.MinValue != null && item.MaxValue != null)
                 {
                     int min = item.MinValue.Value;
                     int max = item.MaxValue.Value;
 
-                    if (max - min < 10)
+                    if (max - min < 10 && max - min > 0)
                     {
                         for (int i = min; i <= max; i++)
                         {
@@ -336,8 +385,73 @@ namespace SentinelsJson.Ild
                     mni3.Header = "Is Not Between...";
                     mi.Items.Add(mni3);
                 }
+                else
+                {
+                    MenuItem mni4 = new MenuItem();
+                    mni4.Header = "Equals...";
+                    mi.Items.Add(mni4);
+
+                    MenuItem mni5 = new MenuItem();
+                    mni5.Header = "Is Between...";
+                    mi.Items.Add(mni5);
+
+                    MenuItem mni6 = new MenuItem();
+                    mni6.Header = "Is Not Between...";
+                    mi.Items.Add(mni6);
+                }
             }
         }
+
+        #region Filter menu options
+
+        public void ClearAllFilters()
+        {
+            foreach (SelectableUserControl item in selPanel.Items)
+            {
+                item.Visibility = Visibility.Visible;
+            }
+
+            foreach (object? o in btnFilter.Menu!.Items)
+            {
+                if (o is MenuItem mi)
+                {
+                    mi.IsChecked = false;
+                }
+            }
+        }
+
+        private const int STRING_CONTAINS = 0;
+        private const int STRING_NOT_CONTAINS = 1;
+        private const int STRING_STARTS_WITH = 2;
+        private const int STRING_MATCHES = 3;
+
+        public void StringFilterAction(int action, IldPropertyInfo property, MenuItem baseItem, MenuItem cancelItem)
+        {
+            string filterVal = "";
+
+            StringInputDialog sid = new StringInputDialog();
+            sid.Title = "Enter String Filter";
+            sid.Description = action switch
+            {
+                0 => "Match items that contain the value entered here:",
+                1 => "Match items that do not contain the value entered here:",
+                2 => "Match items that start with the value entered here:",
+                3 => "Match items that exactly match the value entered here:",
+                _ => "Enter the value to filter by:"
+            };
+
+            sid.ShowDialog();
+            if (sid.DialogResult)
+            {
+                filterVal = sid.Value;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        #endregion
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -414,13 +528,5 @@ namespace SentinelsJson.Ild
                 txtShowHide.Text = "Hide List";
             }
         }
-    }
-
-    public enum IldType
-    {
-        String = 0,
-        Integer = 1,
-        Double = 2,
-        Boolean = 3
     }
 }

@@ -14,8 +14,11 @@ namespace SentinelsJson.Ild
         public event EventHandler? RequestDelete;
         public event EventHandler? ContentChanged; // event just to update main window's "isDirty" value
 
-        public abstract void MapProperties(Dictionary<IldPropertyInfo, object> properties);
+        public abstract void LoadValues(Dictionary<IldPropertyInfo, object> properties);
 
+        public abstract object? GetPropertyValue(IldPropertyInfo property);
+
+        public abstract Dictionary<string, object> GetAllProperties();
 
         public void DoRequestDelete()
         {

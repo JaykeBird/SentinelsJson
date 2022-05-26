@@ -24,4 +24,28 @@ namespace SentinelsJson.Ild
         public int? MaxValue { get; set; }
 
     }
+
+    public class IldPropertyFilter
+    {
+        public IldPropertyFilter(string name, string filterType, string value)
+        {
+            Name = name;
+            FilterType = filterType;
+            Value = value;
+        }
+
+        public string Name { get; set; }
+
+        public string FilterType { get; set; }
+
+        public string Value { get; set; }
+    }
+
+    public enum IldType
+    {
+        String = 0,
+        Integer = 1,
+        Double = 2,
+        Boolean = 3
+    }
 }

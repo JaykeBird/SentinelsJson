@@ -3238,6 +3238,16 @@ namespace SentinelsJson
             //lastEditedBox = sender as TextBox;
         }
 
+        private void HyperlinkCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            string? s = e.Parameter.ToString();
+            if (s != null)
+            {
+                OpenBrowser(s);
+            }
+            //Process.Start(new ProcessStartInfo(e.Parameter.ToString()) { UseShellExecute = true });
+        }
+
         void UpdateMarkdownViewerVisuals()
         {
             if (vwrNotes.Document != null)

@@ -159,7 +159,7 @@ namespace SentinelsJson
 
             SetupTabs();
             selTabs.IsEnabled = false;
-            foreach (SelectableItem item in selTabs.GetSelectedItemsOfType<SelectableItem>())
+            foreach (SelectableItem item in selTabs.Items.SelectedItems.OfType<SelectableItem>())
             {
                 item.IsEnabled = false;
             }
@@ -1290,7 +1290,7 @@ namespace SentinelsJson
             }
             else
             {
-                foreach (SelectableItem item in selTabs.GetItemsAsType<SelectableItem>())
+                foreach (SelectableItem item in selTabs.Items.OfType<SelectableItem>())
                 {
                     if (item.IsEnabled)
                     {
@@ -1341,13 +1341,13 @@ namespace SentinelsJson
 
         void SetupTabs()
         {
-            selTabs.AddItem(CreateTab("General"));
-            selTabs.AddItem(CreateTab("Skills"));
-            selTabs.AddItem(CreateTab("Combat"));
-            selTabs.AddItem(CreateTab("Attributes/Defects"));
-            selTabs.AddItem(CreateTab("Feats"));
-            selTabs.AddItem(CreateTab("Items"));
-            selTabs.AddItem(CreateTab("Notes"));
+            selTabs.Items.Add(CreateTab("General"));
+            selTabs.Items.Add(CreateTab("Skills"));
+            selTabs.Items.Add(CreateTab("Combat"));
+            selTabs.Items.Add(CreateTab("Attributes/Defects"));
+            selTabs.Items.Add(CreateTab("Feats"));
+            selTabs.Items.Add(CreateTab("Items"));
+            selTabs.Items.Add(CreateTab("Notes"));
 
             SetAllTabsVisibility(Visibility.Collapsed);
         }
@@ -1377,7 +1377,7 @@ namespace SentinelsJson
 
         void LoadGeneralTab()
         {
-            selTabs[0].IsSelected = true;
+            selTabs.Items[0].IsSelected = true;
             LoadTab("General");
         }
 

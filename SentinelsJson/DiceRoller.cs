@@ -8,13 +8,13 @@ namespace SentinelsJson
 {
     public static class DiceRoller
     {
-        
+
         public static (string, double) RollDice(string diceString)
         {
-            var rng = new RNGCryptoServiceProvider();
+            var rng = RandomNumberGenerator.Create();// RNGCryptoServiceProvider();
 
             diceString = diceString.Replace(" ", "").Replace("\n", "");
-            
+
             // quick exit for situations where there aren't any dice
             if (ArithmeticParser.IsValidString(diceString))
             {
@@ -145,11 +145,11 @@ namespace SentinelsJson
             return (resultValue, ArithmeticParser.Evaluate(resultValue));
         }
 
-        private static (int, int[]) DoAllDiceRolls(int count, int size, RNGCryptoServiceProvider rng)
+        private static (int, int[]) DoAllDiceRolls(int count, int size, RandomNumberGenerator rng)
         {
             int result = 0;
             int[] arr = new int[count];
-    
+
             for (int i = 0; i < count; i++)
             {
                 int v = DoOneDiceRoll(rng, size) + 1;
@@ -160,7 +160,7 @@ namespace SentinelsJson
             return (result, arr);
         }
 
-        private static int DoOneDiceRoll(RNGCryptoServiceProvider rnd, int max)
+        private static int DoOneDiceRoll(RandomNumberGenerator rnd, int max)
         {
             byte[] r = new byte[4];
             int value;

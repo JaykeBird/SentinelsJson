@@ -47,7 +47,7 @@ namespace SentinelsJson
             {
                 SelectableItem si = new SelectableItem("Name: \"" + kvp.Key + "\", Value: \"" + (kvp.Value ?? "(empty)") + "\"", null, 5);
                 si.Tag = kvp;
-                selSheetSettings.AddItem(si);
+                selSheetSettings.Items.Add(si);
             }
         }
 
@@ -120,7 +120,7 @@ namespace SentinelsJson
 
         private void btnEditSetting_Click(object sender, RoutedEventArgs e)
         {
-            SelectableItem si = selSheetSettings.GetSelectedItemsOfType<SelectableItem>().First();
+            SelectableItem si = selSheetSettings.Items.SelectedItems.OfType<SelectableItem>().First();
             if (si.Tag is KeyValuePair<string, string?> kvp)
             {
                 StringInputDialog sid = new StringInputDialog(App.ColorScheme, "Set Setting Value", "Set the value for the setting \"" + kvp.Key + "\":", kvp.Value ?? "");
@@ -142,8 +142,8 @@ namespace SentinelsJson
 
         private void selSheetSettings_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            btnEditSetting.IsEnabled = selSheetSettings.SelectionCount != 0;
-            btnRemoveSetting.IsEnabled = selSheetSettings.SelectionCount != 0;
+            btnEditSetting.IsEnabled = selSheetSettings.Items.SelectedItems.Count != 0;
+            btnRemoveSetting.IsEnabled = selSheetSettings.Items.SelectedItems.Count != 0;
         }
 
     }

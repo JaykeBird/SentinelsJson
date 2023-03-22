@@ -390,7 +390,7 @@ namespace SentinelsJson
             }
 
             // setup up raw JSON editor
-            if (App.Settings.EditorSyntaxHighlighting && App.Settings.HighContrastTheme == NO_HIGH_CONTRAST)
+            if (App.Settings.EditorSyntaxHighlighting && !isHighContrast)
             {
                 using (Stream? s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SentinelsJson.Json.xshd"))
                 {

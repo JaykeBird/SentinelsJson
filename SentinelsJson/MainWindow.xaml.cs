@@ -90,6 +90,7 @@ namespace SentinelsJson
         {
             ud = new UserData(false);
             sheetid = "-1";
+            bool isHighContrast = false;
 
             // if true, run SaveSettings at the end of this function, to avoid calling SaveSettings like 5 times at once
             bool updateSettings = false;
@@ -142,12 +143,21 @@ namespace SentinelsJson
                 {
                     case "1":
                         App.ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.WhiteOnBlack);
+                        isHighContrast = true;
                         break;
                     case "2":
                         App.ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.GreenOnBlack);
+                        isHighContrast = true;
                         break;
                     case "3":
                         App.ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.BlackOnWhite);
+                        isHighContrast = true;
+                        break;
+                    case "4":
+                        App.ColorScheme = ColorScheme.CreateLightTheme();
+                        break;
+                    case "5":
+                        App.ColorScheme = ColorScheme.CreateDarkTheme();
                         break;
                     default:
                         App.Settings.HighContrastTheme = NO_HIGH_CONTRAST;
@@ -213,7 +223,7 @@ namespace SentinelsJson
             saveDisplayTimer.Tick += saveDisplayTimer_Tick;
 
             // setup up raw JSON editor
-            if (App.Settings.EditorSyntaxHighlighting && App.Settings.HighContrastTheme == NO_HIGH_CONTRAST)
+            if (App.Settings.EditorSyntaxHighlighting && !isHighContrast)
             {
                 using (Stream? s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SentinelsJson.Json.xshd"))
                 {
@@ -1746,16 +1756,16 @@ namespace SentinelsJson
 
         private void mnuOptions_Click(object sender, RoutedEventArgs e)
         {
-            //Options o = new Options();
-            //o.Owner = this;
-            //o.ColorScheme = App.ColorScheme;
+            Options o = new Options();
+            o.Owner = this;
+            o.ColorScheme = App.ColorScheme;
 
-            //o.ShowDialog();
+            o.ShowDialog();
 
-            //if (o.DialogResult)
-            //{
-            //    ReloadSettings();
-            //}
+            if (o.DialogResult)
+            {
+                ReloadSettings();
+            }
         }
 
         #endregion

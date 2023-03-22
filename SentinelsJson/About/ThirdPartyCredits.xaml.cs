@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using SolidShineUi;
 
-namespace SentinelsJson
+namespace SentinelsJson.About
 {
     /// <summary>
     /// Interaction logic for ThirdPartyCredits.xaml

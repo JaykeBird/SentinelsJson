@@ -602,7 +602,14 @@ namespace SentinelsJson
 
         private void mnuNewWindow_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(Process.GetCurrentProcess().MainModule?.FileName);
+            string? filename = Process.GetCurrentProcess().MainModule?.FileName;
+            if (filename == null)
+            {
+                MessageBox.Show("Cannot open another instance automatically.");
+                return;
+            }
+
+            Process.Start(filename);
         }
 
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
@@ -1874,9 +1881,9 @@ namespace SentinelsJson
 
         private void mnuAbout_Click(object sender, RoutedEventArgs e)
         {
-            //About a = new About();
-            //a.Owner = this;
-            //a.ShowDialog();
+            About.About a = new About.About();
+            a.Owner = this;
+            a.ShowDialog();
         }
 
         #endregion

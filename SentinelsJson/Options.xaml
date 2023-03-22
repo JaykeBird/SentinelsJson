@@ -28,7 +28,7 @@
                 <TextBlock Text="General Options" FontSize="16" VerticalAlignment="Top" />
                 <TextBlock Text="Check for Updates" FontWeight="Bold" Margin="0,30,0,0" VerticalAlignment="Top" />
                 <flat:FlatButton x:Name="btnUpdateNow" Content="Check for Updates Now" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="160" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnUpdateNow_Click" />
-                <flat:CheckBox x:Name="chkAutoUpdate" Content="Automatically check for updates when Pathfinder JSON starts" VerticalAlignment="Top" Margin="10,85,0,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:CheckBox x:Name="chkAutoUpdate" Content="Automatically check for updates when Sentinels JSON starts" VerticalAlignment="Top" Margin="10,85,0,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
                 <TextBlock Text="Recent Files" FontWeight="Bold" Margin="0,120,0,0" VerticalAlignment="Top" />
                 <flat:CheckBox x:Name="chkRecentDisplayMenus" Content="Display additional recent file actions as submenu (not as right-click context menu)" VerticalAlignment="Top" Margin="10,145,0,0" ColorScheme="{Binding ColorScheme, ElementName=window}" />
                 <flat:FlatButton x:Name="btnClearList" Content="Clear Recent File List" Margin="10,180,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnClearList_Click" />
@@ -116,8 +116,8 @@
             <Grid x:Name="tabAdvanced" Visibility="Collapsed" >
                 <TextBlock Text="Advanced Options" FontSize="16" VerticalAlignment="Top" />
                 <TextBlock Text="Startup Optimization" FontWeight="Bold" Margin="0,30,0,0" VerticalAlignment="Top" />
-                <flat:CheckBox x:Name="chkUseOptimization" Content="Use startup optimization so PathfinderJSON starts up faster" VerticalAlignment="Top" Margin="10,55,0,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                <TextBlock Text="When enabled, PathfinderJSON stores a bit of data on your hard drive, which it'll reuse whenever you open the program again. Unless you have a reason to turn this off, you should keep it on." Margin="10,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <flat:CheckBox x:Name="chkUseOptimization" Content="Use startup optimization so Sentinels JSON starts up faster" VerticalAlignment="Top" Margin="10,55,0,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <TextBlock Text="When enabled, Sentinels JSON stores a bit of data on your hard drive, which it'll reuse whenever you open the program again. Unless you have a reason to turn this off, you should keep it on." Margin="10,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" />
             </Grid>
         </Grid>
 

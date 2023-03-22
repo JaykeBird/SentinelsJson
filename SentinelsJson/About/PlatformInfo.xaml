@@ -1,9 +1,9 @@
-﻿<flat:FlatWindow x:Class="SentinelsJson.PlatformInfo"
+﻿<flat:FlatWindow x:Class="SentinelsJson.About.PlatformInfo"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SentinelsJson"
+        xmlns:local="clr-namespace:SentinelsJson.About"
         xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
         mc:Ignorable="d"
         Title="Platform Info" Height="250" Width="340" FontSize="12" ResizeMode="NoResize" CaptionDisplayType="Close" >

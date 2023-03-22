@@ -1,9 +1,9 @@
-﻿<flat:FlatWindow x:Class="SentinelsJson.ThirdPartyCredits"
+﻿<flat:FlatWindow x:Class="SentinelsJson.About.ThirdPartyCredits"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SentinelsJson"
+        xmlns:local="clr-namespace:SentinelsJson.About"
         xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
         mc:Ignorable="d" x:Name="window"
         Title="Third Party Credits" Height="450" Width="500" ResizeMode="NoResize" CaptionDisplayType="Close" >
@@ -18,9 +18,9 @@
                     <StackPanel Margin="10,5">
                         <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" Text="Application UI designed using SolidShineUi library" VerticalAlignment="Top"/>
                         <TextBlock HorizontalAlignment="Left" Margin="0,5,0,0" Text="Developed/compiled by Jayke R. Huempfner" VerticalAlignment="Top"/>
-                        <flat:LinkTextBlock HorizontalAlignment="Left" Margin="0,2,0,0" Text="https://jaykebird.com/software/SolidShineUi" VerticalAlignment="Top" AutoSetLinkFromText="True" Cursor="Hand" DisabledBrush="{Binding ColorScheme.LightDisabledColor, Converter={StaticResource ColorToBrushConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                        <flat:LinkTextBlock HorizontalAlignment="Left" Margin="0,2,0,0" Text="https://jaykebird.com/software/ssui" VerticalAlignment="Top" AutoSetLinkFromText="True" Cursor="Hand" DisabledBrush="{Binding ColorScheme.LightDisabledColor, Converter={StaticResource ColorToBrushConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
                         <TextBlock Margin="0,8,10,0" VerticalAlignment="Top" MinHeight="50" TextWrapping="Wrap"
-                   Text="Contributing work by Manuel Schweigert, Pete Laker, Steve Lautenschlager, Richard Moss (Cyotek Ltd.), Warren Galyen (Mechanika Design), Oleg V. Polikarpotchkin, Yassine (Stopbyte), Hector Pulido, Sebastien Lambla, and Nimgoble" />
+                   Text="Contributing work by Manuel Schweigert, Pete Laker, Steve Lautenschlager, Richard Moss (Cyotek Ltd.), Warren Galyen (Mechanika Design), Oleg V. Polikarpotchkin, Yassine (Stopbyte), Hector Pulido, Sebastien Lambla, Nimgoble, and H.A. Sullivan" />
                         <TextBlock HorizontalAlignment="Left" Margin="0,10,0,0" Text="Licensed under MIT License" VerticalAlignment="Top"/>
                         <TextBlock HorizontalAlignment="Left" Margin="0,2,0,0" Text="View website for more details." VerticalAlignment="Top"/>
                     </StackPanel>

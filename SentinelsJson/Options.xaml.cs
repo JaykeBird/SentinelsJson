@@ -570,7 +570,7 @@ namespace SentinelsJson
 
         private void btnPlatformInfo_Click(object sender, RoutedEventArgs e)
         {
-            PlatformInfo pi = new PlatformInfo();
+            About.PlatformInfo pi = new About.PlatformInfo();
             pi.Owner = this;
             pi.ShowDialog();
         }

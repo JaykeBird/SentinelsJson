@@ -52,7 +52,6 @@
 
   <ItemGroup>
     <Resource Include="Images\**" />
-    <Content Include="icon.ico" />
     <EmbeddedResource Include="Json.xshd" />
     <EmbeddedResource Include="None.xshd" />
     <EmbeddedResource Include="SkillsLists\simplified.json" />

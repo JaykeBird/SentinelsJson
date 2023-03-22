@@ -191,7 +191,7 @@
                 <MenuItem Header="_Check for Updates" x:Name="mnuCheckUpdates" Click="mnuCheckUpdates_Click" />
                 <MenuItem Header="A_uto Check on Startup" x:Name="mnuAutoCheck" Click="mnuAutoCheck_Click" />
                 <Separator />
-                <MenuItem Header="_About..." x:Name="mnuAbout" Click="mnuAbout_Click" IsEnabled="False" >
+                <MenuItem Header="_About..." x:Name="mnuAbout" Click="mnuAbout_Click" >
                     <MenuItem.Icon>
                         <Image Source="/SentinelsJson;component/Images/Color/Info.png" />
                     </MenuItem.Icon>
@@ -242,7 +242,7 @@
 
         <ScrollViewer Grid.Column="1" Grid.Row="2" x:Name="scrSheet" AllowDrop="True" Drop="scrSheet_Drop" >
             <StackPanel x:Name="stkSheet" >
-                <Grid Margin="5,5,5,0" x:Name="grdGeneral" Visibility="Collapsed" >
+                <Grid Margin="5,5,5,0" x:Name="grdGeneral" Visibility="Visible" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25"/>
                         <RowDefinition Height="Auto"/>
@@ -253,7 +253,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition Height="150" />
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid Margin="10,0,0,0">
                         <TextBlock x:Name="titGeneral" Text="General" FontSize="16" />
@@ -449,6 +449,10 @@
 
                         <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5" Text="Score" VerticalAlignment="Bottom" Grid.Column="2"/>
                     </Grid>
+                    <StackPanel Grid.Row="6" Height="32" Margin="15,5,5,5" Orientation="Horizontal" >
+                        <TextBlock Text="Health" VerticalAlignment="Center" FontWeight="Normal" />
+                        <TextBlock Text="(HP)" VerticalAlignment="Center" FontWeight="Bold" Margin="3" />
+                    </StackPanel>
                     <Grid HorizontalAlignment="Left" Margin="15,10,0,10" Grid.Row="7" VerticalAlignment="Top" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>

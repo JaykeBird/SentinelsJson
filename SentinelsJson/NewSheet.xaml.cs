@@ -25,7 +25,7 @@ namespace SentinelsJson
 
         private void window_SourceInitialized(object sender, EventArgs e)
         {
-            DisableMinimizeAndMaximizeActions();
+            this.DisableMinimizeAndMaximizeActions();
         }
 
         public string FileLocation { get; private set; } = "";

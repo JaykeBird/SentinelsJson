@@ -1,5 +1,4 @@
-﻿using SentinelsJson.Ild;
-using SolidShineUi;
+﻿using SolidShineUi;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -149,8 +148,13 @@ namespace SentinelsJson.Ild
                 sli.RequestMoveDown += sli_RequestMoveDown;
                 sli.RequestMoveUp += sli_RequestMoveUp;
 
-                selPanel.AddItem(sli);
+                selPanel.Items.Add(sli);
             }
+        }
+
+        public List<T> GetItems<T>()
+        {
+            return new List<T>();
         }
 
         //private List<string> ListProperties<T>(T item)
@@ -466,7 +470,7 @@ namespace SentinelsJson.Ild
             sli.RequestMoveUp += sli_RequestMoveUp;
             sli.ContentChanged += sli_ContentChanged;
 
-            selPanel.AddItem(sli);
+            selPanel.Items.Add(sli);
 
             ContentChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -479,18 +483,26 @@ namespace SentinelsJson.Ild
         private void sli_RequestMoveUp(object? sender, EventArgs e)
         {
             //throw new NotImplementedException();
+            if (sender is SelectableListItem sli)
+            {
+                selPanel.MoveItemUp(selPanel.Items.IndexOf(sli));
+            }
         }
 
         private void sli_RequestMoveDown(object? sender, EventArgs e)
         {
             //throw new NotImplementedException();
+            if (sender is SelectableListItem sli)
+            {
+                selPanel.MoveItemDown(selPanel.Items.IndexOf(sli));
+            }
         }
 
         private void sli_RequestDelete(object? sender, EventArgs e)
         {
             if (sender is SelectableListItem sli)
             {
-                selPanel.RemoveItem(sli);
+                selPanel.Items.Remove(sli);
 
                 ContentChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -498,7 +510,7 @@ namespace SentinelsJson.Ild
 
         private void btnDeselect_Click(object sender, RoutedEventArgs e)
         {
-            selPanel.DeselectAll();
+            selPanel.Items.ClearSelection();
         }
 
         private void btnShowHide_Click(object sender, RoutedEventArgs e)

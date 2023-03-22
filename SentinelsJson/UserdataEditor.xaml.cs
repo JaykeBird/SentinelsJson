@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using SolidShineUi;
@@ -18,11 +19,16 @@ namespace SentinelsJson
             ApplyColorScheme(App.ColorScheme);
         }
 
+        private void window_SourceInitialized(object sender, EventArgs e)
+        {
+            DisableMinimizeAction();
+        }
+
         public new bool DialogResult { get; set; } = false;
 
         public void LoadUserData(UserData ud)
         {
-            cbbProvider.SelectedIndex = (ud.Provider.ToLowerInvariant()) switch
+            cbbProvider.SelectedIndex = ud.Provider.ToLowerInvariant() switch
             {
                 "google" => 0,
                 "github" => 1,
@@ -34,6 +40,9 @@ namespace SentinelsJson
             txtName.Text = ud.DisplayName;
             txtProfileUrl.Text = ud.ProfileUrl;
             txtUserId.Text = ud.Id;
+
+            selEmails.Items.Clear();
+            selPhotos.Items.Clear();
 
             foreach (UserData.Email item in ud.Emails)
             {
@@ -49,7 +58,7 @@ namespace SentinelsJson
                 si.ImageSource = img;
                 si.ShowImage = true;
 
-                selEmails.AddItem(si);
+                selEmails.Items.Add(si);
             }
 
             foreach (UserData.Photo item in ud.Photos)
@@ -65,7 +74,7 @@ namespace SentinelsJson
                 si.ImageSource = App.GetResourcesImage("Link", ColorScheme);
                 si.ShowImage = true;
 
-                selPhotos.AddItem(si);
+                selPhotos.Items.Add(si);
             }
         }
 
@@ -86,12 +95,12 @@ namespace SentinelsJson
             ud.ProfileUrl = GetStringOrNull(txtProfileUrl.Text);
             ud.Id = GetStringOrNull(txtUserId.Text);
 
-            foreach (SelectableItem item in selEmails.GetItemsAsType<SelectableItem>())
+            foreach (SelectableItem item in selEmails.Items.OfType<SelectableItem>())
             {
                 ud.Emails.Add(new UserData.Email { Value = item.Text });
             }
 
-            foreach (SelectableItem item in selPhotos.GetItemsAsType<SelectableItem>())
+            foreach (SelectableItem item in selPhotos.Items.OfType<SelectableItem>())
             {
                 ud.Photos.Add(new UserData.Photo { Value = item.Text });
             }
@@ -109,12 +118,22 @@ namespace SentinelsJson
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
             ofd.Title = "Import Data from File";
             ofd.Filter = "Pathfinder Character Sheet|*.json|All Files|*.*";
-            
+
             if (ofd.ShowDialog() ?? false == true)
             {
                 string filename = ofd.FileName;
                 SentinelsSheet ps = SentinelsSheet.LoadJsonFile(filename);
                 LoadUserData(ps.Player ?? new UserData(true));
+            }
+
+            btnImport.Focus();
+            foreach (SelectableItem item in selEmails.Items.OfType<SelectableItem>())
+            {
+                item.CancelEdit();
+            }
+            foreach (SelectableItem item in selPhotos.Items.OfType<SelectableItem>())
+            {
+                item.CancelEdit();
             }
         }
 
@@ -133,7 +152,8 @@ namespace SentinelsJson
             si.ImageSource = App.GetResourcesImage("Email", ColorScheme);
             si.ShowImage = true;
 
-            selEmails.AddItem(si);
+            selEmails.Items.Add(si);
+            si.Focus();
             si.DisplayEditText();
         }
 
@@ -144,7 +164,7 @@ namespace SentinelsJson
 
         private void btnDeselectEmail_Click(object sender, RoutedEventArgs e)
         {
-            selEmails.DeselectAll();
+            selEmails.Items.ClearSelection();
         }
 
         private void btnAddPhoto_Click(object sender, RoutedEventArgs e)
@@ -155,7 +175,8 @@ namespace SentinelsJson
             si.ImageSource = App.GetResourcesImage("Link", ColorScheme);
             si.ShowImage = true;
 
-            selPhotos.AddItem(si);
+            selPhotos.Items.Add(si);
+            si.Focus();
             si.DisplayEditText();
         }
 
@@ -166,8 +187,9 @@ namespace SentinelsJson
 
         private void btnDeselectPhoto_Click(object sender, RoutedEventArgs e)
         {
-            selPhotos.DeselectAll();
+            selPhotos.Items.ClearSelection();
         }
         #endregion
+
     }
 }

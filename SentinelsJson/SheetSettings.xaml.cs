@@ -23,7 +23,7 @@ namespace SentinelsJson
 
         private void window_SourceInitialized(object sender, EventArgs e)
         {
-            DisableMinimizeAndMaximizeActions();
+            this.DisableMinimizeAndMaximizeActions();
         }
 
         public void UpdateUi()
@@ -66,7 +66,7 @@ namespace SentinelsJson
             CpPerLevel = nudCpLevel.Value;
             Level0Cp = nudCpStart.Value;
 
-            if (fileSelect.SelectedFilesCount == 0)
+            if (fileSelect.SelectedFiles.Count == 0)
             {
                 rdoSkillList.IsChecked = true;
             }
@@ -84,7 +84,7 @@ namespace SentinelsJson
             }
             else
             {
-                SkillList = fileSelect.SelectedFile;
+                SkillList = fileSelect.SelectedFiles[0];
             }
 
             DialogResult = true;
@@ -98,7 +98,7 @@ namespace SentinelsJson
 
         private void fileSelect_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            if (fileSelect.SelectedFilesCount == 0)
+            if (fileSelect.SelectedFiles.Count == 0)
             {
                 rdoSkillList.IsChecked = true;
             }

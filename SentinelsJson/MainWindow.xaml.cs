@@ -1472,91 +1472,57 @@ namespace SentinelsJson
 
         private void mnuColors_Click(object sender, RoutedEventArgs e)
         {
-            if (App.Settings.HighContrastTheme != NO_HIGH_CONTRAST)
+            ChangeTheme.ColorSchemeDialog csd = new ChangeTheme.ColorSchemeDialog();
+            csd.ColorScheme = this.ColorScheme;
+
+            csd.ShowDialog();
+
+            if (csd.DialogResult)
             {
-                MessageDialog md = new MessageDialog(App.ColorScheme);
-                if (md.ShowDialog("A high-contrast theme is currently being used. Changing the color scheme will turn off the high-contrast theme. Do you want to continue?", null, this, "High Contrast Theme In Use",
-                    MessageDialogButtonDisplay.Two, MessageDialogImage.Warning, MessageDialogResult.Cancel, "Continue", "Cancel") == MessageDialogResult.Cancel)
+                App.ColorScheme = csd.SelectedColorScheme;
+
+                if (csd.InternalColorSchemeValue != 0)
                 {
-                    return;
+                    ColorScheme cs = csd.SelectedColorScheme;
+
+                    App.Settings.HighContrastTheme = csd.InternalColorSchemeValue.ToString();
                 }
-            }
+                else
+                {
+                    App.Settings.ThemeColor = csd.SelectedColorScheme.MainColor.GetHexString();
+                    App.Settings.HighContrastTheme = NO_HIGH_CONTRAST;
+                }
 
-            ColorPickerDialog cpd = new ColorPickerDialog(App.ColorScheme, App.ColorScheme.MainColor);
-            cpd.Owner = this;
-            cpd.ShowDialog();
-
-            if (cpd.DialogResult)
-            {
-                App.ColorScheme = new ColorScheme(cpd.SelectedColor);
-                App.Settings.ThemeColor = cpd.SelectedColor.GetHexString();
-                App.Settings.HighContrastTheme = NO_HIGH_CONTRAST;
                 SaveSettings();
                 UpdateAppearance();
-            }
-        }
 
-        private void mnuHighContrast_Click(object sender, RoutedEventArgs e)
-        {
-            MessageDialog md = new MessageDialog(App.ColorScheme)
-            {
-                ExtraButton1Text = "Use White on Black",
-                ExtraButton2Text = "Use Green on Black",
-                ExtraButton3Text = "Use Black on White",
-                OkButtonText = "Don't use",
-                Message = "A high contrast theme is good for users who have vision-impairment or other issues. SentinelsJSON comes with 3 high-contrast options available.",
-                Title = "High Contrast Theme"
-            };
+                // change settings if high contrast is changed
+                bool isHighContrast = false;
+                if (csd.InternalColorSchemeValue >= 1 && csd.InternalColorSchemeValue <= 3) isHighContrast = true;
 
-            md.ShowDialog();
-
-            switch (md.DialogResult)
-            {
-                case MessageDialogResult.OK:
-                    App.Settings.HighContrastTheme = NO_HIGH_CONTRAST;
-                    break;
-                case MessageDialogResult.Cancel:
-                    App.Settings.HighContrastTheme = NO_HIGH_CONTRAST;
-                    break;
-                case MessageDialogResult.Extra1:
-                    App.Settings.HighContrastTheme = "1"; // white on black
-                    break;
-                case MessageDialogResult.Extra2:
-                    App.Settings.HighContrastTheme = "2"; // green on black
-                    break;
-                case MessageDialogResult.Extra3:
-                    App.Settings.HighContrastTheme = "3"; // black on white
-                    break;
-                default:
-                    break;
-            }
-
-            if (App.Settings.HighContrastTheme == NO_HIGH_CONTRAST)
-            {
-                App.ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex(App.Settings.ThemeColor));
-            }
-            else
-            {
-                switch (App.Settings.HighContrastTheme)
+                if (App.Settings.EditorSyntaxHighlighting && !isHighContrast)
                 {
-                    case "1":
-                        App.ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.WhiteOnBlack);
-                        break;
-                    case "2":
-                        App.ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.GreenOnBlack);
-                        break;
-                    case "3":
-                        App.ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.BlackOnWhite);
-                        break;
-                    default:
-                        App.Settings.HighContrastTheme = NO_HIGH_CONTRAST;
-                        App.ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex(App.Settings.ThemeColor));
-                        break;
+                    using (Stream? s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SentinelsJson.Json.xshd"))
+                    {
+                        if (s != null)
+                        {
+                            using XmlReader reader = new XmlTextReader(s);
+                            txtEditRaw.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                        }
+                    }
+                }
+                else
+                {
+                    using (Stream? s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SentinelsJson.None.xshd"))
+                    {
+                        if (s != null)
+                        {
+                            using XmlReader reader = new XmlTextReader(s);
+                            txtEditRaw.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                        }
+                    }
                 }
             }
-
-            SaveSettings();
-            UpdateAppearance();
         }
 
         void ShowHideToolbar(bool show)
@@ -1678,7 +1644,7 @@ namespace SentinelsJson
                 grdEditDrop.Visibility = Visibility.Visible;
                 SetAllTabsVisibility(Visibility.Collapsed);
                 UpdateAppearance();
-                foreach (SelectableItem item in selTabs.GetSelectedItemsOfType<SelectableItem>())
+                foreach (SelectableItem item in selTabs.Items.SelectedItems.OfType<SelectableItem>().ToList())
                 {
                     item.IsSelected = false;
                 }

@@ -2677,7 +2677,7 @@ namespace SentinelsJson
 
             // feats tab
 
-            //sheet.Feats = selFeats.ExportList<Feat>();
+            sheet.Feats = selFeats.GetItems<Feat>();
 
             return sheet;
         }

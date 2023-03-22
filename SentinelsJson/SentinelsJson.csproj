@@ -19,6 +19,7 @@
     <Copyright>© 2019-2023 Jayke R. Huempfner</Copyright>
     <StartupObject>SentinelsJson.App</StartupObject>
     <Nullable>enable</Nullable>
+    <ApplicationIcon>..\icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -51,6 +52,7 @@
 
   <ItemGroup>
     <Resource Include="Images\**" />
+    <Content Include="icon.ico" />
     <EmbeddedResource Include="Json.xshd" />
     <EmbeddedResource Include="None.xshd" />
     <EmbeddedResource Include="SkillsLists\simplified.json" />

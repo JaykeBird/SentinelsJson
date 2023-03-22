@@ -313,6 +313,8 @@ namespace SentinelsJson
         {
             bool updateSettings = false;
 
+            bool isHighContrast = false;
+
             if (App.Settings.HighContrastTheme == NO_HIGH_CONTRAST)
             {
                 App.ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex(App.Settings.ThemeColor));
@@ -323,12 +325,15 @@ namespace SentinelsJson
                 {
                     case "1":
                         App.ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.WhiteOnBlack);
+                        isHighContrast = true;
                         break;
                     case "2":
                         App.ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.GreenOnBlack);
+                        isHighContrast = true;
                         break;
                     case "3":
                         App.ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.BlackOnWhite);
+                        isHighContrast = true;
                         break;
                     case "4":
                         App.ColorScheme = ColorScheme.CreateLightTheme();
@@ -362,31 +367,7 @@ namespace SentinelsJson
             }
 
             // clear recent files list in UI (not in backend)
-            List<FrameworkElement> itemsToRemove = new List<FrameworkElement>();
-
-            foreach (FrameworkElement? item in mnuRecent.Items)
-            {
-
-                if (item is MenuItem)
-                {
-                    if (item.Tag != null)
-                    {
-                        itemsToRemove.Add(item);
-                    }
-                }
-            }
-
-            foreach (var item in itemsToRemove)
-            {
-                mnuRecent.Items.Remove(item);
-            }
-
-            mnuRecentEmpty.Visibility = Visibility.Visible;
-
-            foreach (string file in App.Settings.RecentFiles)//.Reverse<string>())
-            {
-                AddRecentFile(file, false);
-            }
+            RebuildRecentMenu();
 
             ShowHideToolbar(App.Settings.ShowToolbar);
 
@@ -958,6 +939,8 @@ namespace SentinelsJson
 
         void AddRecentFile(string filename, bool storeInSettings = true)
         {
+            bool submenu = App.Settings.DisplayRecentActionsAsSubmenu;
+
             if (storeInSettings && App.Settings.RecentFiles.Contains(filename))
             {
                 JumpList.AddToRecentCategory(filename);
@@ -975,45 +958,32 @@ namespace SentinelsJson
             };
             mi.ToolTip = tt;
             mi.Tag = filename;
-            mi.Click += miRecentFile_Click;
+            mi.Click += MainRecentFileClick;
             mi.ContextMenuOpening += miRecentContext_Opening;
             mnuRecent.Items.Insert(0, mi);
 
             SolidShineUi.ContextMenu cm = new SolidShineUi.ContextMenu();
-            cm.PlacementTarget = mi;
-            cm.Width = 180;
+            if (!submenu)
+            {
+                cm.PlacementTarget = mi;
+                cm.Width = 180;
+            }
+            else
+            {
+                tt.VerticalOffset = -25;
+                tt.HorizontalOffset = 3;
+            }
 
-            MenuItem cm1 = new MenuItem();
-            cm1.Header = "Open";
-            cm1.Tag = mi;
-            cm1.Click += miRecentOpen_Click;
-            cm.Items.Add(cm1);
+            CreateMenuItem("Open", miRecentOpen_Click);
+            CreateMenuItem("Open in New Window", miRecentOpenNew_Click);
+            CreateMenuItem("Copy Path", miRecentCopy_Click);
+            CreateMenuItem("View in Explorer", miRecentView_Click);
+            CreateMenuItem("Remove", miRecentRemove_Click);
 
-            MenuItem cm4 = new MenuItem();
-            cm4.Header = "Open in New Window";
-            cm4.Tag = mi;
-            cm4.Click += miRecentOpenNew_Click;
-            cm.Items.Add(cm4);
-
-            MenuItem cm5 = new MenuItem();
-            cm5.Header = "Copy Path";
-            cm5.Tag = mi;
-            cm5.Click += miRecentCopy_Click;
-            cm.Items.Add(cm5);
-
-            MenuItem cm2 = new MenuItem();
-            cm2.Header = "View in Explorer";
-            cm2.Tag = mi;
-            cm2.Click += miRecentView_Click;
-            cm.Items.Add(cm2);
-
-            MenuItem cm3 = new MenuItem();
-            cm3.Header = "Remove";
-            cm3.Tag = mi;
-            cm3.Click += miRecentRemove_Click;
-            cm.Items.Add(cm3);
-
-            mi.ContextMenu = cm;
+            if (!submenu)
+            {
+                mi.ContextMenu = cm;
+            }
 
             if (storeInSettings)
             {
@@ -1023,6 +993,16 @@ namespace SentinelsJson
             }
 
             mnuRecentEmpty.Visibility = Visibility.Collapsed;
+
+            MenuItem CreateMenuItem(string header, RoutedEventHandler handler)
+            {
+                MenuItem mii = new MenuItem();
+                mii.Header = header;
+                mii.Tag = mi;
+                mii.Click += handler;
+                if (submenu) mi.Items.Add(mii); else cm.Items.Add(mii);
+                return mi;
+            }
         }
 
         private void miRecentContext_Opening(object sender, ContextMenuEventArgs e)
@@ -1034,6 +1014,13 @@ namespace SentinelsJson
                     cm.ApplyColorScheme(App.ColorScheme);
                 }
             }
+        }
+
+        private void MainRecentFileClick(object sender, RoutedEventArgs e)
+        {
+            if (App.Settings.DisplayRecentActionsAsSubmenu) return;
+
+            miRecentFile_Click(sender, e);
         }
 
         private void miRecentFile_Click(object sender, RoutedEventArgs e)
@@ -1060,8 +1047,8 @@ namespace SentinelsJson
                     {
                         MessageDialog md = new MessageDialog(App.ColorScheme);
                         md.OkButtonText = "Cancel";
-                        md.ShowDialog("This file does not exist any more. Do you want to remove this file from the list or attempt to open anyway?", App.ColorScheme, this,
-                            "File Not Found", MessageDialogButtonDisplay.Auto, MessageDialogImage.Error, MessageDialogResult.Cancel, "Remove file from list", "Attempt to open anyway");
+                        md.ShowDialog("This file does not seem to exist any more. Do you want to remove this file from the list or attempt to open anyway?", App.ColorScheme, this,
+                            "File Not Found", MessageDialogButtonDisplay.Auto, MessageDialogImage.Error, MessageDialogResult.Cancel, "Remove file from list", "Attempt to open");
                         switch (md.DialogResult)
                         {
                             case MessageDialogResult.OK:
@@ -1147,11 +1134,19 @@ namespace SentinelsJson
             }
         }
 
+        private void mnuRecentActions_Click(object sender, RoutedEventArgs e)
+        {
+            App.Settings.DisplayRecentActionsAsSubmenu = !App.Settings.DisplayRecentActionsAsSubmenu;
+
+            SaveSettings();
+            RebuildRecentMenu();
+        }
+
         bool AskClearRecentList()
         {
             MessageDialog md = new MessageDialog(App.ColorScheme);
-            md.ShowDialog("Are you sure you want to remove all files from the Recent Files list?", App.ColorScheme, this, "Clear Recent Files List", MessageDialogButtonDisplay.Two, MessageDialogImage.Question, MessageDialogResult.Cancel,
-                "Yes", "Cancel");
+            md.ShowDialog("Are you sure you want to remove all files from the Recent Files list?", App.ColorScheme, this, "Clear Recent Files List", MessageDialogButtonDisplay.Two,
+                MessageDialogImage.Question, MessageDialogResult.Cancel, "Yes", "Cancel");
 
             if (md.DialogResult == MessageDialogResult.OK)
             {
@@ -1161,6 +1156,35 @@ namespace SentinelsJson
             {
                 return false;
             }
+        }
+
+        void RebuildRecentMenu()
+        {
+            List<FrameworkElement> itemsToRemove = new List<FrameworkElement>();
+
+            foreach (FrameworkElement? item in mnuRecent.Items)
+            {
+
+                if (item is MenuItem)
+                {
+                    if (item.Tag != null)
+                    {
+                        itemsToRemove.Add(item);
+                    }
+                }
+            }
+
+            foreach (var item in itemsToRemove)
+            {
+                mnuRecent.Items.Remove(item);
+            }
+
+            foreach (string file in App.Settings.RecentFiles)//.Reverse<string>())
+            {
+                AddRecentFile(file, false);
+            }
+
+            mnuRecentActions.IsChecked = App.Settings.DisplayRecentActionsAsSubmenu;
         }
 
         private void miRecentOpen_Click(object sender, RoutedEventArgs e)
@@ -1184,7 +1208,15 @@ namespace SentinelsJson
                 {
                     if (parent.Tag is string file)
                     {
-                        Process.Start(Process.GetCurrentProcess().MainModule?.FileName, "\"" + file + "\"");
+                        string? filename = Process.GetCurrentProcess().MainModule?.FileName;
+                        if (filename == null)
+                        {
+                            // TODO: ask user if they want to open in this instance instead
+                            MessageBox.Show("Cannot open another instance automatically.");
+                            return;
+                        }
+
+                        Process.Start(filename, "\"" + file + "\"");
                     }
                 }
             }

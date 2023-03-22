@@ -18,6 +18,7 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using System.Diagnostics;
 using System.Windows.Input;
 using static SentinelsJson.CoreUtils;
+using System.ComponentModel;
 
 namespace SentinelsJson
 {
@@ -3242,10 +3243,47 @@ namespace SentinelsJson
         {
             string? s = e.Parameter.ToString();
             if (s != null)
-            {
-                OpenBrowser(s);
-            }
-            //Process.Start(new ProcessStartInfo(e.Parameter.ToString()) { UseShellExecute = true });
+
+                try
+                {
+                    if (s != null)
+                    {
+                        OpenBrowser(s);
+                    }
+                }
+                catch (ArgumentNullException)
+                {
+                    // could not open the link as it is null
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Log(0, "vwrNotes", "Link is null, from Notes viewer.\n");
+                    }
+                }
+                catch (System.IO.FileNotFoundException)
+                {
+                    OpenBrowser(s);
+                    // could not open the link as it doesn't exist
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Log(0, "vwrNotes", "Link \"" + s + "\" does not exist, from Notes viewer.\n");
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // could not open the link for some reason
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Log(0, "vwrNotes", "Link \"" + s + "\" was not defined, from Notes viewer.\n");
+                    }
+                }
+                catch (Win32Exception)
+                {
+                    // could not open the link for some reason
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Log(0, "vwrNotes", "Link \"" + s + "\" could not be opened, from Notes viewer.\n");
+                    }
+                }
         }
 
         void UpdateMarkdownViewerVisuals()

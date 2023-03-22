@@ -66,7 +66,8 @@
                     <ComboBoxItem Content="None" />
                 </ComboBox>
                 <RadioButton x:Name="rdoSelectFile" Grid.Column="0" Grid.Row="4" GroupName="SkillOption" Margin="15,0,0,0" Content="Load from a file:" VerticalAlignment="Center" />
-                <flat:FileSelect x:Name="fileSelect" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Grid.Column="2" Grid.Row="4" AllowMultipleFiles="False" FileFilter="*.json" SelectionChanged="fileSelect_SelectionChanged" />
+                <flat:FileSelect x:Name="fileSelect" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Grid.Column="2" Grid.Row="4" AllowMultipleFiles="False" 
+                                 FileFilter="*.json" SelectionChanged="fileSelect_SelectionChanged" />
             </Grid>
             <TextBlock Grid.Row="3" Margin="60,0,10,20" TextWrapping="Wrap" >
                 Warning! Changing the skill list may cause you to lose data for some skills; they will need to be re-entered.
@@ -80,15 +81,19 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock x:Name="lblGenericSettings" HorizontalAlignment="Left" Margin="15,5" Text="Advanced sheet settings:" VerticalAlignment="Center" Grid.Row="0"/>
-            <TextBlock x:Name="lblGenericSettingsWarning" HorizontalAlignment="Left" Margin="40,5" Text="(Be careful with editing these values. SentinelsJSON uses them for some features.)" VerticalAlignment="Center" Grid.Row="1"/>
-            <flat:SelectPanel x:Name="selSheetSettings" Grid.Row="2" MinHeight="80" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Margin="40,0,20,0" MultiSelect="False" SelectionChanged="selSheetSettings_SelectionChanged" />
+            <TextBlock x:Name="lblGenericSettingsWarning" HorizontalAlignment="Left" Margin="40,5" Text="(Be careful with editing these values. SentinelsJSON uses them for some features.)" 
+                       VerticalAlignment="Center" Grid.Row="1"/>
+            <flat:SelectPanel x:Name="selSheetSettings" Grid.Row="2" MinHeight="80" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Margin="40,0,20,0" MultiSelect="False" 
+                              SelectionChanged="selSheetSettings_SelectionChanged" />
             <StackPanel Orientation="Horizontal" Grid.Row="3" MinHeight="24" Margin="40,5">
-                <flat:FlatButton Margin="5,0" Content="Add..." MinWidth="80" x:Name="btnAddSetting" Click="btnAddSetting_Click" IsEnabled="False" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                <flat:FlatButton Margin="5,0" Content="Edit..." MinWidth="80" x:Name="btnEditSetting" Click="btnEditSetting_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                <flat:FlatButton Margin="5,0" Content="Remove..." MinWidth="80" x:Name="btnRemoveSetting" Click="btnRemoveSetting_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:FlatButton Margin="5,0" Content="Add..." MinWidth="80" x:Name="btnAddSetting" Click="btnAddSetting_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:FlatButton Margin="5,0" Content="Edit..." MinWidth="80" x:Name="btnEditSetting" Click="btnEditSetting_Click" IsEnabled="False" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:FlatButton Margin="5,0" Content="Remove..." MinWidth="80" x:Name="btnRemoveSetting" Click="btnRemoveSetting_Click" IsEnabled="False" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
             </StackPanel>
         </Grid>
-        <flat:FlatButton x:Name="btnSave" ColorScheme="{Binding ColorScheme, ElementName=window}" Content="Save" Margin="0,0,105,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="80" Click="btnSave_Click" Grid.Row="3" />
-        <flat:FlatButton x:Name="btnClose" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Center" Width="80" Click="btnClose_Click" Grid.Row="3" />
+        <flat:FlatButton x:Name="btnSave" ColorScheme="{Binding ColorScheme, ElementName=window}" Content="Save" Margin="0,0,105,0" VerticalAlignment="Center" HorizontalAlignment="Right" 
+                         Width="80" Click="btnSave_Click" Grid.Row="3" />
+        <flat:FlatButton x:Name="btnClose" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Center" 
+                         Width="80" Click="btnClose_Click" Grid.Row="3" />
     </Grid>
 </flat:FlatWindow>

@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Linq;
+using SentinelsJson;
 
 namespace SentinelsJson
 {
@@ -87,6 +88,18 @@ namespace SentinelsJson
                 SkillList = fileSelect.SelectedFiles[0];
             }
 
+            Dictionary<string, string?> newShettings = new Dictionary<string, string?>();
+
+            foreach (SelectableUserControl item in selSheetSettings.Items)
+            {
+                if (item.Tag is KeyValuePair<string, string?> kvp)
+                {
+                    newShettings[kvp.Key] = kvp.Value;
+                }
+            }
+
+            SheetSettingsList = newShettings;
+
             DialogResult = true;
             Close();
         }
@@ -116,6 +129,18 @@ namespace SentinelsJson
         private void btnAddSetting_Click(object sender, RoutedEventArgs e)
         {
             // TO BE ADDED
+            AddSettingValueWindow asv = new AddSettingValueWindow();
+            asv.ColorScheme = ColorScheme;
+            asv.ShowDialog();
+
+            if (asv.DialogResult)
+            {
+                SelectableItem si = new SelectableItem();
+                si.Tag = new KeyValuePair<string, string>(asv.SettingName, asv.SettingValue);
+                si.Text = $"Name: \"{asv.SettingName}\", Value: \"{asv.SettingValue}\"";
+
+                selSheetSettings.Items.Add(si);
+            }
         }
 
         private void btnEditSetting_Click(object sender, RoutedEventArgs e)
@@ -137,7 +162,12 @@ namespace SentinelsJson
 
         private void btnRemoveSetting_Click(object sender, RoutedEventArgs e)
         {
-            selSheetSettings.RemoveSelectedItems();
+            MessageDialog md = new MessageDialog(ColorScheme);
+            md.ShowDialog("Are you sure you want to remove the selected setting?", null, this, "Confirm Remove", MessageDialogButtonDisplay.Two, MessageDialogImage.Question);
+            if (md.DialogResult == MessageDialogResult.OK)
+            {
+                selSheetSettings.RemoveSelectedItems();
+            }
         }
 
         private void selSheetSettings_SelectionChanged(object sender, SelectionChangedEventArgs e)

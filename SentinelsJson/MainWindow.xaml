@@ -167,7 +167,7 @@
                 <MenuItem Header="_Dice Roller" x:Name="mnuDiceRoll" Click="mnuDiceRoll_Click" />
                 <Separator />
                 <MenuItem Header="_Text Editor Font..." x:Name="mnuEditorFont" Click="mnuEditorFont_Click" />
-                <MenuItem Header="_Options..." x:Name="mnuOptions" Click="mnuOptions_Click" IsEnabled="False">
+                <MenuItem Header="_Options..." x:Name="mnuOptions" Click="mnuOptions_Click" >
                     <MenuItem.Icon>
                         <Image Source="/SentinelsJson;component/Images/Color/Options.png" />
                     </MenuItem.Icon>

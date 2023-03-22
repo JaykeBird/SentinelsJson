@@ -103,6 +103,7 @@ namespace SentinelsJson.ChangeTheme
         private void btnCustomColored_Click(object sender, EventArgs e)
         {
             ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, btnCustomColorTheme.DisplayedColorScheme.MainColor);
+            cpd.ShowTransparencyControls = false;
             cpd.ShowDialog();
 
             if (cpd.DialogResult)
